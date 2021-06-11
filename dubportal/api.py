@@ -14,6 +14,8 @@ HERE = pathlib.Path(__file__).parent.resolve()
 DOCS = HERE.parent.joinpath("docs")
 DATA = HERE.joinpath("data", "DUB_website_main_v2.tsv")
 DATA_PROCESED = HERE.joinpath("data", "data.json")
+NDEX_LINKS = DOCS.joinpath('network_index.json')
+
 environment = Environment(
     autoescape=True, loader=FileSystemLoader(HERE), trim_blocks=False
 )
@@ -194,8 +196,11 @@ def main():
     with open(os.path.join(DOCS, "index.html"), "w") as file:
         print(index_html, file=file)
 
+    with NDEX_LINKS.open() as file:
+        ndex_links = json.load(file)
+
     for row in rows:
-        gene_html = gene_template.render(record=row)
+        gene_html = gene_template.render(record=row, ndex=ndex_links[row['hgnc_symbol']])
         directory = DOCS.joinpath(row["hgnc_symbol"])
         directory.mkdir(exist_ok=True, parents=True)
         with directory.joinpath("index.html").open("w") as file:
