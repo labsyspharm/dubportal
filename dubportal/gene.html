@@ -120,9 +120,9 @@
                         {{ row.name }}
                     </a>
                 </td>
-                <td align="right">{{ row.p }}</td>
-                <td align="right">{{ row.p_adj }}</td>
-                <td align="right">{{ row.q }}</td>
+                <td align="right">{{ "%.2e" | format(row.p) }}</td>
+                <td align="right">{{ "%.2e" | format(row.p_adj) }}</td>
+                <td align="right">{{ "%.2e" | format(row.q) }}</td>
             </tr>
         {% endfor %}
         </tbody>
