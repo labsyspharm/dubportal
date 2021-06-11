@@ -3,17 +3,19 @@
 {% block title %}DUB portal{% endblock %}
 
 {% block scripts %}
-{{ super() }}
-<script>
-    $(document).ready(function () {
-        $("#table-terms").DataTable();
-    })
-</script>
+    {{ super() }}
+    <script>
+        $(document).ready(function () {
+            $("#table-terms").DataTable();
+        })
+    </script>
 {% endblock %}
 
 {% block content %}
-<div class="container">
     <h1 align="center">DUB portal</h1>
+    <p>
+        TODO Laura: explanation about DUB Portal.
+    </p>
     <table class="table table-striped table-hover" id="table-terms">
         <thead>
         <tr style="text-align: right;">
@@ -21,42 +23,41 @@
             <th># Papers</th>
             <th>Dependent Cell Lines</th>
             <th>Dependent Genes</th>
-            <th>Top Enriched GO Term for Dependent Genes</th>
-            <th>GO <i>p</i>-value</th>
-            <th>GO <i>p</i>-value (adj.)</th>
-            <th>GO <i>q</i>-value</th>
+            <th>Top GSEA Result for Dependent Genes</th>
+            <th>GSEA <i>p</i>-value (adj.)</th>
+            <th>GSEA <i>q</i>-value</th>
         </tr>
         </thead>
         <tbody>
         {% for row in rows %}
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:{{ row.hgnc_id }}" href="#">
-                    {{ row.hgnc_symbol }}
-                </a>
-            </td>
-            <td align="right">{{ row.papers }}</td>
-            <td align="right">{{ "%.1f"|format(row.fraction_cell_lines_dependent * 100) }}%</td>
-            <td align="right">{{ row.depmap | length }}</td>
-            {% if row.go %}
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="{{ row.go.identifier }}" href="#">
-                    {{ row.go.name }}
-                </a>
-            </td>
-            <td align="right">{{ row.go.p }}</td>
-            <td align="right">{{ row.go.p_adj }}</td>
-            <td align="right">{{ row.go.q }}</td>
-            {% else %}
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            {% endif %}
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:{{ row.hgnc_id }}"
+                       href="/{{ row.hgnc_symbol }}">
+                        {{ row.hgnc_symbol }}
+                    </a>
+                </td>
+                <td align="right">{{ row.papers }}</td>
+                <td align="right">{{ "%.1f"|format(row.fraction_cell_lines_dependent * 100) }}%</td>
+                <td align="right">{{ row.depmap | length }}</td>
+                {% if row.go %}
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="{{ row.go[0].identifier }}"
+                           href="https://bioregistry.io/{{ row.go[0].identifier }}">
+                            {{ row.go[0].name }}
+                        </a>
+                    </td>
+                    <td align="right">{{ "%.2e" | format(row.go[0].p_adj) }}</td>
+                    <td align="right">{{ "%.2e" | format(row.go[0].q) }}</td>
+                {% else %}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            </tr>
         {% endfor %}
         </tbody>
     </table>
-</div>
 {% endblock %}

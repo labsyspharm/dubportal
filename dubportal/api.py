@@ -19,6 +19,7 @@ environment = Environment(
 )
 
 index_template = environment.get_template("index.html")
+gene_template = environment.get_template("gene.html")
 
 GENE_FIXES = {
     "KRTAP21": "KRTAP21-1",  # This record has been split, apparently
@@ -86,7 +87,7 @@ def get_processed_data():
         dub_hgnc_symbol = hgnc_client.get_hgnc_name(dub_hgnc_id)
 
         if go_term == "none significant":
-            go = {}
+            go = []
         else:
             go_term = GO_FIXES.get(go_term, go_term)
             go_term_norm = go_term.removeprefix("GO_").replace("_", " ").lower()
@@ -115,14 +116,16 @@ def get_processed_data():
                         "hgnc_name": hgnc_client.get_hgnc_name(go_gene_id),
                     }
                 )
-            go = dict(
-                identifier=go_id,
-                name=go_name,
-                genes=go_gene_dicts,
-                p=go_p,
-                p_adj=go_padj,
-                q=go_q,
-            )
+            go = [
+                dict(
+                    identifier=go_id,
+                    name=go_name,
+                    genes=go_gene_dicts,
+                    p=go_p,
+                    p_adj=go_padj,
+                    q=go_q,
+                ),
+            ]
 
         depmap_results = []
         for (
@@ -185,10 +188,18 @@ def get_rv(force: bool = False):
 
 
 def main():
-    rv = get_rv()
-    index_html = index_template.render(rows=list(rv.values()))
+    rows = list(get_rv().values())
+
+    index_html = index_template.render(rows=rows)
     with open(os.path.join(DOCS, "index.html"), "w") as file:
         print(index_html, file=file)
+
+    for row in rows:
+        gene_html = gene_template.render(record=row)
+        directory = DOCS.joinpath(row["hgnc_symbol"])
+        directory.mkdir(exist_ok=True, parents=True)
+        with directory.joinpath("index.html").open("w") as file:
+            print(gene_html, file=file)
 
 
 if __name__ == "__main__":

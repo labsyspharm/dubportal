@@ -20,13 +20,12 @@ logger = logging.getLogger(__name__)
 
 
 def get_statements_for_dub(dub):
-    logger.info('Getting statements for %s' % dub)
+    logger.info("Getting statements for %s" % dub)
     hgnc_id = hgnc_client.get_current_hgnc_id(dub)
     if hgnc_id is None:
-        logger.warning('Could not get HGNC ID for %s' % dub)
+        logger.warning("Could not get HGNC ID for %s" % dub)
         return None
-    ip = get_statements(agents=['%s@HGNC' % hgnc_id],
-                        ev_limit=10000)
+    ip = get_statements(agents=["%s@HGNC" % hgnc_id], ev_limit=10000)
     stmts = filter_out_medscan(ip.statements)
     stmts = ac.filter_by_curation(stmts, curs)
     stmts = sorted(stmts, key=lambda x: len(x.evidence), reverse=True)
@@ -34,18 +33,18 @@ def get_statements_for_dub(dub):
 
 
 def filter_out_medscan(stmts):
-    logger.info('Starting medscan filter with %d statements' % len(stmts))
+    logger.info("Starting medscan filter with %d statements" % len(stmts))
     new_stmts = []
     for stmt in stmts:
         new_evidence = []
         for ev in stmt.evidence:
-            if ev.source_api == 'medscan':
+            if ev.source_api == "medscan":
                 continue
             new_evidence.append(ev)
         stmt.evidence = new_evidence
         if new_evidence:
             new_stmts.append(stmt)
-    logger.info('Finished medscan filter with %d statements' % len(new_stmts))
+    logger.info("Finished medscan filter with %d statements" % len(new_stmts))
     return new_stmts
 
 
@@ -64,14 +63,13 @@ def upload_network(dub, stmts):
     add_semantic_hub_layout(cxa.cx, dub)
     model_id = cxa.upload_model()
     ndex_client.set_style(model_id)
-    ndex_client.add_to_network_set(model_id,
-                                   '381f3a8d-cac9-11eb-9a85-0ac135e8bacf')
+    ndex_client.add_to_network_set(model_id, "381f3a8d-cac9-11eb-9a85-0ac135e8bacf")
     return model_id
 
 
-if __name__ == '__main__':
-    df = pandas.read_csv(DATA, sep='\t')
-    dubs = sorted(df['DUB'].unique())
+if __name__ == "__main__":
+    df = pandas.read_csv(DATA, sep="\t")
+    dubs = sorted(df["DUB"].unique())
     network_index = {}
     all_stmts = {}
     for dub in dubs:
@@ -80,7 +78,7 @@ if __name__ == '__main__':
         network_index[dub] = network_id
         all_stmts[dub] = stmts
 
-    with open('network_index.json', 'w') as fh:
+    with open("network_index.json", "w") as fh:
         json.dump(network_index, fh)
-    with open('statements.pkl', 'wb') as fh:
+    with open("statements.pkl", "wb") as fh:
         pickle.dump(all_stmts, fh, protocol=5)
