@@ -1,40 +1,63 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>DUB portal</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link
-        rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous"
-    />
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.12/c3.min.css"
-    />
-    <link
-        rel="stylesheet"
-        href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"
-    />
+<head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Bootstrap -->
+            <link
+                    rel="stylesheet"
+                    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+                    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+                    crossorigin="anonymous"
+            />
+            <link
+                    rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.12/c3.min.css"
+            />
+            <link
+                    rel="stylesheet"
+                    href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"
+            />
+            <!-- DataTables, see: https://datatables.net/examples/styling/bootstrap4.html-->
+            <link
+                    rel="stylesheet"
+                    href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
+            />
+            <style type="text/css">
+                h2 {
+                    margin-top: 35px;
+                }
 
-    <!-- DataTables, see: https://datatables.net/examples/styling/bootstrap4.html-->
-    <link
-        rel="stylesheet"
-        href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
-    />
-    <style type="text/css">
-        h1, h2 {
-            margin-top: 35px;
-        }
-    </style>
-  </head>
-  <body data-spy="scroll" data-target="#toc">
-    
-    
-<div class="container">
+                html, body {
+                    height: 100%;
+                }
+
+                body {
+                    display: flex;
+                    flex-flow: column;
+                }
+
+                .footer {
+                    margin-top: auto;
+                    padding-top: 1em;
+                    background-color: #f5f5f5;
+                }
+            </style>
+
+        <script src="https://kit.fontawesome.com/4c86883252.js" crossorigin="anonymous"></script>
+        <title>DUB portal</title>
+</head>
+
+<body data-spy="scroll" data-target="#toc">
+
+
+
+    <div class="container" style="margin-top: 50px; margin-bottom: 50px">
+        
     <h1 align="center">DUB portal</h1>
+    <p>
+        TODO Laura: explanation about DUB Portal.
+    </p>
     <table class="table table-striped table-hover" id="table-terms">
         <thead>
         <tr style="text-align: right;">
@@ -42,759 +65,807 @@
             <th># Papers</th>
             <th>Dependent Cell Lines</th>
             <th>Dependent Genes</th>
-            <th>Top Enriched GO Term</th>
-            <th>GO <i>p</i>-value</th>
-            <th>GO <i>p</i>-value (adj.)</th>
-            <th>GO <i>q</i>-value</th>
+            <th>Top GSEA Result for Dependent Genes</th>
+            <th>GSEA <i>p</i>-value (adj.)</th>
+            <th>GSEA <i>q</i>-value</th>
         </tr>
         </thead>
         <tbody>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:950" href="#" >
-                    BAP1
-                </a>
-            </td>
-            <td align="right">1094</td>
-            <td align="right">76.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0035097" href="#" >
-                    histone methyltransferase complex
-                </a>
-            </td>
-            <td align="right">3.44e-06</td>
-            <td align="right">0.000768143</td>
-            <td align="right">0.000322703</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:950"
+                       href="/BAP1">
+                        BAP1
+                    </a>
+                </td>
+                <td align="right">1094</td>
+                <td align="right">76.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0035097"
+                           href="https://bioregistry.io/GO:0035097">
+                            histone methyltransferase complex
+                        </a>
+                    </td>
+                    <td align="right">7.68e-04</td>
+                    <td align="right">3.23e-04</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:24185" href="#" >
-                    BRCC3
-                </a>
-            </td>
-            <td align="right">65</td>
-            <td align="right">0.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0070552" href="#" >
-                    BRISC complex
-                </a>
-            </td>
-            <td align="right">5.55e-07</td>
-            <td align="right">0.000219934</td>
-            <td align="right">8.54e-05</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:24185"
+                       href="/BRCC3">
+                        BRCC3
+                    </a>
+                </td>
+                <td align="right">65</td>
+                <td align="right">0.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0070552"
+                           href="https://bioregistry.io/GO:0070552">
+                            BRISC complex
+                        </a>
+                    </td>
+                    <td align="right">2.20e-04</td>
+                    <td align="right">8.54e-05</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:2240" href="#" >
-                    COPS5
-                </a>
-            </td>
-            <td align="right">310</td>
-            <td align="right">100.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0000338" href="#" >
-                    protein deneddylation
-                </a>
-            </td>
-            <td align="right">2.27e-20</td>
-            <td align="right">1.63e-18</td>
-            <td align="right">8.12e-19</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:2240"
+                       href="/COPS5">
+                        COPS5
+                    </a>
+                </td>
+                <td align="right">310</td>
+                <td align="right">100.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0000338"
+                           href="https://bioregistry.io/GO:0000338">
+                            protein deneddylation
+                        </a>
+                    </td>
+                    <td align="right">1.63e-18</td>
+                    <td align="right">8.12e-19</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:2584" href="#" >
-                    CYLD
-                </a>
-            </td>
-            <td align="right">635</td>
-            <td align="right">5.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0034178" href="#" >
-                    toll-like receptor 13 signaling pathway
-                </a>
-            </td>
-            <td align="right">4.87e-10</td>
-            <td align="right">2.23e-07</td>
-            <td align="right">4.52e-08</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:2584"
+                       href="/CYLD">
+                        CYLD
+                    </a>
+                </td>
+                <td align="right">635</td>
+                <td align="right">5.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0034178"
+                           href="https://bioregistry.io/GO:0034178">
+                            toll-like receptor 13 signaling pathway
+                        </a>
+                    </td>
+                    <td align="right">2.23e-07</td>
+                    <td align="right">4.52e-08</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:3275" href="#" >
-                    EIF3F
-                </a>
-            </td>
-            <td align="right">73</td>
-            <td align="right">98.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0006413" href="#" >
-                    translational initiation
-                </a>
-            </td>
-            <td align="right">6.15e-10</td>
-            <td align="right">2.77e-08</td>
-            <td align="right">1.94e-09</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:3275"
+                       href="/EIF3F">
+                        EIF3F
+                    </a>
+                </td>
+                <td align="right">73</td>
+                <td align="right">98.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0006413"
+                           href="https://bioregistry.io/GO:0006413">
+                            translational initiation
+                        </a>
+                    </td>
+                    <td align="right">2.77e-08</td>
+                    <td align="right">1.94e-09</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:3273" href="#" >
-                    EIF3H
-                </a>
-            </td>
-            <td align="right">55</td>
-            <td align="right">96.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0001732" href="#" >
-                    formation of cytoplasmic translation initiation complex
-                </a>
-            </td>
-            <td align="right">1.12e-08</td>
-            <td align="right">3.09e-06</td>
-            <td align="right">8.14e-07</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:3273"
+                       href="/EIF3H">
+                        EIF3H
+                    </a>
+                </td>
+                <td align="right">55</td>
+                <td align="right">96.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0001732"
+                           href="https://bioregistry.io/GO:0001732">
+                            formation of cytoplasmic translation initiation complex
+                        </a>
+                    </td>
+                    <td align="right">3.09e-06</td>
+                    <td align="right">8.14e-07</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:23077" href="#" >
-                    OTUB1
-                </a>
-            </td>
-            <td align="right">94</td>
-            <td align="right">3.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0070979" href="#" >
-                    protein K11-linked ubiquitination
-                </a>
-            </td>
-            <td align="right">7.11e-08</td>
-            <td align="right">8.6e-06</td>
-            <td align="right">3.29e-06</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:23077"
+                       href="/OTUB1">
+                        OTUB1
+                    </a>
+                </td>
+                <td align="right">94</td>
+                <td align="right">3.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0070979"
+                           href="https://bioregistry.io/GO:0070979">
+                            protein K11-linked ubiquitination
+                        </a>
+                    </td>
+                    <td align="right">8.60e-06</td>
+                    <td align="right">3.29e-06</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:25402" href="#" >
-                    OTUD5
-                </a>
-            </td>
-            <td align="right">11</td>
-            <td align="right">48.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0070535" href="#" >
-                    histone H2A K63-linked ubiquitination
-                </a>
-            </td>
-            <td align="right">1.17e-06</td>
-            <td align="right">0.000539891</td>
-            <td align="right">0.000236897</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:25402"
+                       href="/OTUD5">
+                        OTUD5
+                    </a>
+                </td>
+                <td align="right">11</td>
+                <td align="right">48.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0070535"
+                           href="https://bioregistry.io/GO:0070535">
+                            histone H2A K63-linked ubiquitination
+                        </a>
+                    </td>
+                    <td align="right">5.40e-04</td>
+                    <td align="right">2.37e-04</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:17340" href="#" >
-                    PRPF8
-                </a>
-            </td>
-            <td align="right">111</td>
-            <td align="right">100.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0005681" href="#" >
-                    spliceosomal complex
-                </a>
-            </td>
-            <td align="right">1.42e-09</td>
-            <td align="right">3.71e-07</td>
-            <td align="right">1.84e-07</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:17340"
+                       href="/PRPF8">
+                        PRPF8
+                    </a>
+                </td>
+                <td align="right">111</td>
+                <td align="right">100.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0005681"
+                           href="https://bioregistry.io/GO:0005681">
+                            spliceosomal complex
+                        </a>
+                    </td>
+                    <td align="right">3.71e-07</td>
+                    <td align="right">1.84e-07</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:16889" href="#" >
-                    PSMD14
-                </a>
-            </td>
-            <td align="right">62</td>
-            <td align="right">100.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:1902750" href="#" >
-                    negative regulation of cell cycle G2/M phase transition
-                </a>
-            </td>
-            <td align="right">3.06e-08</td>
-            <td align="right">7.22e-06</td>
-            <td align="right">2.03e-06</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:16889"
+                       href="/PSMD14">
+                        PSMD14
+                    </a>
+                </td>
+                <td align="right">62</td>
+                <td align="right">100.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:1902750"
+                           href="https://bioregistry.io/GO:1902750">
+                            negative regulation of cell cycle G2/M phase transition
+                        </a>
+                    </td>
+                    <td align="right">7.22e-06</td>
+                    <td align="right">2.03e-06</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:9565" href="#" >
-                    PSMD7
-                </a>
-            </td>
-            <td align="right">25</td>
-            <td align="right">100.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0005681" href="#" >
-                    spliceosomal complex
-                </a>
-            </td>
-            <td align="right">2.56e-07</td>
-            <td align="right">8.67e-05</td>
-            <td align="right">3.24e-05</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:9565"
+                       href="/PSMD7">
+                        PSMD7
+                    </a>
+                </td>
+                <td align="right">25</td>
+                <td align="right">100.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0005681"
+                           href="https://bioregistry.io/GO:0005681">
+                            spliceosomal complex
+                        </a>
+                    </td>
+                    <td align="right">8.67e-05</td>
+                    <td align="right">3.24e-05</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:16950" href="#" >
-                    STAMBP
-                </a>
-            </td>
-            <td align="right">58</td>
-            <td align="right">32.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0007032" href="#" >
-                    endosome organization
-                </a>
-            </td>
-            <td align="right">2.4e-06</td>
-            <td align="right">0.000497298</td>
-            <td align="right">0.000247827</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:16950"
+                       href="/STAMBP">
+                        STAMBP
+                    </a>
+                </td>
+                <td align="right">58</td>
+                <td align="right">32.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0007032"
+                           href="https://bioregistry.io/GO:0007032">
+                            endosome organization
+                        </a>
+                    </td>
+                    <td align="right">4.97e-04</td>
+                    <td align="right">2.48e-04</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:11896" href="#" >
-                    TNFAIP3
-                </a>
-            </td>
-            <td align="right">1218</td>
-            <td align="right">1.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:1901223" href="#" >
-                    negative regulation of NIK/NF-kappaB signaling
-                </a>
-            </td>
-            <td align="right">3.83e-08</td>
-            <td align="right">1.09e-05</td>
-            <td align="right">4.56e-06</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:11896"
+                       href="/TNFAIP3">
+                        TNFAIP3
+                    </a>
+                </td>
+                <td align="right">1218</td>
+                <td align="right">1.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:1901223"
+                           href="https://bioregistry.io/GO:1901223">
+                            negative regulation of NIK/NF-kappaB signaling
+                        </a>
+                    </td>
+                    <td align="right">1.09e-05</td>
+                    <td align="right">4.56e-06</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12515" href="#" >
-                    UCHL3
-                </a>
-            </td>
-            <td align="right">127</td>
-            <td align="right">1.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0030330" href="#" >
-                    DNA damage response, signal transduction by p53 class mediator
-                </a>
-            </td>
-            <td align="right">1.37e-08</td>
-            <td align="right">6.14e-06</td>
-            <td align="right">1.63e-06</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12515"
+                       href="/UCHL3">
+                        UCHL3
+                    </a>
+                </td>
+                <td align="right">127</td>
+                <td align="right">1.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0030330"
+                           href="https://bioregistry.io/GO:0030330">
+                            DNA damage response, signal transduction by p53 class mediator
+                        </a>
+                    </td>
+                    <td align="right">6.14e-06</td>
+                    <td align="right">1.63e-06</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:19678" href="#" >
-                    UCHL5
-                </a>
-            </td>
-            <td align="right">138</td>
-            <td align="right">50.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0033202" href="#" >
-                    DNA helicase complex
-                </a>
-            </td>
-            <td align="right">5.41e-19</td>
-            <td align="right">4.16e-17</td>
-            <td align="right">2.33e-17</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:19678"
+                       href="/UCHL5">
+                        UCHL5
+                    </a>
+                </td>
+                <td align="right">138</td>
+                <td align="right">50.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0033202"
+                           href="https://bioregistry.io/GO:0033202">
+                            DNA helicase complex
+                        </a>
+                    </td>
+                    <td align="right">4.16e-17</td>
+                    <td align="right">2.33e-17</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12607" href="#" >
-                    USP1
-                </a>
-            </td>
-            <td align="right">180</td>
-            <td align="right">14.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0006310" href="#" >
-                    DNA recombination
-                </a>
-            </td>
-            <td align="right">6.8e-07</td>
-            <td align="right">0.000247636</td>
-            <td align="right">7.3e-05</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12607"
+                       href="/USP1">
+                        USP1
+                    </a>
+                </td>
+                <td align="right">180</td>
+                <td align="right">14.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0006310"
+                           href="https://bioregistry.io/GO:0006310">
+                            DNA recombination
+                        </a>
+                    </td>
+                    <td align="right">2.48e-04</td>
+                    <td align="right">7.30e-05</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12612" href="#" >
-                    USP14
-                </a>
-            </td>
-            <td align="right">232</td>
-            <td align="right">9.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0031965" href="#" >
-                    nuclear membrane
-                </a>
-            </td>
-            <td align="right">0.000133267</td>
-            <td align="right">0.026919856</td>
-            <td align="right">0.007888782</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12612"
+                       href="/USP14">
+                        USP14
+                    </a>
+                </td>
+                <td align="right">232</td>
+                <td align="right">9.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0031965"
+                           href="https://bioregistry.io/GO:0031965">
+                            nuclear membrane
+                        </a>
+                    </td>
+                    <td align="right">2.69e-02</td>
+                    <td align="right">7.89e-03</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12613" href="#" >
-                    USP15
-                </a>
-            </td>
-            <td align="right">114</td>
-            <td align="right">1.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0035329" href="#" >
-                    hippo signaling
-                </a>
-            </td>
-            <td align="right">8.15e-05</td>
-            <td align="right">0.022168207</td>
-            <td align="right">0.010637994</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12613"
+                       href="/USP15">
+                        USP15
+                    </a>
+                </td>
+                <td align="right">114</td>
+                <td align="right">1.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0035329"
+                           href="https://bioregistry.io/GO:0035329">
+                            hippo signaling
+                        </a>
+                    </td>
+                    <td align="right">2.22e-02</td>
+                    <td align="right">1.06e-02</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12616" href="#" >
-                    USP18
-                </a>
-            </td>
-            <td align="right">229</td>
-            <td align="right">16.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0034340" href="#" >
-                    response to type I interferon
-                </a>
-            </td>
-            <td align="right">9.98e-14</td>
-            <td align="right">7.49e-12</td>
-            <td align="right">3.26e-12</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12616"
+                       href="/USP18">
+                        USP18
+                    </a>
+                </td>
+                <td align="right">229</td>
+                <td align="right">16.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0034340"
+                           href="https://bioregistry.io/GO:0034340">
+                            response to type I interferon
+                        </a>
+                    </td>
+                    <td align="right">7.49e-12</td>
+                    <td align="right">3.26e-12</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12621" href="#" >
-                    USP22
-                </a>
-            </td>
-            <td align="right">152</td>
-            <td align="right">1.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0070461" href="#" >
-                    SAGA-type complex
-                </a>
-            </td>
-            <td align="right">4.07e-17</td>
-            <td align="right">3.7e-15</td>
-            <td align="right">1.07e-15</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12621"
+                       href="/USP22">
+                        USP22
+                    </a>
+                </td>
+                <td align="right">152</td>
+                <td align="right">1.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0070461"
+                           href="https://bioregistry.io/GO:0070461">
+                            SAGA-type complex
+                        </a>
+                    </td>
+                    <td align="right">3.70e-15</td>
+                    <td align="right">1.07e-15</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12625" href="#" >
-                    USP28
-                </a>
-            </td>
-            <td align="right">83</td>
-            <td align="right">1.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0071479" href="#" >
-                    cellular response to ionizing radiation
-                </a>
-            </td>
-            <td align="right">1.54e-14</td>
-            <td align="right">9.94e-12</td>
-            <td align="right">2.58e-12</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12625"
+                       href="/USP28">
+                        USP28
+                    </a>
+                </td>
+                <td align="right">83</td>
+                <td align="right">1.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0071479"
+                           href="https://bioregistry.io/GO:0071479">
+                            cellular response to ionizing radiation
+                        </a>
+                    </td>
+                    <td align="right">9.94e-12</td>
+                    <td align="right">2.58e-12</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:19143" href="#" >
-                    USP32
-                </a>
-            </td>
-            <td align="right">16</td>
-            <td align="right">2.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0000938" href="#" >
-                    GARP complex
-                </a>
-            </td>
-            <td align="right">1.17e-06</td>
-            <td align="right">0.000101448</td>
-            <td align="right">4.79e-05</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:19143"
+                       href="/USP32">
+                        USP32
+                    </a>
+                </td>
+                <td align="right">16</td>
+                <td align="right">2.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0000938"
+                           href="https://bioregistry.io/GO:0000938">
+                            GARP complex
+                        </a>
+                    </td>
+                    <td align="right">1.01e-04</td>
+                    <td align="right">4.79e-05</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:20061" href="#" >
-                    USP35
-                </a>
-            </td>
-            <td align="right">13</td>
-            <td align="right">6.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0071277" href="#" >
-                    cellular response to calcium ion
-                </a>
-            </td>
-            <td align="right">0.000110081</td>
-            <td align="right">0.01078789</td>
-            <td align="right">0.004055598</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:20061"
+                       href="/USP35">
+                        USP35
+                    </a>
+                </td>
+                <td align="right">13</td>
+                <td align="right">6.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0071277"
+                           href="https://bioregistry.io/GO:0071277">
+                            cellular response to calcium ion
+                        </a>
+                    </td>
+                    <td align="right">1.08e-02</td>
+                    <td align="right">4.06e-03</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:20062" href="#" >
-                    USP36
-                </a>
-            </td>
-            <td align="right">32</td>
-            <td align="right">100.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0003724" href="#" >
-                    RNA helicase activity
-                </a>
-            </td>
-            <td align="right">0.000130542</td>
-            <td align="right">0.028197171</td>
-            <td align="right">0.010435609</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:20062"
+                       href="/USP36">
+                        USP36
+                    </a>
+                </td>
+                <td align="right">32</td>
+                <td align="right">100.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0003724"
+                           href="https://bioregistry.io/GO:0003724">
+                            RNA helicase activity
+                        </a>
+                    </td>
+                    <td align="right">2.82e-02</td>
+                    <td align="right">1.04e-02</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:20063" href="#" >
-                    USP37
-                </a>
-            </td>
-            <td align="right">31</td>
-            <td align="right">80.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0000076" href="#" >
-                    DNA replication checkpoint
-                </a>
-            </td>
-            <td align="right">1.4e-05</td>
-            <td align="right">0.001564174</td>
-            <td align="right">0.000543933</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:20063"
+                       href="/USP37">
+                        USP37
+                    </a>
+                </td>
+                <td align="right">31</td>
+                <td align="right">80.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0000076"
+                           href="https://bioregistry.io/GO:0000076">
+                            DNA replication checkpoint
+                        </a>
+                    </td>
+                    <td align="right">1.56e-03</td>
+                    <td align="right">5.44e-04</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:20067" href="#" >
-                    USP38
-                </a>
-            </td>
-            <td align="right">13</td>
-            <td align="right">2.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0071479" href="#" >
-                    cellular response to ionizing radiation
-                </a>
-            </td>
-            <td align="right">1.33e-11</td>
-            <td align="right">7.07e-09</td>
-            <td align="right">1.93e-09</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:20067"
+                       href="/USP38">
+                        USP38
+                    </a>
+                </td>
+                <td align="right">13</td>
+                <td align="right">2.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0071479"
+                           href="https://bioregistry.io/GO:0071479">
+                            cellular response to ionizing radiation
+                        </a>
+                    </td>
+                    <td align="right">7.07e-09</td>
+                    <td align="right">1.93e-09</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:20068" href="#" >
-                    USP42
-                </a>
-            </td>
-            <td align="right">18</td>
-            <td align="right">1.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0030330" href="#" >
-                    DNA damage response, signal transduction by p53 class mediator
-                </a>
-            </td>
-            <td align="right">3.35e-06</td>
-            <td align="right">0.001352748</td>
-            <td align="right">0.000344603</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:20068"
+                       href="/USP42">
+                        USP42
+                    </a>
+                </td>
+                <td align="right">18</td>
+                <td align="right">1.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0030330"
+                           href="https://bioregistry.io/GO:0030330">
+                            DNA damage response, signal transduction by p53 class mediator
+                        </a>
+                    </td>
+                    <td align="right">1.35e-03</td>
+                    <td align="right">3.45e-04</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12628" href="#" >
-                    USP5
-                </a>
-            </td>
-            <td align="right">87</td>
-            <td align="right">100.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:1901987" href="#" >
-                    regulation of cell cycle phase transition
-                </a>
-            </td>
-            <td align="right">1.31e-05</td>
-            <td align="right">0.003932345</td>
-            <td align="right">0.001973071</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12628"
+                       href="/USP5">
+                        USP5
+                    </a>
+                </td>
+                <td align="right">87</td>
+                <td align="right">100.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:1901987"
+                           href="https://bioregistry.io/GO:1901987">
+                            regulation of cell cycle phase transition
+                        </a>
+                    </td>
+                    <td align="right">3.93e-03</td>
+                    <td align="right">1.97e-03</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:23086" href="#" >
-                    USP51
-                </a>
-            </td>
-            <td align="right">11</td>
-            <td align="right">0.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0099587" href="#" >
-                    inorganic ion import across plasma membrane
-                </a>
-            </td>
-            <td align="right">0.000287173</td>
-            <td align="right">0.046809173</td>
-            <td align="right">0.009547641</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:23086"
+                       href="/USP51">
+                        USP51
+                    </a>
+                </td>
+                <td align="right">11</td>
+                <td align="right">0.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0099587"
+                           href="https://bioregistry.io/GO:0099587">
+                            inorganic ion import across plasma membrane
+                        </a>
+                    </td>
+                    <td align="right">4.68e-02</td>
+                    <td align="right">9.55e-03</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:29255" href="#" >
-                    USP53
-                </a>
-            </td>
-            <td align="right">6</td>
-            <td align="right">2.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0031683" href="#" >
-                    G-protein beta/gamma-subunit complex binding
-                </a>
-            </td>
-            <td align="right">1.58e-05</td>
-            <td align="right">0.002005786</td>
-            <td align="right">0.000930991</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:29255"
+                       href="/USP53">
+                        USP53
+                    </a>
+                </td>
+                <td align="right">6</td>
+                <td align="right">2.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0031683"
+                           href="https://bioregistry.io/GO:0031683">
+                            G-protein beta/gamma-subunit complex binding
+                        </a>
+                    </td>
+                    <td align="right">2.01e-03</td>
+                    <td align="right">9.31e-04</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12630" href="#" >
-                    USP7
-                </a>
-            </td>
-            <td align="right">469</td>
-            <td align="right">81.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0010212" href="#" >
-                    response to ionizing radiation
-                </a>
-            </td>
-            <td align="right">1.61e-10</td>
-            <td align="right">8.11e-08</td>
-            <td align="right">9.67e-09</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12630"
+                       href="/USP7">
+                        USP7
+                    </a>
+                </td>
+                <td align="right">469</td>
+                <td align="right">81.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0010212"
+                           href="https://bioregistry.io/GO:0010212">
+                            response to ionizing radiation
+                        </a>
+                    </td>
+                    <td align="right">8.11e-08</td>
+                    <td align="right">9.67e-09</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12631" href="#" >
-                    USP8
-                </a>
-            </td>
-            <td align="right">196</td>
-            <td align="right">98.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0016197" href="#" >
-                    endosomal transport
-                </a>
-            </td>
-            <td align="right">1.62e-11</td>
-            <td align="right">3.62e-09</td>
-            <td align="right">1.45e-09</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12631"
+                       href="/USP8">
+                        USP8
+                    </a>
+                </td>
+                <td align="right">196</td>
+                <td align="right">98.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0016197"
+                           href="https://bioregistry.io/GO:0016197">
+                            endosomal transport
+                        </a>
+                    </td>
+                    <td align="right">3.62e-09</td>
+                    <td align="right">1.45e-09</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:12632" href="#" >
-                    USP9X
-                </a>
-            </td>
-            <td align="right">259</td>
-            <td align="right">92.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0032435" href="#" >
-                    negative regulation of proteasomal ubiquitin-dependent protein catabolic process
-                </a>
-            </td>
-            <td align="right">6.51e-05</td>
-            <td align="right">0.011519878</td>
-            <td align="right">0.003684339</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:12632"
+                       href="/USP9X">
+                        USP9X
+                    </a>
+                </td>
+                <td align="right">259</td>
+                <td align="right">92.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0032435"
+                           href="https://bioregistry.io/GO:0032435">
+                            negative regulation of proteasomal ubiquitin-dependent protein catabolic process
+                        </a>
+                    </td>
+                    <td align="right">1.15e-02</td>
+                    <td align="right">3.68e-03</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:20294" href="#" >
-                    USPL1
-                </a>
-            </td>
-            <td align="right">5</td>
-            <td align="right">99.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0070847" href="#" >
-                    core mediator complex
-                </a>
-            </td>
-            <td align="right">3.26e-06</td>
-            <td align="right">0.000355698</td>
-            <td align="right">0.000161447</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:20294"
+                       href="/USPL1">
+                        USPL1
+                    </a>
+                </td>
+                <td align="right">5</td>
+                <td align="right">99.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0070847"
+                           href="https://bioregistry.io/GO:0070847">
+                            core mediator complex
+                        </a>
+                    </td>
+                    <td align="right">3.56e-04</td>
+                    <td align="right">1.61e-04</td>
+                
+            </tr>
         
-        <tr>
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="HGNC:30897" href="#" >
-                    VCPIP1
-                </a>
-            </td>
-            <td align="right">5</td>
-            <td align="right">35.0%</td>
-            <td align="right">7</td>
-            
-            <td>
-                <a data-toggle="tooltip" data-html="true" title="GO:0006284" href="#" >
-                    base-excision repair
-                </a>
-            </td>
-            <td align="right">4.76e-05</td>
-            <td align="right">0.014766161</td>
-            <td align="right">0.004132254</td>
-            
-        </tr>
+            <tr>
+                <td>
+                    <a data-toggle="tooltip" data-html="true" title="HGNC:30897"
+                       href="/VCPIP1">
+                        VCPIP1
+                    </a>
+                </td>
+                <td align="right">5</td>
+                <td align="right">35.0%</td>
+                <td align="right">7</td>
+                
+                    <td>
+                        <a data-toggle="tooltip" data-html="true" title="GO:0006284"
+                           href="https://bioregistry.io/GO:0006284">
+                            base-excision repair
+                        </a>
+                    </td>
+                    <td align="right">1.48e-02</td>
+                    <td align="right">4.13e-03</td>
+                
+            </tr>
         
         </tbody>
     </table>
-</div>
+
+    </div>
+
+
+<footer class="footer">
+    <p class="small text-center text-muted">
+        Developed with ❤️ in 🇩🇪 and 🇺🇸 by the <a href="https://indralab.github.io">INDRA Lab</a> in the
+        <a href="https://hits.harvard.edu">Harvard Program in Therapeutic Science (HiTS)</a>.
+    </p>
+</footer>
 
 
     
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
     <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
 
     <!-- DataTables, see: https://datatables.net/examples/styling/bootstrap4.html-->
@@ -806,15 +877,14 @@
 
     <script>
         $(function () {
-          $('[data-toggle="tooltip"]').tooltip()
+            $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
-<script>
-    $(document).ready(function () {
-        $("#table-terms").DataTable();
-    })
-</script>
+    <script>
+        $(document).ready(function () {
+            $("#table-terms").DataTable();
+        })
+    </script>
 
-  </body>
+</body>
 </html>
-
