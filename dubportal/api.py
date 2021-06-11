@@ -3,18 +3,20 @@ import logging
 import os
 import pathlib
 
+import click
 import gilda
 import pandas as pd
-from jinja2 import Environment, FileSystemLoader
-
+import pyobo
 from indra.databases import go_client, hgnc_client
+from jinja2 import Environment, FileSystemLoader
+from more_click import force_option, verbose_option
 
 logger = logging.getLogger(__name__)
 HERE = pathlib.Path(__file__).parent.resolve()
 DOCS = HERE.parent.joinpath("docs")
 DATA = HERE.joinpath("data", "DUB_website_main_v2.tsv")
 DATA_PROCESED = HERE.joinpath("data", "data.json")
-NDEX_LINKS = DOCS.joinpath('network_index.json')
+NDEX_LINKS = DOCS.joinpath("network_index.json")
 
 environment = Environment(
     autoescape=True, loader=FileSystemLoader(HERE), trim_blocks=False
@@ -165,10 +167,14 @@ def get_processed_data():
                     type=cmap_type,
                 )
             depmap_results.append(depmap_result)
-
         rv[dub] = dict(
             hgnc_id=dub_hgnc_id,
             hgnc_symbol=dub_hgnc_symbol,
+            uniprot_id=hgnc_client.get_uniprot_id(dub_hgnc_id),
+            entrez_id=hgnc_client.get_entrez_id(dub_hgnc_id),
+            mgi_id=hgnc_client.get_mouse_id(dub_hgnc_id),
+            rgd_id=hgnc_client.get_rat_id(dub_hgnc_id),
+            description=pyobo.get_definition("hgnc", dub_hgnc_id),
             rnaseq=rnaseq,
             papers=int(n_papers.replace(",", "")),
             fraction_cell_lines_dependent=fraction_dependent,
@@ -178,7 +184,7 @@ def get_processed_data():
     return rv
 
 
-def get_rv(force: bool = False):
+def get_rv(force: bool = True):
     if DATA_PROCESED.is_file() and not force:
         with DATA_PROCESED.open() as file:
             return json.load(file)
@@ -189,8 +195,11 @@ def get_rv(force: bool = False):
     return rv
 
 
-def main():
-    rows = list(get_rv().values())
+@click.command()
+@force_option
+@verbose_option
+def main(force: bool):
+    rows = list(get_rv(force=force).values())
 
     index_html = index_template.render(rows=rows)
     with open(os.path.join(DOCS, "index.html"), "w") as file:
@@ -200,7 +209,9 @@ def main():
         ndex_links = json.load(file)
 
     for row in rows:
-        gene_html = gene_template.render(record=row, ndex=ndex_links[row['hgnc_symbol']])
+        gene_html = gene_template.render(
+            record=row, ndex=ndex_links[row["hgnc_symbol"]]
+        )
         directory = DOCS.joinpath(row["hgnc_symbol"])
         directory.mkdir(exist_ok=True, parents=True)
         with directory.joinpath("index.html").open("w") as file:

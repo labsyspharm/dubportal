@@ -15,10 +15,24 @@
 {% block content %}
     <h1 align="center">Dependencies of {{ record.hgnc_symbol }}</h1>
     <dl>
+        <dt>HGNC Gene Name</dt>
+        <dd>{{ record.description }}</dd>
         <dt>HGNC Gene Symbol</dt>
         <dd>{{ record.hgnc_symbol }}</dd>
         <dt>HGNC Identifier</dt>
         <dd><a href="https://bioregistry.io/hgnc:{{ record.hgnc_id }}">HGNC:{{ record.hgnc_id }}<a/></dd>
+        <dt>UniProt Identifier</dt>
+        <dd><a href="https://bioregistry.io/uniprot:{{ record.uniprot_id }}">{{ record.uniprot_id }}<a/></dd>
+        <dt>Entrez Gene Identifier</dt>
+        <dd><a href="https://bioregistry.io/ncbigene:{{ record.entrez_id }}">{{ record.entrez_id }}<a/></dd>
+        {% if record.mgi_id %}
+            <dt>Mouse Gene Identifier</dt>
+            <dd><a href="https://bioregistry.io/mgi:{{ record.mgi_id }}">MGI:{{ record.mgi_id }}<a/></dd>
+        {% endif %}
+        {% if record.rgd_id %}
+            <dt>Rat Gene Identifier</dt>
+            <dd><a href="https://bioregistry.io/rgd:{{ record.rgd_id }}">RGD:{{ record.rgd_id }}<a/></dd>
+        {% endif %}
         <dt>NDEx Network</dt>
         <dd><a href="https://bioregistry.io/ndex:{{ ndex }}">{{ ndex }}</a></dd>
         <dt>Number of Papers</dt>
