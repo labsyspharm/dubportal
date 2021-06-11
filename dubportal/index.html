@@ -16,16 +16,22 @@
     <p>
         TODO Laura: explanation about DUB Portal.
     </p>
+    <p>
+        Using the biological processes and other Gene Ontology terms from well characterized DUBs as a positive control,
+        several gene set enrichment analyses were considered. Threshold-less methods like GSEA had relatively poor
+        results. Over-representation analysis with a threshold of of the top 7 highest absolute value Dependency Map
+        correlations yielded the best results and is reported below. The top enriched GO term for each DUB is shown in
+        the table below.
+    </p>
     <table class="table table-striped table-hover" id="table-terms">
         <thead>
         <tr style="text-align: right;">
             <th>Name</th>
-            <th># Papers</th>
-            <th>Dependent Cell Lines</th>
-            <th>Dependent Genes</th>
+            <th align="right"># Papers</th>
+            <th align="right">Dependent Cell Lines</th>
             <th>Top GSEA Result for Dependent Genes</th>
-            <th>GSEA <i>p</i>-value (adj.)</th>
-            <th>GSEA <i>q</i>-value</th>
+            <th align="right">GSEA <i>p</i>-value (adj.)</th>
+            <th align="right">GSEA <i>q</i>-value</th>
         </tr>
         </thead>
         <tbody>
@@ -39,7 +45,6 @@
                 </td>
                 <td align="right">{{ row.papers }}</td>
                 <td align="right">{{ "%.1f"|format(row.fraction_cell_lines_dependent * 100) }}%</td>
-                <td align="right">{{ row.depmap | length }}</td>
                 {% if row.go %}
                     <td>
                         <a data-toggle="tooltip" data-html="true" title="{{ row.go[0].identifier }}"
