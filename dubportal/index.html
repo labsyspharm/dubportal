@@ -26,6 +26,7 @@
     <table class="table table-striped table-hover" id="table-terms">
         <thead>
         <tr style="text-align: right;">
+            <th>Symbol</th>
             <th>Name</th>
             <th align="right"># Papers</th>
             <th align="right">Dependent Cell Lines</th>
@@ -43,6 +44,7 @@
                         {{ row.hgnc_symbol }}
                     </a>
                 </td>
+                <td>{{ row.hgnc_name }}</td>
                 <td align="right">{{ row.papers }}</td>
                 <td align="right">{{ "%.1f"|format(row.fraction_cell_lines_dependent * 100) }}%</td>
                 {% if row.go %}

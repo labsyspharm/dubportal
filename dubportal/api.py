@@ -167,14 +167,19 @@ def get_processed_data():
                     type=cmap_type,
                 )
             depmap_results.append(depmap_result)
+
+        # External IDs
+        entrez_id = hgnc_client.get_entrez_id(dub_hgnc_id)
+
         rv[dub] = dict(
             hgnc_id=dub_hgnc_id,
             hgnc_symbol=dub_hgnc_symbol,
+            hgnc_name=pyobo.get_definition("hgnc", dub_hgnc_id),
             uniprot_id=hgnc_client.get_uniprot_id(dub_hgnc_id),
-            entrez_id=hgnc_client.get_entrez_id(dub_hgnc_id),
+            entrez_id=entrez_id,
+            # description=pyobo.get_definition('ncbigene', entrez_id),
             mgi_id=hgnc_client.get_mouse_id(dub_hgnc_id),
             rgd_id=hgnc_client.get_rat_id(dub_hgnc_id),
-            description=pyobo.get_definition("hgnc", dub_hgnc_id),
             rnaseq=rnaseq,
             papers=int(n_papers.replace(",", "")),
             fraction_cell_lines_dependent=fraction_dependent,
