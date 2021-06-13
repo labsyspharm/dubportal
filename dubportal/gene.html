@@ -13,7 +13,10 @@
 {% endblock %}
 
 {% block content %}
-    <h1 align="center">Dependencies of {{ record.hgnc_symbol }}</h1>
+    <h1>
+        <a href="/"><i class="fas fa-home"></i></a> <small><i class="fas fa-chevron-right"></i></small>
+        Dependencies of {{ record.hgnc_symbol }}
+    </h1>
     <dl class="row">
         <dt class="col-4">HGNC Gene Name</dt>
         <dd class="col-8">{{ record.hgnc_name }}</dd>
@@ -21,18 +24,23 @@
         <dd class="col-8">{{ record.hgnc_symbol }}</dd>
         <dt class="col-4">Identifiers</dt>
         <dd class="col-8">
-            <a class="badge badge-info" href="https://bioregistry.io/hgnc:{{ record.hgnc_id }}">hgnc:{{ record.hgnc_id }}</a>
-            <a class="badge badge-info" href="https://bioregistry.io/ncbigene:{{ record.entrez_id }}">ncbigene:{{ record.entrez_id }}</a>
-            <a class="badge badge-info" href="https://bioregistry.io/uniprot:{{ record.uniprot_id }}">uniprot:{{ record.uniprot_id }}</a>
+            <a class="badge badge-info"
+               href="https://bioregistry.io/hgnc:{{ record.hgnc_id }}">hgnc:{{ record.hgnc_id }}</a>
+            <a class="badge badge-info"
+               href="https://bioregistry.io/ncbigene:{{ record.entrez_id }}">ncbigene:{{ record.entrez_id }}</a>
+            <a class="badge badge-info"
+               href="https://bioregistry.io/uniprot:{{ record.uniprot_id }}">uniprot:{{ record.uniprot_id }}</a>
         </dd>
         {% if record.mgi_id or record.rgd_id %}
             <dt class="col-4">Orthologs</dt>
             <dd class="col-8">
                 {% if record.rgd_id %}
-                <a class="badge badge-info" href="https://bioregistry.io/mgi:{{ record.mgi_id }}">mgi:{{ record.mgi_id }}</a>
+                    <a class="badge badge-info"
+                       href="https://bioregistry.io/mgi:{{ record.mgi_id }}">mgi:{{ record.mgi_id }}</a>
                 {% endif %}
                 {% if record.rgd_id %}
-                <a class="badge badge-info" href="https://bioregistry.io/rgd:{{ record.rgd_id }}">rgd:{{ record.rgd_id }}</a>
+                    <a class="badge badge-info"
+                       href="https://bioregistry.io/rgd:{{ record.rgd_id }}">rgd:{{ record.rgd_id }}</a>
                 {% endif %}
             </dd>
         {% endif %}
