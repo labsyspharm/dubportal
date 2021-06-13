@@ -2,13 +2,17 @@ import json
 import logging
 import os
 import pathlib
+from typing import Optional
 
 import click
+import famplex
 import gilda
+import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
 from indra.databases import go_client, hgnc_client
 from jinja2 import Environment, FileSystemLoader
+from matplotlib_venn import venn2
 from more_click import force_option, verbose_option
 
 logger = logging.getLogger(__name__)
@@ -69,6 +73,25 @@ UNGROUPED_KEY = [
     "CMAP_Score",
     "CMAP_Perturbation_Type",
 ]
+
+#: A set of HGNC gene symbol strings corresponding to DUBs,
+#: based on HGNC gene family annotations
+FAMPLEX_DUBS = {
+    identifier
+    for prefix, identifier in famplex.descendant_terms("FPLX", "DUB")
+    if prefix == "HGNC"
+}
+
+
+def get_dub_type(gene_symbol: str) -> Optional[str]:
+    """Get the top-level DUB type of the gene."""
+    if gene_symbol not in FAMPLEX_DUBS:
+        return None
+    ancestors = list(famplex.ancestral_terms("HGNC", gene_symbol))
+    # FIXME this might no work on the ones that have multiple trees
+    if ancestors[-1] != ("FPLX", "DUB"):
+        return None
+    return ancestors[-2][1]
 
 
 def get_processed_data():
@@ -168,6 +191,9 @@ def get_processed_data():
                 )
             depmap_results.append(depmap_result)
 
+        # FamPlex identifier for the DUB class
+        dub_class = get_dub_type(dub_hgnc_symbol)
+
         # External IDs
         entrez_id = hgnc_client.get_entrez_id(dub_hgnc_id)
 
@@ -180,6 +206,8 @@ def get_processed_data():
             # description=pyobo.get_definition('ncbigene', entrez_id),
             mgi_id=hgnc_client.get_mouse_id(dub_hgnc_id),
             rgd_id=hgnc_client.get_rat_id(dub_hgnc_id),
+            #: If this DUB is not annotated in HGNC/FamPlex
+            dub_class=dub_class,
             rnaseq=rnaseq,
             papers=int(n_papers.replace(",", "")),
             fraction_cell_lines_dependent=fraction_dependent,
@@ -197,6 +225,12 @@ def get_rv(force: bool = True):
     rv = get_processed_data()
     with DATA_PROCESED.open("w") as file:
         json.dump(rv, file, indent=2, sort_keys=True)
+
+    # Make a venn diagram describing the overlaps
+    venn2([set(rv), FAMPLEX_DUBS], ["DUB Portal", "FamPlex"])
+    plt.tight_layout()
+    plt.savefig(DOCS.joinpath("overlap.svg"))
+
     return rv
 
 
@@ -204,8 +238,9 @@ def get_rv(force: bool = True):
 @force_option
 @verbose_option
 def main(force: bool):
-    rows = list(get_rv(force=force).values())
+    rv = get_rv(force=force)
 
+    rows = list(rv.values())
     index_html = index_template.render(rows=rows)
     with open(os.path.join(DOCS, "index.html"), "w") as file:
         print(index_html, file=file)

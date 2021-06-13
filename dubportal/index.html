@@ -13,21 +13,28 @@
 
 {% block content %}
     <h1 align="center">DUB portal</h1>
-    <p>
-        TODO Laura: explanation about DUB Portal.
-    </p>
-    <p>
-        Using the biological processes and other Gene Ontology terms from well characterized DUBs as a positive control,
-        several gene set enrichment analyses were considered. Threshold-less methods like GSEA had relatively poor
-        results. Over-representation analysis with a threshold of of the top 7 highest absolute value Dependency Map
-        correlations yielded the best results and is reported below. The top enriched GO term for each DUB is shown in
-        the table below.
-    </p>
+    <div class="card">
+        <div class="card-body" style="margin-bottom: 20px;">
+            <img style="max-height: 240px" class="float-right" src="overlap.svg"
+                 alt="Venn diagram showing overlaps between DUB Portal and FamPlex entries for DUBs"/>
+            <p>
+                TODO Laura: explanation about DUB Portal.
+            </p>
+            <p>
+                Using the biological processes and other Gene Ontology terms from well characterized DUBs as a positive
+                control, several gene set enrichment analyses were considered. Threshold-less methods like GSEA had
+                relatively poor results. Over-representation analysis with a threshold of of the top 7 highest absolute
+                value Dependency Map correlations yielded the best results and is reported below. The top enriched GO
+                term for each DUB is shown in the table below.
+            </p>
+        </div>
+    </div>
     <table class="table table-striped table-hover" id="table-terms">
         <thead>
         <tr style="text-align: right;">
             <th>Symbol</th>
             <th>Name</th>
+            <th>Class</th>
             <th align="right"># Papers</th>
             <th align="right">Dependent Cell Lines</th>
             <th>Top GSEA Result for Dependent Genes</th>
@@ -45,6 +52,13 @@
                     </a>
                 </td>
                 <td>{{ row.hgnc_name }}</td>
+                <td align="right">
+                    {% if row.dub_class %}
+                        <a href="https://bioregistry.io/fplx:{{ row.dub_class }}">
+                            {{ row.dub_class }}
+                        </a>
+                    {% endif %}
+                </td>
                 <td align="right">{{ row.papers }}</td>
                 <td align="right">{{ "%.1f"|format(row.fraction_cell_lines_dependent * 100) }}%</td>
                 {% if row.go %}
