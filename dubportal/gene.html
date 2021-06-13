@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}DUB portal{% endblock %}
+{% block title %}DUB Portal{% endblock %}
 
 {% block scripts %}
     {{ super() }}
@@ -14,31 +14,34 @@
 
 {% block content %}
     <h1 align="center">Dependencies of {{ record.hgnc_symbol }}</h1>
-    <dl>
-        <dt>HGNC Gene Name</dt>
-        <dd>{{ record.hgnc_name }}</dd>
-        <dt>HGNC Gene Symbol</dt>
-        <dd>{{ record.hgnc_symbol }}</dd>
-        <dt>HGNC Identifier</dt>
-        <dd><a href="https://bioregistry.io/hgnc:{{ record.hgnc_id }}">HGNC:{{ record.hgnc_id }}<a/></dd>
-        <dt>UniProt Identifier</dt>
-        <dd><a href="https://bioregistry.io/uniprot:{{ record.uniprot_id }}">{{ record.uniprot_id }}<a/></dd>
-        <dt>Entrez Gene Identifier</dt>
-        <dd><a href="https://bioregistry.io/ncbigene:{{ record.entrez_id }}">{{ record.entrez_id }}<a/></dd>
-        {% if record.mgi_id %}
-            <dt>Mouse Gene Identifier</dt>
-            <dd><a href="https://bioregistry.io/mgi:{{ record.mgi_id }}">MGI:{{ record.mgi_id }}<a/></dd>
+    <dl class="row">
+        <dt class="col-4">HGNC Gene Name</dt>
+        <dd class="col-8">{{ record.hgnc_name }}</dd>
+        <dt class="col-4">HGNC Gene Symbol</dt>
+        <dd class="col-8">{{ record.hgnc_symbol }}</dd>
+        <dt class="col-4">Identifiers</dt>
+        <dd class="col-8">
+            <a class="badge badge-info" href="https://bioregistry.io/hgnc:{{ record.hgnc_id }}">hgnc:{{ record.hgnc_id }}</a>
+            <a class="badge badge-info" href="https://bioregistry.io/ncbigene:{{ record.entrez_id }}">ncbigene:{{ record.entrez_id }}</a>
+            <a class="badge badge-info" href="https://bioregistry.io/uniprot:{{ record.uniprot_id }}">uniprot:{{ record.uniprot_id }}</a>
+        </dd>
+        {% if record.mgi_id or record.rgd_id %}
+            <dt class="col-4">Orthologs</dt>
+            <dd class="col-8">
+                {% if record.rgd_id %}
+                <a class="badge badge-info" href="https://bioregistry.io/mgi:{{ record.mgi_id }}">mgi:{{ record.mgi_id }}</a>
+                {% endif %}
+                {% if record.rgd_id %}
+                <a class="badge badge-info" href="https://bioregistry.io/rgd:{{ record.rgd_id }}">rgd:{{ record.rgd_id }}</a>
+                {% endif %}
+            </dd>
         {% endif %}
-        {% if record.rgd_id %}
-            <dt>Rat Gene Identifier</dt>
-            <dd><a href="https://bioregistry.io/rgd:{{ record.rgd_id }}">RGD:{{ record.rgd_id }}<a/></dd>
-        {% endif %}
-        <dt>NDEx Network</dt>
-        <dd><a href="https://bioregistry.io/ndex:{{ ndex }}">{{ ndex }}</a></dd>
-        <dt>Number of Papers</dt>
-        <dd>{{ record.papers }}</dd>
-        <dt>RNASeq</dt>
-        <dd>{{ record.rnaseq }}</dd>
+        <dt class="col-4">NDEx Network</dt>
+        <dd class="col-8"><a href="https://bioregistry.io/ndex:{{ ndex }}">{{ ndex }}</a></dd>
+        <dt class="col-4">Number of Papers</dt>
+        <dd class="col-8">{{ record.papers }}</dd>
+        <dt class="col-4">RNASeq</dt>
+        <dd class="col-8">{{ record.rnaseq }}</dd>
     </dl>
     <h2>DepMap Correlation Analysis</h2>
     <p>
@@ -47,6 +50,7 @@
     <table class="table table-striped table-hover" id="table-terms">
         <thead>
         <tr style="text-align: right;">
+            <th>Symbol</th>
             <th>Name</th>
             <th align="right">DepMap Correlation</th>
             <th align="right">CCLE Correlation</th>
@@ -66,6 +70,7 @@
                         {{ row.hgnc_symbol }}
                     </a>
                 </td>
+                <td>{{ row.hgnc_name }}</td>
                 <td align="right">{{ row.correlation }}</td>
                 {% if row.ccle %}
                     <td align="right">{{ "%.2f" | format(row.ccle.correlation) }}</td>

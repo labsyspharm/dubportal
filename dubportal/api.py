@@ -175,6 +175,7 @@ def get_processed_data():
             depmap_result = dict(
                 hgnc_id=depmap_gene_id,
                 hgnc_symbol=depmap_gene_symbol,
+                hgnc_name=pyobo.get_definition("hgnc", depmap_gene_id),
                 correlation=depmap_corr,
             )
             if pd.notna(ccle_corr):
