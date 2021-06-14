@@ -19,13 +19,15 @@
         <dt class="col-4">Unique to the DUB Portal</dt>
         <dd class="col-8">
             {% for row in unique_dubportal %}
-                <a class="badge badge-info" href="https://bioregistry.io/hgnc:{{ row.identifier }}">{{ row.symbol }}</a>
+                <a data-toggle="tooltip" data-html="true" title="{{ row.name }}" class="badge badge-info"
+                   href="https://bioregistry.io/hgnc:{{ row.identifier }}">{{ row.symbol }}</a>
             {% endfor %}
         </dd>
         <dt class="col-4">Unique to FamPlex</dt>
         <dd class="col-8">
             {% for row in unique_famplex %}
-                <a class="badge badge-info" href="https://bioregistry.io/hgnc:{{ row.identifier }}">{{ row.symbol }}</a>
+                <a data-toggle="tooltip" data-html="true" title="{{ row.name }}" class="badge badge-info"
+                   href="https://bioregistry.io/hgnc:{{ row.identifier }}">{{ row.symbol }}</a>
             {% endfor %}
         </dd>
     </dl>

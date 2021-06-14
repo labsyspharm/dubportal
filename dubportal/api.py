@@ -253,8 +253,8 @@ def main(force: bool):
     with NDEX_LINKS.open() as file:
         ndex_links = json.load(file)
 
-    unique_dubportal = _d(set(rv) - FAMPLEX_DUBS)
-    unique_famplex = _d(FAMPLEX_DUBS - set(rv))
+    unique_dubportal = _d(sorted(set(rv) - FAMPLEX_DUBS))
+    unique_famplex = _d(sorted(FAMPLEX_DUBS - set(rv)))
 
     about_html = about_template.render(unique_famplex=unique_famplex, unique_dubportal=unique_dubportal)
     about_dir = DOCS.joinpath('about')
