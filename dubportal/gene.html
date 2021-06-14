@@ -56,6 +56,15 @@
         {% endif %}
         <dt class="col-4">NDEx Network</dt>
         <dd class="col-8"><a href="https://bioregistry.io/ndex:{{ ndex }}">{{ ndex }}</a></dd>
+        <dt class="col-4">INDRA Statements</dt>
+        <dd class="col-8">
+            <a class="badge badge-info"
+               href="https://db.indra.bio/statements/from_agents?format=html&subject={{ record.hgnc_symbol }}&type=Deubiquitination">
+                deubiquitinations</a>
+            <a class="badge badge-info"
+               href="https://db.indra.bio/statements/from_agents?format=html&subject={{ record.hgnc_symbol }}">
+                all statements</a>
+        </dd>
         {#        <dt class="col-4">Number of Papers</dt>#}
         {#        <dd class="col-8">{{ record.papers }}</dd>#}
         {#        <dt class="col-4">RNASeq</dt>#}
