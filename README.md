@@ -1,5 +1,8 @@
 # DUB Portal
 
+This website is served at the following location:
+https://indralab.github.io/dubportal/
+
 To build and view, run the following:
 
 ```bash
