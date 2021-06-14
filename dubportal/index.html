@@ -41,7 +41,6 @@
             <th>DUB</th>
             <th>DUB Name</th>
             <th>DUB Class</th>
-            <th align="right"># Papers</th>
             <th align="right">Dependent Cell Lines</th>
             <th>Top GSEA Result for Dependent Genes</th>
             <th align="right">GSEA <i>p</i>-value (adj.)</th>
@@ -65,7 +64,6 @@
                         </a>
                     {% endif %}
                 </td>
-                <td align="right">{{ row.papers }}</td>
                 <td align="right">{{ "%.1f"|format(row.fraction_cell_lines_dependent * 100) }}%</td>
                 {% if row.go %}
                     <td>
@@ -77,8 +75,6 @@
                     <td align="right">{{ "%.2e" | format(row.go[0].p_adj) }}</td>
                     <td align="right">{{ "%.2e" | format(row.go[0].q) }}</td>
                 {% else %}
-                    <td></td>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
