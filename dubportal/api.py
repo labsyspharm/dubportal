@@ -272,7 +272,7 @@ def get_rv(force: bool = True):
 def main(force: bool):
     rv = get_rv(force=force)
 
-    rows = list(rv.values())
+    rows = sorted(rv.values(), key=itemgetter('hgnc_symbol'))
     index_html = index_template.render(rows=rows)
     with open(os.path.join(DOCS, "index.html"), "w") as file:
         print(index_html, file=file)
