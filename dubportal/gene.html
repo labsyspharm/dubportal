@@ -193,6 +193,7 @@
         <thead>
         <tr style="text-align: right;">
             <th>Name</th>
+            <th>GO Type</th>
             <th align="right"><i>p</i>-value</th>
             <th align="right"><i>p</i>-value (adj.)</th>
             <th align="right"><i>q</i>-value</th>
@@ -207,6 +208,7 @@
                         {{ row.name }}
                     </a>
                 </td>
+                <td><span class="badge badge-info">{{ row.type }}</span></td>
                 <td align="right">{{ "%.2e" | format(row.p) }}</td>
                 <td align="right">{{ "%.2e" | format(row.p_adj) }}</td>
                 <td align="right">{{ "%.2e" | format(row.q) }}</td>

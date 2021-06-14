@@ -2,16 +2,16 @@ import json
 import logging
 import os
 import pathlib
+from operator import itemgetter
 from typing import List, Optional
 
 import click
 import famplex
-import gilda
 import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
 import requests
-from indra.databases import go_client, hgnc_client
+from indra.databases import hgnc_client
 from indra.statements import Statement, stmts_from_json
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
@@ -41,18 +41,6 @@ GENE_FIXES = {
     "KRTAP12": "KRTAP12-1",  # This record has been split, apparently
     "KRTAP20": "KRTAP20-1",
 }
-GO_FIXES = {
-    "GO_TOLL_LIKE_RECEPTOR_SIGNALING_PATHWAY": "toll-like receptor 13 signaling pathway",
-    "GO_PROTEIN_K11_LINKED_UBIQUITINATION": "protein K11-linked ubiquitination",
-    "GO_HISTONE_H2A_K63_LINKED_UBIQUITINATION": "histone H2A K63-linked ubiquitination",
-    "GO_NEGATIVE_REGULATION_OF_CELL_CYCLE_G2_M_PHASE_TRANSITION": "negative regulation of cell cycle G2/M phase transition",
-    "GO_REGULATION_OF_NIK_NF_KAPPAB_SIGNALING": "negative regulation of NIK/NF-kappaB signaling",
-    "GO_DNA_DAMAGE_RESPONSE_SIGNAL_TRANSDUCTION_BY_P53_CLASS_MEDIATOR": "DNA damage response, signal transduction by p53 class mediator",
-    "GO_SAGA_TYPE_COMPLEX": "SAGA-type complex",
-    "GO_G_PROTEIN_BETA_GAMMA_SUBUNIT_COMPLEX_BINDING": "G-protein beta/gamma-subunit complex binding",
-    "GO_NEGATIVE_REGULATION_OF_PROTEASOMAL_UBIQUITIN_DEPENDENT_PROTEIN_CATABOLIC_PROCESS": "negative regulation of proteasomal ubiquitin-dependent protein catabolic process",
-    "GO_BASE_EXCISION_REPAIR": "base-excision repair",
-}
 
 #: A set of HGNC gene symbol strings corresponding to DUBs,
 #: based on HGNC gene family annotations
@@ -77,6 +65,17 @@ def get_dub_type(gene_symbol: str) -> Optional[str]:
         return None
 
 
+def get_go_type(identifier: str) -> str:
+    if pyobo.has_ancestor('go', identifier, 'go', '0008150'):
+        return 'Biological Process'
+    elif pyobo.has_ancestor('go', identifier, 'go', '0005575'):
+        return 'Cellular Component'
+    elif pyobo.has_ancestor('go', identifier, 'go', '0003674'):
+        return 'Molecular Function'
+    else:
+        return 'Other'
+
+
 def get_cached_stmts(source: str, target: str, force: bool = False) -> List[Statement]:
     path = STATEMENTS_DIR.joinpath(source, f'{target}.json')
     if path.is_file() and not force:
@@ -89,21 +88,6 @@ def get_cached_stmts(source: str, target: str, force: bool = False) -> List[Stat
         with path.open('w') as file:
             json.dump(res, file, indent=2, sort_keys=True)
     return stmts_from_json(res['statements'].values())
-
-
-def process_go_label(go_term):
-    if go_term == "none significant":
-        return
-    go_term = GO_FIXES.get(go_term, go_term)
-    go_term_norm = go_term.removeprefix("GO_").replace("_", " ").lower()
-    go_id = go_client.get_go_id_from_label(go_term_norm)
-    if go_id:
-        return go_id
-
-    matches = gilda.ground(go_term_norm)
-    for match in matches:
-        if match.term.db == "GO":
-            return match.term.id
 
 
 def process_symbol_list(symbols):
@@ -119,62 +103,40 @@ def process_symbol_list(symbols):
 
 
 def get_processed_data():
-    df = pd.read_csv(DATA, sep="\t")
-    df.rename(
-        inplace=True,
-        columns={
-            # The GO gene set enrichment analysis was done for each DUB on all of its co-dependencies. This
-            #  is the top reported GO term name
-            "GO_enriched_in_codependencies": "go_mmsig_name",
-            # p-value of GO gene set enrichment analysis
-            "pvalue": "go_p",
-            # adjusted p-value of GO gene set enrichment analysis
-            "p.adjust": "go_p_adj",
-            # q-value of the most significant GO term in gene set enrichment analysis
-            "qvalue": "go_q",
-            # The list of genes associated to the most significant GO term
-            "geneID": "go_gene_symbols",
-        },
-    )
+    all_gsea_df = pd.read_csv(DATA_DUR.joinpath('gsea.tsv'), sep='\t')
+    all_gsea_groups = all_gsea_df.groupby(by=['hgnc_id', 'hgnc_symbol'])
+    symbol_to_gsea = {
+        hgnc_symbol: gsea_df
+        for (hgnc_id, hgnc_symbol), gsea_df in all_gsea_groups
+    }
 
+    df = pd.read_csv(DATA, sep="\t")
     df["fraction_cell_lines_dependent_on_DUB"].fillna(0.0, inplace=True)
 
     df["dub_hgnc_id"] = df["DUB"].map(hgnc_client.get_current_hgnc_id)
     df["dub_hgnc_symbol"] = df["dub_hgnc_id"].map(hgnc_client.get_hgnc_name)
     del df["DUB"]
 
-    df["go_id"] = df["go_mmsig_name"].map(process_go_label)
-    df["go_name"] = df["go_id"].map(go_client.get_go_label, na_action="ignore")
-    df["go_gene_ids"] = df["go_gene_symbols"].map(
-        process_symbol_list, na_action="ignore"
-    )
-    del df["go_gene_symbols"]
-    del df["go_mmsig_name"]
-
     rv = {}
     for (dub_hgnc_id, dub_hgnc_symbol), sdf in tqdm(df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]), unit='DUB'):
-        row = sdf.iloc[0]
-        go = []
-        if row["go_id"]:
-            go.append(
+        gsea_df: pd.DataFrame = symbol_to_gsea.get(dub_hgnc_symbol)
+        if gsea_df is None:
+            go = []
+        else:
+            go = [
                 dict(
-                    identifier=row["go_id"],
-                    name=row["go_name"],
-                    p=row["go_p"],
-                    p_adj=row["go_p_adj"],
-                    q=row["go_q"],
-                    genes=[
-                        {
-                            "hgnc_id": go_gene_id,
-                            "hgnc_name": hgnc_client.get_hgnc_name(go_gene_id),
-                        }
-                        for go_gene_id in row["go_gene_ids"]
-                    ],
+                    identifier=row['go_id'],
+                    name=row['go_name'],
+                    type=get_go_type(row['go_id'].removeprefix('GO:')),
+                    p=row['pvalue'],
+                    p_adj=row['p.adjust'],
+                    q=row['qvalue'],
                 )
-            )
+                for _, row in gsea_df.sort_values('qvalue', ascending=True).iterrows()
+            ]
 
-        fraction_dependent = row["fraction_cell_lines_dependent_on_DUB"]
-        papers = int(row['PubMed_papers'].replace(",", ""))
+        fraction_dependent = sdf.iloc[0]["fraction_cell_lines_dependent_on_DUB"]
+        papers = int(sdf.iloc[0]['PubMed_papers'].replace(",", ""))
 
         depmap_results = []
         for _, row in tqdm(sdf.iterrows(), unit='dep', leave=False):
