@@ -130,13 +130,9 @@ def get_processed_data():
     del df["go_gene_symbols"]
     del df["go_mmsig_name"]
 
-    groups = list(df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]))
-    print(f"there are {len(groups)} groups")
-
     rv = {}
-    for (dub_hgnc_id, dub_hgnc_symbol), sdf in groups:
+    for (dub_hgnc_id, dub_hgnc_symbol), sdf in df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]):
         row = sdf.iloc[0]
-
         go = []
         if row["go_id"]:
             go.append(
@@ -157,6 +153,7 @@ def get_processed_data():
             )
 
         fraction_dependent = row["fraction_cell_lines_dependent_on_DUB"]
+        papers = int(row['PubMed_papers'].replace(",", ""))
 
         depmap_results = []
         for _, row in sdf.iterrows():
@@ -175,6 +172,13 @@ def get_processed_data():
                 hgnc_symbol=depmap_gene_symbol,
                 hgnc_name=pyobo.get_definition("hgnc", depmap_gene_id),
                 correlation=row["DepMap_correlation"],
+                interactions=dict(
+                    biogrid=row['Biogrid'] == 'yes',
+                    intact=row['IntAct'] == 'yes',
+                    nursa=row['NURSA'] == 'yes',
+                    pc=row['PathwayCommons'] == 'yes',
+                    ppid=row['PPID_support'] == 'yes',
+                ),
             )
 
             ccle_corr = row["CCLE_Proteomics_correlation"]
@@ -212,7 +216,7 @@ def get_processed_data():
             #: If this DUB is not annotated in HGNC/FamPlex
             dub_class=dub_class,
             # rnaseq=rnaseq,
-            # papers=int(n_papers.replace(",", "")),
+            papers=papers,
             fraction_cell_lines_dependent=fraction_dependent,
             go=go,
             depmap=depmap_results,

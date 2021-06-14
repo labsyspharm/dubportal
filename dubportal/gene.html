@@ -12,6 +12,14 @@
     </script>
 {% endblock %}
 
+{% macro boolbox(value) -%}
+    {% if value %}
+        <span style="color: green;"><i class="fas fa-check-circle"></i></span>
+    {% else %}
+        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+    {% endif %}
+{%- endmacro %}
+
 {% block content %}
     <h1>
         <a href="/"><i class="fas fa-home"></i></a> <small><i class="fas fa-chevron-right"></i></small>
@@ -61,6 +69,11 @@
             <th>Symbol</th>
             <th>Name</th>
             <th align="right">DepMap Correlation</th>
+            <th align="right">BioGRID</th>
+            <th align="right">IntAct</th>
+            <th align="right">NURSA</th>
+            <th align="right">PC</th>
+            <th align="right">PPID</th>
             <th align="right">CCLE Correlation</th>
             <th align="right">CCLE Z-score</th>
             <th align="right">CCLE <i>p</i>-value (adj)</th>
@@ -80,6 +93,11 @@
                 </td>
                 <td>{{ row.hgnc_name }}</td>
                 <td align="right">{{ row.correlation }}</td>
+                <td>{{ boolbox(row.interactions.biogrid) }}</td>
+                <td>{{ boolbox(row.interactions.intact) }}</td>
+                <td>{{ boolbox(row.interactions.nursa) }}</td>
+                <td>{{ boolbox(row.interactions.pc) }}</td>
+                <td>{{ boolbox(row.interactions.ppid) }}</td>
                 {% if row.ccle %}
                     <td align="right">{{ "%.2f" | format(row.ccle.correlation) }}</td>
                     <td align="right">{{ "%.2f" | format(row.ccle.z) }}</td>
