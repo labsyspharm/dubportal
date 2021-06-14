@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}DUB Portal Comparison{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $(document).ready(function () {
+            $("#table-terms").DataTable();
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1 align="center">About</h1>
+    <p>This page is about the comparison between DUBs listed here and external resources, like FamPlex.</p>
+    <h2>Comparison to External Resources</h2>
+    <dl class="row">
+        <dt class="col-4">Unique to the DUB Portal</dt>
+        <dd class="col-8">
+            {% for row in unique_dubportal %}
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:{{ row.identifier }}">{{ row.symbol }}</a>
+            {% endfor %}
+        </dd>
+        <dt class="col-4">Unique to FamPlex</dt>
+        <dd class="col-8">
+            {% for row in unique_famplex %}
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:{{ row.identifier }}">{{ row.symbol }}</a>
+            {% endfor %}
+        </dd>
+    </dl>
+{% endblock %}

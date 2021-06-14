@@ -1,13 +1,8 @@
 <!DOCTYPE html>
-<html{% block html_attribs %}{% endblock html_attribs %}>
+<html>
 <head>
-    {%- block head %}
-        {%- block metas %}
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {%- endblock metas %}
-
-        {%- block styles %}
             <!-- Bootstrap -->
             <link
                     rel="stylesheet"
@@ -48,17 +43,15 @@
                     background-color: #f5f5f5;
                 }
             </style>
-        {%- endblock styles %}
 
         <script src="https://kit.fontawesome.com/4c86883252.js" crossorigin="anonymous"></script>
-        <title>{% block title %}{{ title|default }}{% endblock title %}</title>
-    {%- endblock head %}
+        <title>DUB Portal Comparison</title>
 </head>
 
-<body{% block body_attribs %}{% endblock body_attribs %} data-spy="scroll" data-target="#toc">
+<body data-spy="scroll" data-target="#toc">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">
-            {# <img src="{{ url_for('static', filename='logo.svg') }}" width="30" height="30" alt=""> #}
+            
             DUB Portal
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -77,12 +70,67 @@
         </div>
     </nav>
 
-{% block main %}
+
     <div class="container" style="margin-top: 50px; margin-bottom: 50px">
-        {% block content -%}
-        {%- endblock content %}
+        
+    <h1 align="center">About</h1>
+    <p>This page is about the comparison between DUBs listed here and external resources, like FamPlex.</p>
+    <h2>Comparison to External Resources</h2>
+    <dl class="row">
+        <dt class="col-4">Unique to the DUB Portal</dt>
+        <dd class="col-8">
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:16889">PSMD14</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:3275">EIF3F</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:9565">PSMD7</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:25934">MPND</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:24105">STAMBPL1</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:16950">STAMBP</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:2240">COPS5</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:29401">MYSM1</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:21749">COPS6</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:17340">PRPF8</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:3273">EIF3H</a>
+            
+        </dd>
+        <dt class="col-4">Unique to FamPlex</dt>
+        <dd class="col-8">
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:25629">OTULINL</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:25008">BABAM1</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:18318">ASXL1</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:28975">ABRAXAS2</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:35475">MINDY4B</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:20070">USP41</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:24173">ATXN3L</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:37182">USP17L1</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:1106">BABAM2</a>
+            
+                <a class="badge badge-info" href="https://bioregistry.io/hgnc:30881">ALG13</a>
+            
+        </dd>
+    </dl>
+
     </div>
-{% endblock %}
+
 
 <footer class="footer">
     <p class="small text-center text-muted">
@@ -93,7 +141,8 @@
     </p>
 </footer>
 
-{% block scripts %}
+
+    
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -117,6 +166,11 @@
             $('[data-toggle="tooltip"]').tooltip()
         })
     </script>
-{%- endblock scripts %}
+    <script>
+        $(document).ready(function () {
+            $("#table-terms").DataTable();
+        })
+    </script>
+
 </body>
 </html>

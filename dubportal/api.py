@@ -6,17 +6,18 @@ from operator import itemgetter
 from typing import List, Optional
 
 import click
-import famplex
 import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
 import requests
-from indra.databases import hgnc_client
-from indra.statements import Statement, stmts_from_json
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
 from more_click import force_option, verbose_option
 from tqdm import tqdm
+
+import famplex
+from indra.databases import hgnc_client
+from indra.statements import Statement, stmts_from_json
 
 logger = logging.getLogger(__name__)
 HERE = pathlib.Path(__file__).parent.resolve()
@@ -35,6 +36,7 @@ environment = Environment(
 
 index_template = environment.get_template("index.html")
 gene_template = environment.get_template("gene.html")
+about_template = environment.get_template("about.html")
 
 GENE_FIXES = {
     "KRTAP21": "KRTAP21-1",  # This record has been split, apparently
@@ -228,6 +230,15 @@ def get_rv(force: bool = True):
     return rv
 
 
+def _d(symbols):
+    return [
+        dict(identifier=identifier, symbol=symbol, name=pyobo.get_definition('hgnc', identifier))
+        for identifier, symbol in (
+            (hgnc_client.get_current_hgnc_id(symbol), symbol)
+            for symbol in symbols)
+    ]
+
+
 @click.command()
 @force_option
 @verbose_option
@@ -241,6 +252,15 @@ def main(force: bool):
 
     with NDEX_LINKS.open() as file:
         ndex_links = json.load(file)
+
+    unique_dubportal = _d(set(rv) - FAMPLEX_DUBS)
+    unique_famplex = _d(FAMPLEX_DUBS - set(rv))
+
+    about_html = about_template.render(unique_famplex=unique_famplex, unique_dubportal=unique_dubportal)
+    about_dir = DOCS.joinpath('about')
+    about_dir.mkdir(exist_ok=True, parents=True)
+    with about_dir.joinpath('index.html').open('w') as file:
+        print(about_html, file=file)
 
     for row in rows:
         gene_html = gene_template.render(
