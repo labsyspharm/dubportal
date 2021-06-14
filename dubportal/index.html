@@ -39,44 +39,54 @@
     </div>
     <table class="table table-striped table-hover" id="table-terms">
         <thead>
-        <tr style="text-align: right;">
+        <tr>
             <th>DUB</th>
             <th>DUB Name</th>
             <th>DUB Class</th>
-            <th align="right">Dependent Cell Lines</th>
+            <th style="text-align: right">Dependent Cell Lines</th>
             <th>Top GSEA Result for Dependent Genes</th>
-            <th align="right">GSEA <i>p</i>-value (adj.)</th>
-            <th align="right">GSEA <i>q</i>-value</th>
-            <th align="right"># Papers</th>
+            <th style="text-align: right">GSEA <i>p</i>-value (adj.)</th>
+            <th style="text-align: right">GSEA <i>q</i>-value</th>
+            <th style="text-align: right"># Papers</th>
         </tr>
         </thead>
         <tbody>
         {% for row in rows %}
             <tr>
                 <td>
-                    <a data-toggle="tooltip" data-html="true" title="HGNC:{{ row.hgnc_id }}"
+                    <a data-toggle="tooltip" data-html="true"
+                       title="HGNC:{{ row.hgnc_id }}<br>Click for more information in the DUB Portal."
                        href="{{ row.hgnc_symbol }}">
                         {{ row.hgnc_symbol }}
                     </a>
                 </td>
-                <td>{{ row.hgnc_name }}</td>
-                <td align="right">
+                <td>
+                    <a data-toggle="tooltip" data-html="true"
+                       title="HGNC:{{ row.hgnc_id }}<br>Click for more information in the DUB Portal."
+                       href="{{ row.hgnc_symbol }}">
+                        {{ row.hgnc_name }}
+                    </a>
+                </td>
+                <td>
                     {% if row.dub_class %}
-                        <a href="https://bioregistry.io/fplx:{{ row.dub_class }}">
+                        <a data-toggle="tooltip" data-html="true"
+                           title="FPLX:{{ row.dub_class }}<br>Click for external information from FamPlex."
+                           href="https://bioregistry.io/fplx:{{ row.dub_class }}">
                             {{ row.dub_class }}
                         </a>
                     {% endif %}
                 </td>
-                <td align="right">{{ "%.1f"|format(row.fraction_cell_lines_dependent * 100) }}%</td>
+                <td style="text-align: right">{{ "%.1f"|format(row.fraction_cell_lines_dependent * 100) }}%</td>
                 {% if row.go %}
                     <td>
-                        <a data-toggle="tooltip" data-html="true" title="{{ row.go[0].identifier }}"
+                        <a data-toggle="tooltip" data-html="true"
+                           title="{{ row.go[0].identifier }}<br>Click for external information from the Gene Ontology."
                            href="https://bioregistry.io/{{ row.go[0].identifier }}">
                             {{ row.go[0].name }}
                         </a>
                     </td>
-                    <td align="right">{{ "%.2e" | format(row.go[0].p_adj) }}</td>
-                    <td align="right">{{ "%.2e" | format(row.go[0].q) }}</td>
+                    <td style="text-align: right">{{ "%.2e" | format(row.go[0].p_adj) }}</td>
+                    <td style="text-align: right">{{ "%.2e" | format(row.go[0].q) }}</td>
                 {% else %}
                     <td></td>
                     <td></td>
