@@ -71,8 +71,14 @@
                href="https://db.indra.bio/statements/from_agents?format=html&subject={{ record.hgnc_symbol }}">
                 all statements</a>
         </dd>
-        {#        <dt class="col-4">Number of Papers</dt>#}
-        {#        <dd class="col-8">{{ record.papers }}</dd>#}
+        <dt class="col-4">Pathway Commons</dt>
+        <dd class="col-8">
+            <a class="badge badge-info"
+               href="https://apps.pathwaycommons.org/interactions?source={{ record.hgnc_symbol }}">
+                Search for {{ record.hgnc_symbol }}</a>
+        </dd>
+        <dt class="col-4">Number of Papers</dt>
+        <dd class="col-8">{{ record.papers }}</dd>
         {#        <dt class="col-4">RNASeq</dt>#}
         {#        <dd class="col-8">{{ record.rnaseq }}</dd>#}
     </dl>
@@ -110,8 +116,18 @@
                     {{ badgebox('BioGRID', row.interactions.biogrid) }}
                     {{ badgebox('IntAct', row.interactions.intact) }}
                     {{ badgebox('NURSA', row.interactions.nursa) }}
-                    {{ badgebox('PC', row.interactions.pc) }}
-                    {{ badgebox('INDRA', row.interactions.indra) }}
+                    {% if row.interactions.pc %}
+                        <a class="badge badge-primary"
+                           href="https://apps.pathwaycommons.org/search?type=Pathway&q={{ record.hgnc_symbol }},{{ row.hgnc_symbol }}">
+                            Pathway Commons
+                        </a>
+                    {% endif %}
+                    {% if row.interactions.indra %}
+                        <a class="badge badge-primary"
+                           href="https://db.indra.bio/statements/from_agents?format=html&subject={{ record.hgnc_symbol }}&object={{ row.hgnc_symbol }}">
+                            INDRA
+                        </a>
+                    {% endif %}
                 </td>
                 {% if row.ccle %}
                     <td align="right">{{ "%.2f" | format(row.ccle.correlation) }}</td>
