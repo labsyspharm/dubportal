@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import pathlib
-from typing import Optional
+from typing import List, Optional
 
 import click
 import famplex
@@ -10,17 +10,24 @@ import gilda
 import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
+import requests
 from indra.databases import go_client, hgnc_client
+from indra.statements import Statement, stmts_from_json
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
 from more_click import force_option, verbose_option
+from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
 HERE = pathlib.Path(__file__).parent.resolve()
 DOCS = HERE.parent.joinpath("docs")
-DATA = HERE.joinpath("data", "DUB_website_main_v2.tsv")
-DATA_PROCESED = HERE.joinpath("data", "data.json")
+DATA_DUR = HERE.joinpath("data")
+DATA = DATA_DUR.joinpath("DUB_website_main_v2.tsv")
+DATA_PROCESSED = DATA_DUR.joinpath("data.json")
 NDEX_LINKS = DOCS.joinpath("network_index.json")
+
+STATEMENTS_DIR = DATA_DUR.joinpath('statements')
+STATEMENTS_DIR.mkdir(exist_ok=True, parents=True)
 
 environment = Environment(
     autoescape=True, loader=FileSystemLoader(HERE), trim_blocks=False
@@ -68,6 +75,20 @@ def get_dub_type(gene_symbol: str) -> Optional[str]:
         return ancestors[-2][1]
     except IndexError:
         return None
+
+
+def get_cached_stmts(source: str, target: str, force: bool = False) -> List[Statement]:
+    path = STATEMENTS_DIR.joinpath(source, f'{target}.json')
+    if path.is_file() and not force:
+        with path.open() as file:
+            res = json.load(file)
+    else:
+        url = f'https://db.indra.bio/statements/from_agents?format=json&subject={source}&object={target}'
+        res = requests.get(url).json()
+        path.parent.mkdir(exist_ok=True, parents=True)
+        with path.open('w') as file:
+            json.dump(res, file, indent=2, sort_keys=True)
+    return stmts_from_json(res['statements'].values())
 
 
 def process_go_label(go_term):
@@ -131,7 +152,7 @@ def get_processed_data():
     del df["go_mmsig_name"]
 
     rv = {}
-    for (dub_hgnc_id, dub_hgnc_symbol), sdf in df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]):
+    for (dub_hgnc_id, dub_hgnc_symbol), sdf in tqdm(df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]), unit='DUB'):
         row = sdf.iloc[0]
         go = []
         if row["go_id"]:
@@ -156,7 +177,7 @@ def get_processed_data():
         papers = int(row['PubMed_papers'].replace(",", ""))
 
         depmap_results = []
-        for _, row in sdf.iterrows():
+        for _, row in tqdm(sdf.iterrows(), unit='dep', leave=False):
             depmap_gene = row["DepMap_coDependency"]
             if pd.isna(depmap_gene):
                 continue
@@ -167,6 +188,9 @@ def get_processed_data():
                     f"could not map depmap dependency for {dub_hgnc_symbol} to HGNC ID: {depmap_gene}"
                 )
             depmap_gene_symbol = hgnc_client.get_hgnc_name(depmap_gene_id)
+
+            stmts = get_cached_stmts(dub_hgnc_symbol, depmap_gene_symbol)
+
             depmap_result = dict(
                 hgnc_id=depmap_gene_id,
                 hgnc_symbol=depmap_gene_symbol,
@@ -178,6 +202,7 @@ def get_processed_data():
                     nursa=row['NURSA'] == 'yes',
                     pc=row['PathwayCommons'] == 'yes',
                     ppid=row['PPID_support'] == 'yes',
+                    indra=len(stmts) > 0,
                 ),
             )
 
@@ -225,12 +250,12 @@ def get_processed_data():
 
 
 def get_rv(force: bool = True):
-    if DATA_PROCESED.is_file() and not force:
-        with DATA_PROCESED.open() as file:
+    if DATA_PROCESSED.is_file() and not force:
+        with DATA_PROCESSED.open() as file:
             return json.load(file)
 
     rv = get_processed_data()
-    with DATA_PROCESED.open("w") as file:
+    with DATA_PROCESSED.open("w") as file:
         json.dump(rv, file, indent=2, sort_keys=True)
 
     # Make a venn diagram describing the overlaps

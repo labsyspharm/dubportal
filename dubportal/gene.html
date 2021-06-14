@@ -22,6 +22,12 @@
     {% endif %}
 {%- endmacro %}
 
+{% macro badgebox(name, flag) -%}
+    {% if flag %}
+        <span class="badge badge-primary">{{ name }}</span>
+    {% endif %}
+{%- endmacro %}
+
 {% block content %}
     <h1>
         <a href="/"><i class="fas fa-home"></i></a> <small><i class="fas fa-chevron-right"></i></small>
@@ -80,11 +86,7 @@
             <th>Symbol</th>
             <th>Name</th>
             <th align="right">DepMap Correlation</th>
-            <th align="right">BioGRID</th>
-            <th align="right">IntAct</th>
-            <th align="right">NURSA</th>
-            <th align="right">PC</th>
-            <th align="right">PPID</th>
+            <th align="right">Evidence</th>
             <th align="right">CCLE Correlation</th>
             <th align="right">CCLE Z-score</th>
             <th align="right">CCLE <i>p</i>-value (adj)</th>
@@ -104,11 +106,13 @@
                 </td>
                 <td>{{ row.hgnc_name }}</td>
                 <td align="right">{{ row.correlation }}</td>
-                <td>{{ boolbox(row.interactions.biogrid) }}</td>
-                <td>{{ boolbox(row.interactions.intact) }}</td>
-                <td>{{ boolbox(row.interactions.nursa) }}</td>
-                <td>{{ boolbox(row.interactions.pc) }}</td>
-                <td>{{ boolbox(row.interactions.ppid) }}</td>
+                <td>
+                    {{ badgebox('BioGRID', row.interactions.biogrid) }}
+                    {{ badgebox('IntAct', row.interactions.intact) }}
+                    {{ badgebox('NURSA', row.interactions.nursa) }}
+                    {{ badgebox('PC', row.interactions.pc) }}
+                    {{ badgebox('INDRA', row.interactions.indra) }}
+                </td>
                 {% if row.ccle %}
                     <td align="right">{{ "%.2f" | format(row.ccle.correlation) }}</td>
                     <td align="right">{{ "%.2f" | format(row.ccle.z) }}</td>
