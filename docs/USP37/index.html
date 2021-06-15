@@ -42,6 +42,10 @@
                     padding-top: 1em;
                     background-color: #f5f5f5;
                 }
+
+                nav[data-toggle="toc"] {
+                    top: 42px;
+                }
             </style>
 
         <script src="https://kit.fontawesome.com/4c86883252.js" crossorigin="anonymous"></script>
@@ -49,522 +53,529 @@
 </head>
 
 <body data-spy="scroll" data-target="#toc">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/dubportal">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/dubportal">
+        
+        DUB Portal
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/about/">About</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+    <div class="container" style="margin-top: 2.5em; margin-bottom: 2.5em">
+        <div class="row justify-content-center">
+            <!-- sidebar, which will move to the top on a small screen -->
+            <div class="col-sm-3 d-none d-sm-none d-md-block">
+                <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
+            </div>
+            <!-- main content area -->
+            <div class="col-sm-9">
+                <h1 style="margin-bottom: 1.5rem">Dependencies of USP37</h1>
+                <dl class="row">
+                    <dt class="col-4">HGNC Gene Name</dt>
+                    <dd class="col-8">ubiquitin specific peptidase 37</dd>
+                    <dt class="col-4">HGNC Gene Symbol</dt>
+                    <dd class="col-8">USP37</dd>
+                    <dt class="col-4">Identifiers</dt>
+                    <dd class="col-8">
+                        <a class="badge badge-info"
+                           href="https://bioregistry.io/hgnc:20063">hgnc:20063</a>
+                        <a class="badge badge-info"
+                           href="https://bioregistry.io/ncbigene:57695">ncbigene:57695</a>
+                        <a class="badge badge-info"
+                           href="https://bioregistry.io/uniprot:Q86T82">uniprot:Q86T82</a>
+                    </dd>
+                    
+                        <dt class="col-4">Orthologs</dt>
+                        <dd class="col-8">
+                            
+                                <a class="badge badge-info"
+                                   href="https://bioregistry.io/mgi:2442483">mgi:2442483</a>
+                            
+                            
+                                <a class="badge badge-info"
+                                   href="https://bioregistry.io/rgd:2319715">rgd:2319715</a>
+                            
+                        </dd>
+                    
+                    <dt class="col-4">NDEx Network</dt>
+                    <dd class="col-8"><a href="https://bioregistry.io/ndex:82bdb0e6-cad0-11eb-9a85-0ac135e8bacf">82bdb0e6-cad0-11eb-9a85-0ac135e8bacf</a></dd>
+                    <dt class="col-4">INDRA Statements</dt>
+                    <dd class="col-8">
+                        <a class="badge badge-info"
+                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP37&type=Deubiquitination">
+                            deubiquitinations</a>
+                        <a class="badge badge-info"
+                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP37">
+                            all statements</a>
+                    </dd>
+                    <dt class="col-4">Pathway Commons</dt>
+                    <dd class="col-8">
+                        <a class="badge badge-info"
+                           href="https://apps.pathwaycommons.org/interactions?source=USP37">
+                            Search for USP37</a>
+                    </dd>
+                    <dt class="col-4">Number of Papers</dt>
+                    <dd class="col-8">31</dd>
+                    
+                    
+                </dl>
+                <h2>DepMap Correlation Analysis</h2>
+                <p>
+                    The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled
+                    CRISPR-Cas9 knockout proliferation screen conducted in more than 700 cancer cell lines spanning many
+                    different tumor lineages. Each cell line in the DepMap contains a unique barcode, and each gene
+                    knockout is assigned a “dependency score” on a per cell-line basis. The dependency score quantifies
+                    the rate of CRISPR-Cas9 guide drop out for each guide in each cell line. It has been found that
+                    proteins with similar DepMap scores across cell lines, a phenomenon known as co-dependent genes,
+                    have closely related biological functions. This can include activity in the same or parallel
+                    pathways or membership in the same protein complex or the same pathway.
+                </p>
+                <p>
+                    We identified the strongest seven co-dependent genes for DUBs and ran GO enrichment analysis in
+                    order to explore the pathways and complexes DUBs are correlated with in the DepMap. We sought to
+                    provide support for the co-dependent genes being in the same pathway or complex by leveraging
+                    additional datasets. We used BioGRID, IntAct, and Pathway Commons PPIDs, and the NURSA PPID to
+                    determine whether co-dependent genes interact with one another. As another approach to identify
+                    potential interactors, we looked at proteomics data from the Broad Institute's <a
+                        href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> for
+                    proteins whose expression across ~375 cell lines strongly correlated with the abundance of each DUB;
+                    it has previously been observed that proteins in the same complex are frequently significantly
+                    co-expressed. And, we determined whether co-dependent genes yield similar transcriptomic signatures
+                    in the Broad Institute's <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity
+                    Map (CMap)</a>.
+                </p>
+                <table class="table table-striped table-hover" id="table-terms">
+                    <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th style="text-align: right">DepMap Correlation</th>
+                        <th>Evidence</th>
+                        <th style="text-align: right">CCLE Correlation</th>
+                        <th style="text-align: right">CCLE Z-score</th>
+                        <th style="text-align: right">CCLE <i>p</i>-value (adj)</th>
+                        <th style="text-align: right">CCLE Significant</th>
+                        <th style="text-align: right">CMAP Score</th>
+                        <th>CMAP Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:30750<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:30750">
+                                    TIPIN
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:30750<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:30750">
+                                    TIMELESS interacting protein
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.248</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:23194<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:23194">
+                                    THAP11
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:23194<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:23194">
+                                    THAP domain containing 11
+                                </a>
+                            </td>
+                            <td style="text-align: right">-0.207</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9807<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9807">
+                                    RAD17
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9807<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9807">
+                                    RAD17 checkpoint clamp loader component
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.205</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:6556<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:6556">
+                                    LETM1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:6556<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:6556">
+                                    leucine zipper and EF-hand containing transmembrane protein 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">-0.204</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:8490<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:8490">
+                                    ORC4
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:8490<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:8490">
+                                    origin recognition complex subunit 4
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.204</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:1983<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:1983">
+                                    UTP4
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:1983<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:1983">
+                                    UTP4 small subunit processome component
+                                </a>
+                            </td>
+                            <td style="text-align: right">-0.203</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:17889<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:17889">
+                                    APEX2
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:17889<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:17889">
+                                    apurinic/apyrimidinic endodeoxyribonuclease 2
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.201</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                    </tbody>
+                </table>
+                <h2>GO Term Enrichment</h2>
+                <p>
+                    Gene set enrichment analysis was done on the genes correlated with USP37using the
+                    terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the<a
+                        href="http://geneontology.org/docs/go-annotations/">Gene Ontology Annotations database</a>via <a
+                        href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp">MSigDB</a>.
+                </p>
+                <p>
+                    Using the biological processes and other Gene Ontology terms from well characterized DUBs as a
+                    positive control, several gene set enrichment analyses were considered. Threshold-less methods
+                    like<a href="https://www.gsea-msigdb.org/gsea/index.jsp">GSEA</a> had relatively poor results.
+                    Over-representation analysis with a threshold of of the top 7 highest absolute value Dependency Map
+                    correlations yielded the best results and is reported below.
+                </p>
+                <table class="table table-striped table-hover" id="gsea-enrichment">
+                    <thead>
+                    <tr>
+                        <th>GO Identifier</th>
+                        <th>GO Name</th>
+                        <th>GO Type</th>
+                        <th style="text-align: right"><i>p</i>-value</th>
+                        <th style="text-align: right"><i>p</i>-value (adj.)</th>
+                        <th style="text-align: right"><i>q</i>-value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0000076"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0000076<br>Click for external information from the Gene Ontology.">
+                                    GO:0000076
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0000076<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0000076">
+                                    DNA replication checkpoint
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">1.40e-05</td>
+                            <td style="text-align: right">1.56e-03</td>
+                            <td style="text-align: right">5.44e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0008156"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0008156<br>Click for external information from the Gene Ontology.">
+                                    GO:0008156
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0008156<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0008156">
+                                    negative regulation of DNA replication
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">9.04e-05</td>
+                            <td style="text-align: right">1.01e-02</td>
+                            <td style="text-align: right">1.27e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0006260"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0006260<br>Click for external information from the Gene Ontology.">
+                                    GO:0006260
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0006260<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0006260">
+                                    DNA replication
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">9.77e-05</td>
+                            <td style="text-align: right">1.09e-02</td>
+                            <td style="text-align: right">1.27e-03</td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+                <h2>Knockdown Analysis</h2>
+                <p>
+                    The following table shows the significantly differentially expressed genes after knocking
+                    down USP37.
+                </p>
+                <table class="table table-striped table-hover" id="table-terms">
+                    <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th style="text-align: right">log<sub>2</sub>-fold-change</th>
+                        <th style="text-align: right"><i>p</i>-value</th>
+                        <th style="text-align: right"><i>p</i>-value (adj.)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:7155<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:7155">
+                                    MMP1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:7155<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:7155">
+                                    matrix metallopeptidase 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">4.51e-01</td>
+                            <td style="text-align: right">1.38e-08</td>
+                            <td style="text-align: right">1.53e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9623<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9623">
+                                    PTMA
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9623<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9623">
+                                    prothymosin alpha
+                                </a>
+                            </td>
+                            <td style="text-align: right">-3.32e-01</td>
+                            <td style="text-align: right">1.01e-08</td>
+                            <td style="text-align: right">1.53e-04</td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
             
-            DUB Portal
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/dubportal">Home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/dubportal/about/">About</a>
-                </li>
-            </ul>
+            </div>
         </div>
-    </nav>
-
-
-    <div class="container" style="margin-top: 50px; margin-bottom: 50px">
-        
-    <h1 style="margin-bottom: 1.5rem">
-        <a href="/dubportal"><i class="fas fa-home"></i></a> <small><i class="fas fa-chevron-right"></i></small>
-        Dependencies of USP37
-    </h1>
-    <dl class="row">
-        <dt class="col-4">HGNC Gene Name</dt>
-        <dd class="col-8">ubiquitin specific peptidase 37</dd>
-        <dt class="col-4">HGNC Gene Symbol</dt>
-        <dd class="col-8">USP37</dd>
-        <dt class="col-4">Identifiers</dt>
-        <dd class="col-8">
-            <a class="badge badge-info"
-               href="https://bioregistry.io/hgnc:20063">hgnc:20063</a>
-            <a class="badge badge-info"
-               href="https://bioregistry.io/ncbigene:57695">ncbigene:57695</a>
-            <a class="badge badge-info"
-               href="https://bioregistry.io/uniprot:Q86T82">uniprot:Q86T82</a>
-        </dd>
-        
-            <dt class="col-4">Orthologs</dt>
-            <dd class="col-8">
-                
-                    <a class="badge badge-info"
-                       href="https://bioregistry.io/mgi:2442483">mgi:2442483</a>
-                
-                
-                    <a class="badge badge-info"
-                       href="https://bioregistry.io/rgd:2319715">rgd:2319715</a>
-                
-            </dd>
-        
-        <dt class="col-4">NDEx Network</dt>
-        <dd class="col-8"><a href="https://bioregistry.io/ndex:82bdb0e6-cad0-11eb-9a85-0ac135e8bacf">82bdb0e6-cad0-11eb-9a85-0ac135e8bacf</a></dd>
-        <dt class="col-4">INDRA Statements</dt>
-        <dd class="col-8">
-            <a class="badge badge-info"
-               href="https://db.indra.bio/statements/from_agents?format=html&subject=USP37&type=Deubiquitination">
-                deubiquitinations</a>
-            <a class="badge badge-info"
-               href="https://db.indra.bio/statements/from_agents?format=html&subject=USP37">
-                all statements</a>
-        </dd>
-        <dt class="col-4">Pathway Commons</dt>
-        <dd class="col-8">
-            <a class="badge badge-info"
-               href="https://apps.pathwaycommons.org/interactions?source=USP37">
-                Search for USP37</a>
-        </dd>
-        <dt class="col-4">Number of Papers</dt>
-        <dd class="col-8">31</dd>
-        
-        
-    </dl>
-    <h2>DepMap Correlation Analysis</h2>
-    <p>
-        The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled CRISPR-Cas9
-        knockout proliferation screen conducted in more than 700 cancer cell lines spanning many different tumor
-        lineages. Each cell line in the DepMap contains a unique barcode, and each gene knockout is assigned a
-        “dependency score” on a per cell-line basis. The dependency score quantifies the rate of CRISPR-Cas9 guide drop
-        out for each guide in each cell line. It has been found that proteins with similar DepMap scores across cell
-        lines, a phenomenon known as co-dependent genes, have closely related biological functions. This can include
-        activity in the same or parallel pathways or membership in the same protein complex or the same pathway.
-    </p>
-    <p>
-        We identified the strongest seven co-dependent genes for DUBs and ran GO enrichment analysis in order to explore
-        the pathways and complexes DUBs are correlated with in the DepMap. We sought to provide support for the
-        co-dependent genes being in the same pathway or complex by leveraging additional datasets. We used BioGRID,
-        IntAct, and Pathway Commons PPIDs, and the NURSA PPID to determine whether co-dependent genes interact with one
-        another. As another approach to identify potential interactors, we looked at proteomics data from the Broad
-        Institute's <a href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> for
-        proteins whose expression across ~375 cell lines strongly correlated with the abundance of each DUB; it has
-        previously been observed that proteins in the same complex are frequently significantly co-expressed. And, we
-        determined whether co-dependent genes yield similar transcriptomic signatures in the Broad Institute's
-        <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity Map (CMap)</a>.
-    </p>
-    <table class="table table-striped table-hover" id="table-terms">
-        <thead>
-        <tr>
-            <th>Symbol</th>
-            <th>Name</th>
-            <th style="text-align: right">DepMap Correlation</th>
-            <th>Evidence</th>
-            <th style="text-align: right">CCLE Correlation</th>
-            <th style="text-align: right">CCLE Z-score</th>
-            <th style="text-align: right">CCLE <i>p</i>-value (adj)</th>
-            <th style="text-align: right">CCLE Significant</th>
-            <th style="text-align: right">CMAP Score</th>
-            <th>CMAP Type</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:30750<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:30750">
-                        TIPIN
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:30750<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:30750">
-                        TIMELESS interacting protein
-                    </a>
-                </td>
-                <td style="text-align: right">0.248</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:23194<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:23194">
-                        THAP11
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:23194<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:23194">
-                        THAP domain containing 11
-                    </a>
-                </td>
-                <td style="text-align: right">-0.207</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:9807<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:9807">
-                        RAD17
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:9807<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:9807">
-                        RAD17 checkpoint clamp loader component
-                    </a>
-                </td>
-                <td style="text-align: right">0.205</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:6556<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:6556">
-                        LETM1
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:6556<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:6556">
-                        leucine zipper and EF-hand containing transmembrane protein 1
-                    </a>
-                </td>
-                <td style="text-align: right">-0.204</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:8490<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:8490">
-                        ORC4
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:8490<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:8490">
-                        origin recognition complex subunit 4
-                    </a>
-                </td>
-                <td style="text-align: right">0.204</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:1983<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:1983">
-                        UTP4
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:1983<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:1983">
-                        UTP4 small subunit processome component
-                    </a>
-                </td>
-                <td style="text-align: right">-0.203</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:17889<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:17889">
-                        APEX2
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:17889<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:17889">
-                        apurinic/apyrimidinic endodeoxyribonuclease 2
-                    </a>
-                </td>
-                <td style="text-align: right">0.201</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-        </tbody>
-    </table>
-    <h2>GO Term Enrichment</h2>
-    <p>
-        Gene set enrichment analysis was done on the genes correlated with USP37
-        using the terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the
-        <a href="http://geneontology.org/docs/go-annotations/">Gene Ontology Annotations database</a>
-        via <a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp">MSigDB</a>.
-    </p>
-    <p>
-        Using the biological processes and other Gene Ontology terms from well characterized DUBs as a positive
-        control, several gene set enrichment analyses were considered. Threshold-less methods like
-        <a href="https://www.gsea-msigdb.org/gsea/index.jsp">GSEA</a> had relatively poor results. Over-representation
-        analysis with a threshold of of the top 7 highest absolute value Dependency Map correlations yielded the best
-        results and is reported below.
-    </p>
-    <table class="table table-striped table-hover" id="gsea-enrichment">
-        <thead>
-        <tr>
-            <th>GO Identifier</th>
-            <th>GO Name</th>
-            <th>GO Type</th>
-            <th style="text-align: right"><i>p</i>-value</th>
-            <th style="text-align: right"><i>p</i>-value (adj.)</th>
-            <th style="text-align: right"><i>q</i>-value</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0000076"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0000076<br>Click for external information from the Gene Ontology.">
-                        GO:0000076
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0000076<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0000076">
-                        DNA replication checkpoint
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">1.40e-05</td>
-                <td style="text-align: right">1.56e-03</td>
-                <td style="text-align: right">5.44e-04</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0008156"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0008156<br>Click for external information from the Gene Ontology.">
-                        GO:0008156
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0008156<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0008156">
-                        negative regulation of DNA replication
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">9.04e-05</td>
-                <td style="text-align: right">1.01e-02</td>
-                <td style="text-align: right">1.27e-03</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0006260"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0006260<br>Click for external information from the Gene Ontology.">
-                        GO:0006260
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0006260<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0006260">
-                        DNA replication
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">9.77e-05</td>
-                <td style="text-align: right">1.09e-02</td>
-                <td style="text-align: right">1.27e-03</td>
-            </tr>
-        
-        </tbody>
-    </table>
-        <h2>Knockdown Analysis</h2>
-        <p>
-            The following table shows the significantly differentially expressed genes after knocking
-            down USP37.
-        </p>
-        <table class="table table-striped table-hover" id="table-terms">
-            <thead>
-            <tr>
-                <th>Symbol</th>
-                <th>Name</th>
-                <th style="text-align: right">log<sub>2</sub>-fold-change</th>
-                <th style="text-align: right"><i>p</i>-value</th>
-                <th style="text-align: right"><i>p</i>-value (adj.)</th>
-            </tr>
-            </thead>
-            <tbody>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:7155<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:7155">
-                            MMP1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:7155<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:7155">
-                            matrix metallopeptidase 1
-                        </a>
-                    </td>
-                    <td style="text-align: right">4.51e-01</td>
-                    <td style="text-align: right">1.38e-08</td>
-                    <td style="text-align: right">1.53e-04</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:9623<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:9623">
-                            PTMA
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:9623<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:9623">
-                            prothymosin alpha
-                        </a>
-                    </td>
-                    <td style="text-align: right">-3.32e-01</td>
-                    <td style="text-align: right">1.01e-08</td>
-                    <td style="text-align: right">1.53e-04</td>
-                </tr>
-            
-            </tbody>
-        </table>
-    
-
     </div>
 
 

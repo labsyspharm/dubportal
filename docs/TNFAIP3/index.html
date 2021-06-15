@@ -42,6 +42,10 @@
                     padding-top: 1em;
                     background-color: #f5f5f5;
                 }
+
+                nav[data-toggle="toc"] {
+                    top: 42px;
+                }
             </style>
 
         <script src="https://kit.fontawesome.com/4c86883252.js" crossorigin="anonymous"></script>
@@ -49,1565 +53,1572 @@
 </head>
 
 <body data-spy="scroll" data-target="#toc">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/dubportal">
-            
-            DUB Portal
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/dubportal">Home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/dubportal/about/">About</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/dubportal">
+        
+        DUB Portal
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/about/">About</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 
-    <div class="container" style="margin-top: 50px; margin-bottom: 50px">
-        
-    <h1 style="margin-bottom: 1.5rem">
-        <a href="/dubportal"><i class="fas fa-home"></i></a> <small><i class="fas fa-chevron-right"></i></small>
-        Dependencies of TNFAIP3
-    </h1>
-    <dl class="row">
-        <dt class="col-4">HGNC Gene Name</dt>
-        <dd class="col-8">TNF alpha induced protein 3</dd>
-        <dt class="col-4">HGNC Gene Symbol</dt>
-        <dd class="col-8">TNFAIP3</dd>
-        <dt class="col-4">Identifiers</dt>
-        <dd class="col-8">
-            <a class="badge badge-info"
-               href="https://bioregistry.io/hgnc:11896">hgnc:11896</a>
-            <a class="badge badge-info"
-               href="https://bioregistry.io/ncbigene:7128">ncbigene:7128</a>
-            <a class="badge badge-info"
-               href="https://bioregistry.io/uniprot:P21580">uniprot:P21580</a>
-        </dd>
-        
-            <dt class="col-4">Orthologs</dt>
-            <dd class="col-8">
-                
-                    <a class="badge badge-info"
-                       href="https://bioregistry.io/mgi:1196377">mgi:1196377</a>
-                
-                
-                    <a class="badge badge-info"
-                       href="https://bioregistry.io/rgd:1589275">rgd:1589275</a>
-                
-            </dd>
-        
-        <dt class="col-4">NDEx Network</dt>
-        <dd class="col-8"><a href="https://bioregistry.io/ndex:17025fac-cacd-11eb-9a85-0ac135e8bacf">17025fac-cacd-11eb-9a85-0ac135e8bacf</a></dd>
-        <dt class="col-4">INDRA Statements</dt>
-        <dd class="col-8">
-            <a class="badge badge-info"
-               href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&type=Deubiquitination">
-                deubiquitinations</a>
-            <a class="badge badge-info"
-               href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3">
-                all statements</a>
-        </dd>
-        <dt class="col-4">Pathway Commons</dt>
-        <dd class="col-8">
-            <a class="badge badge-info"
-               href="https://apps.pathwaycommons.org/interactions?source=TNFAIP3">
-                Search for TNFAIP3</a>
-        </dd>
-        <dt class="col-4">Number of Papers</dt>
-        <dd class="col-8">1218</dd>
-        
-        
-    </dl>
-    <h2>DepMap Correlation Analysis</h2>
-    <p>
-        The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled CRISPR-Cas9
-        knockout proliferation screen conducted in more than 700 cancer cell lines spanning many different tumor
-        lineages. Each cell line in the DepMap contains a unique barcode, and each gene knockout is assigned a
-        “dependency score” on a per cell-line basis. The dependency score quantifies the rate of CRISPR-Cas9 guide drop
-        out for each guide in each cell line. It has been found that proteins with similar DepMap scores across cell
-        lines, a phenomenon known as co-dependent genes, have closely related biological functions. This can include
-        activity in the same or parallel pathways or membership in the same protein complex or the same pathway.
-    </p>
-    <p>
-        We identified the strongest seven co-dependent genes for DUBs and ran GO enrichment analysis in order to explore
-        the pathways and complexes DUBs are correlated with in the DepMap. We sought to provide support for the
-        co-dependent genes being in the same pathway or complex by leveraging additional datasets. We used BioGRID,
-        IntAct, and Pathway Commons PPIDs, and the NURSA PPID to determine whether co-dependent genes interact with one
-        another. As another approach to identify potential interactors, we looked at proteomics data from the Broad
-        Institute's <a href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> for
-        proteins whose expression across ~375 cell lines strongly correlated with the abundance of each DUB; it has
-        previously been observed that proteins in the same complex are frequently significantly co-expressed. And, we
-        determined whether co-dependent genes yield similar transcriptomic signatures in the Broad Institute's
-        <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity Map (CMap)</a>.
-    </p>
-    <table class="table table-striped table-hover" id="table-terms">
-        <thead>
-        <tr>
-            <th>Symbol</th>
-            <th>Name</th>
-            <th style="text-align: right">DepMap Correlation</th>
-            <th>Evidence</th>
-            <th style="text-align: right">CCLE Correlation</th>
-            <th style="text-align: right">CCLE Z-score</th>
-            <th style="text-align: right">CCLE <i>p</i>-value (adj)</th>
-            <th style="text-align: right">CCLE Significant</th>
-            <th style="text-align: right">CMAP Score</th>
-            <th>CMAP Type</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:16903<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:16903">
-                        TNIP1
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:16903<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:16903">
-                        TNFAIP3 interacting protein 1
-                    </a>
-                </td>
-                <td style="text-align: right">0.353</td>
-                <td>
+    <div class="container" style="margin-top: 2.5em; margin-bottom: 2.5em">
+        <div class="row justify-content-center">
+            <!-- sidebar, which will move to the top on a small screen -->
+            <div class="col-sm-3 d-none d-sm-none d-md-block">
+                <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
+            </div>
+            <!-- main content area -->
+            <div class="col-sm-9">
+                <h1 style="margin-bottom: 1.5rem">Dependencies of TNFAIP3</h1>
+                <dl class="row">
+                    <dt class="col-4">HGNC Gene Name</dt>
+                    <dd class="col-8">TNF alpha induced protein 3</dd>
+                    <dt class="col-4">HGNC Gene Symbol</dt>
+                    <dd class="col-8">TNFAIP3</dd>
+                    <dt class="col-4">Identifiers</dt>
+                    <dd class="col-8">
+                        <a class="badge badge-info"
+                           href="https://bioregistry.io/hgnc:11896">hgnc:11896</a>
+                        <a class="badge badge-info"
+                           href="https://bioregistry.io/ncbigene:7128">ncbigene:7128</a>
+                        <a class="badge badge-info"
+                           href="https://bioregistry.io/uniprot:P21580">uniprot:P21580</a>
+                    </dd>
                     
+                        <dt class="col-4">Orthologs</dt>
+                        <dd class="col-8">
+                            
+                                <a class="badge badge-info"
+                                   href="https://bioregistry.io/mgi:1196377">mgi:1196377</a>
+                            
+                            
+                                <a class="badge badge-info"
+                                   href="https://bioregistry.io/rgd:1589275">rgd:1589275</a>
+                            
+                        </dd>
+                    
+                    <dt class="col-4">NDEx Network</dt>
+                    <dd class="col-8"><a href="https://bioregistry.io/ndex:17025fac-cacd-11eb-9a85-0ac135e8bacf">17025fac-cacd-11eb-9a85-0ac135e8bacf</a></dd>
+                    <dt class="col-4">INDRA Statements</dt>
+                    <dd class="col-8">
+                        <a class="badge badge-info"
+                           href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&type=Deubiquitination">
+                            deubiquitinations</a>
+                        <a class="badge badge-info"
+                           href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3">
+                            all statements</a>
+                    </dd>
+                    <dt class="col-4">Pathway Commons</dt>
+                    <dd class="col-8">
+                        <a class="badge badge-info"
+                           href="https://apps.pathwaycommons.org/interactions?source=TNFAIP3">
+                            Search for TNFAIP3</a>
+                    </dd>
+                    <dt class="col-4">Number of Papers</dt>
+                    <dd class="col-8">1218</dd>
+                    
+                    
+                </dl>
+                <h2>DepMap Correlation Analysis</h2>
+                <p>
+                    The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled
+                    CRISPR-Cas9 knockout proliferation screen conducted in more than 700 cancer cell lines spanning many
+                    different tumor lineages. Each cell line in the DepMap contains a unique barcode, and each gene
+                    knockout is assigned a “dependency score” on a per cell-line basis. The dependency score quantifies
+                    the rate of CRISPR-Cas9 guide drop out for each guide in each cell line. It has been found that
+                    proteins with similar DepMap scores across cell lines, a phenomenon known as co-dependent genes,
+                    have closely related biological functions. This can include activity in the same or parallel
+                    pathways or membership in the same protein complex or the same pathway.
+                </p>
+                <p>
+                    We identified the strongest seven co-dependent genes for DUBs and ran GO enrichment analysis in
+                    order to explore the pathways and complexes DUBs are correlated with in the DepMap. We sought to
+                    provide support for the co-dependent genes being in the same pathway or complex by leveraging
+                    additional datasets. We used BioGRID, IntAct, and Pathway Commons PPIDs, and the NURSA PPID to
+                    determine whether co-dependent genes interact with one another. As another approach to identify
+                    potential interactors, we looked at proteomics data from the Broad Institute's <a
+                        href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> for
+                    proteins whose expression across ~375 cell lines strongly correlated with the abundance of each DUB;
+                    it has previously been observed that proteins in the same complex are frequently significantly
+                    co-expressed. And, we determined whether co-dependent genes yield similar transcriptomic signatures
+                    in the Broad Institute's <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity
+                    Map (CMap)</a>.
+                </p>
+                <table class="table table-striped table-hover" id="table-terms">
+                    <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th style="text-align: right">DepMap Correlation</th>
+                        <th>Evidence</th>
+                        <th style="text-align: right">CCLE Correlation</th>
+                        <th style="text-align: right">CCLE Z-score</th>
+                        <th style="text-align: right">CCLE <i>p</i>-value (adj)</th>
+                        <th style="text-align: right">CCLE Significant</th>
+                        <th style="text-align: right">CMAP Score</th>
+                        <th>CMAP Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:16903<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:16903">
+                                    TNIP1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:16903<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:16903">
+                                    TNFAIP3 interacting protein 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.353</td>
+                            <td>
+                                
         <span class="badge badge-primary">BioGRID</span>
     
-                    
+                                
         <span class="badge badge-primary">IntAct</span>
     
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=TNFAIP3,TNIP1">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&object=TNIP1">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.16</td>
+                                <td style="text-align: right">0.80</td>
+                                <td style="text-align: right">1.59e-02</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
                     
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:7797<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:7797">
+                                    NFKBIA
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:7797<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:7797">
+                                    NFKB inhibitor alpha
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.292</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=TNFAIP3,NFKBIA">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&object=NFKBIA">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">-0.05</td>
+                                <td style="text-align: right">-0.38</td>
+                                <td style="text-align: right">5.63e-01</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td style="text-align: right">95.99</td>
+                                <td style="text-align: right">oe</td>
+                            
+                        </tr>
                     
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=TNFAIP3,TNIP1">
-                            Pathway Commons
-                        </a>
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:2584<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:2584">
+                                    CYLD
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:2584<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:2584">
+                                    CYLD lysine 63 deubiquitinase
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.272</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&object=CYLD">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.14</td>
+                                <td style="text-align: right">0.66</td>
+                                <td style="text-align: right">7.05e-02</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
                     
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:25679<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:25679">
+                                    ATG101
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:25679<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:25679">
+                                    autophagy related 101
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.228</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td style="text-align: right">-0.01</td>
+                                <td style="text-align: right">-0.13</td>
+                                <td style="text-align: right">9.33e-01</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
                     
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&object=TNIP1">
-                            INDRA
-                        </a>
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9275<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9275">
+                                    PPM1A
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9275<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9275">
+                                    protein phosphatase, Mg2+/Mn2+ dependent 1A
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.227</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td style="text-align: right">-0.00</td>
+                                <td style="text-align: right">-0.10</td>
+                                <td style="text-align: right">9.78e-01</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
                     
-                </td>
-                
-                    <td style="text-align: right">0.16</td>
-                    <td style="text-align: right">0.80</td>
-                    <td style="text-align: right">1.59e-02</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:7797<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:7797">
-                        NFKBIA
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:7797<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:7797">
-                        NFKB inhibitor alpha
-                    </a>
-                </td>
-                <td style="text-align: right">0.292</td>
-                <td>
-                    
-                    
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=TNFAIP3,NFKBIA">
-                            Pathway Commons
-                        </a>
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&object=NFKBIA">
-                            INDRA
-                        </a>
-                    
-                </td>
-                
-                    <td style="text-align: right">-0.05</td>
-                    <td style="text-align: right">-0.38</td>
-                    <td style="text-align: right">5.63e-01</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td style="text-align: right">95.99</td>
-                    <td style="text-align: right">oe</td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:2584<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:2584">
-                        CYLD
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:2584<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:2584">
-                        CYLD lysine 63 deubiquitinase
-                    </a>
-                </td>
-                <td style="text-align: right">0.272</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&object=CYLD">
-                            INDRA
-                        </a>
-                    
-                </td>
-                
-                    <td style="text-align: right">0.14</td>
-                    <td style="text-align: right">0.66</td>
-                    <td style="text-align: right">7.05e-02</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:25679<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:25679">
-                        ATG101
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:25679<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:25679">
-                        autophagy related 101
-                    </a>
-                </td>
-                <td style="text-align: right">0.228</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                </td>
-                
-                    <td style="text-align: right">-0.01</td>
-                    <td style="text-align: right">-0.13</td>
-                    <td style="text-align: right">9.33e-01</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:9275<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:9275">
-                        PPM1A
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:9275<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:9275">
-                        protein phosphatase, Mg2+/Mn2+ dependent 1A
-                    </a>
-                </td>
-                <td style="text-align: right">0.227</td>
-                <td>
-                    
-                    
-                    
-                    
-                    
-                </td>
-                
-                    <td style="text-align: right">-0.00</td>
-                    <td style="text-align: right">-0.10</td>
-                    <td style="text-align: right">9.78e-01</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:6112<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:6112">
-                        IRAK1
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:6112<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:6112">
-                        interleukin 1 receptor associated kinase 1
-                    </a>
-                </td>
-                <td style="text-align: right">-0.218</td>
-                <td>
-                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:6112<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:6112">
+                                    IRAK1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:6112<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:6112">
+                                    interleukin 1 receptor associated kinase 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">-0.218</td>
+                            <td>
+                                
         <span class="badge badge-primary">BioGRID</span>
     
+                                
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=TNFAIP3,IRAK1">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&object=IRAK1">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">-0.00</td>
+                                <td style="text-align: right">-0.10</td>
+                                <td style="text-align: right">9.78e-01</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td style="text-align: right">-99.89</td>
+                                <td style="text-align: right">kd</td>
+                            
+                        </tr>
                     
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:29331<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:29331">
+                                    EPG5
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:29331<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:29331">
+                                    ectopic P-granules autophagy protein 5 homolog
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.216</td>
+                            <td>
+                                
+                                
+                                
+                                
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.12</td>
+                                <td style="text-align: right">0.59</td>
+                                <td style="text-align: right">1.04e-01</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
                     
+                    </tbody>
+                </table>
+                <h2>GO Term Enrichment</h2>
+                <p>
+                    Gene set enrichment analysis was done on the genes correlated with TNFAIP3using the
+                    terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the<a
+                        href="http://geneontology.org/docs/go-annotations/">Gene Ontology Annotations database</a>via <a
+                        href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp">MSigDB</a>.
+                </p>
+                <p>
+                    Using the biological processes and other Gene Ontology terms from well characterized DUBs as a
+                    positive control, several gene set enrichment analyses were considered. Threshold-less methods
+                    like<a href="https://www.gsea-msigdb.org/gsea/index.jsp">GSEA</a> had relatively poor results.
+                    Over-representation analysis with a threshold of of the top 7 highest absolute value Dependency Map
+                    correlations yielded the best results and is reported below.
+                </p>
+                <table class="table table-striped table-hover" id="gsea-enrichment">
+                    <thead>
+                    <tr>
+                        <th>GO Identifier</th>
+                        <th>GO Name</th>
+                        <th>GO Type</th>
+                        <th style="text-align: right"><i>p</i>-value</th>
+                        <th style="text-align: right"><i>p</i>-value (adj.)</th>
+                        <th style="text-align: right"><i>q</i>-value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=TNFAIP3,IRAK1">
-                            Pathway Commons
-                        </a>
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:1901222"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:1901222<br>Click for external information from the Gene Ontology.">
+                                    GO:1901222
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:1901222<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:1901222">
+                                    regulation of NIK/NF-kappaB signaling
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">3.83e-08</td>
+                            <td style="text-align: right">1.09e-05</td>
+                            <td style="text-align: right">4.56e-06</td>
+                        </tr>
                     
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0035872"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0035872<br>Click for external information from the Gene Ontology.">
+                                    GO:0035872
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0035872<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0035872">
+                                    nucleotide-binding domain, leucine rich repeat containing receptor signaling pathway
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">2.18e-07</td>
+                            <td style="text-align: right">6.20e-05</td>
+                            <td style="text-align: right">9.94e-06</td>
+                        </tr>
                     
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=TNFAIP3&object=IRAK1">
-                            INDRA
-                        </a>
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0038061"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0038061<br>Click for external information from the Gene Ontology.">
+                                    GO:0038061
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0038061<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0038061">
+                                    NIK/NF-kappaB signaling
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">2.51e-07</td>
+                            <td style="text-align: right">7.12e-05</td>
+                            <td style="text-align: right">9.94e-06</td>
+                        </tr>
                     
-                </td>
-                
-                    <td style="text-align: right">-0.00</td>
-                    <td style="text-align: right">-0.10</td>
-                    <td style="text-align: right">9.78e-01</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td style="text-align: right">-99.89</td>
-                    <td style="text-align: right">kd</td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:29331<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:29331">
-                        EPG5
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:29331<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:29331">
-                        ectopic P-granules autophagy protein 5 homolog
-                    </a>
-                </td>
-                <td style="text-align: right">0.216</td>
-                <td>
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0002221"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0002221<br>Click for external information from the Gene Ontology.">
+                                    GO:0002221
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0002221<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0002221">
+                                    pattern recognition receptor signaling pathway
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">3.70e-07</td>
+                            <td style="text-align: right">1.05e-04</td>
+                            <td style="text-align: right">1.10e-05</td>
+                        </tr>
                     
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0002753"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0002753<br>Click for external information from the Gene Ontology.">
+                                    GO:0002753
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0002753<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0002753">
+                                    cytoplasmic pattern recognition receptor signaling pathway
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">1.15e-06</td>
+                            <td style="text-align: right">3.27e-04</td>
+                            <td style="text-align: right">2.50e-05</td>
+                        </tr>
                     
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0007249"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0007249<br>Click for external information from the Gene Ontology.">
+                                    GO:0007249
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0007249<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0007249">
+                                    I-kappaB kinase/NF-kappaB signaling
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">1.26e-06</td>
+                            <td style="text-align: right">3.58e-04</td>
+                            <td style="text-align: right">2.50e-05</td>
+                        </tr>
                     
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0002218"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0002218<br>Click for external information from the Gene Ontology.">
+                                    GO:0002218
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0002218<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0002218">
+                                    activation of innate immune response
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">2.51e-06</td>
+                            <td style="text-align: right">7.12e-04</td>
+                            <td style="text-align: right">4.26e-05</td>
+                        </tr>
                     
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0032088"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0032088<br>Click for external information from the Gene Ontology.">
+                                    GO:0032088
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0032088<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0032088">
+                                    negative regulation of NF-kappaB transcription factor activity
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">3.44e-06</td>
+                            <td style="text-align: right">9.78e-04</td>
+                            <td style="text-align: right">5.12e-05</td>
+                        </tr>
                     
-                </td>
-                
-                    <td style="text-align: right">0.12</td>
-                    <td style="text-align: right">0.59</td>
-                    <td style="text-align: right">1.04e-01</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-        </tbody>
-    </table>
-    <h2>GO Term Enrichment</h2>
-    <p>
-        Gene set enrichment analysis was done on the genes correlated with TNFAIP3
-        using the terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the
-        <a href="http://geneontology.org/docs/go-annotations/">Gene Ontology Annotations database</a>
-        via <a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp">MSigDB</a>.
-    </p>
-    <p>
-        Using the biological processes and other Gene Ontology terms from well characterized DUBs as a positive
-        control, several gene set enrichment analyses were considered. Threshold-less methods like
-        <a href="https://www.gsea-msigdb.org/gsea/index.jsp">GSEA</a> had relatively poor results. Over-representation
-        analysis with a threshold of of the top 7 highest absolute value Dependency Map correlations yielded the best
-        results and is reported below.
-    </p>
-    <table class="table table-striped table-hover" id="gsea-enrichment">
-        <thead>
-        <tr>
-            <th>GO Identifier</th>
-            <th>GO Name</th>
-            <th>GO Type</th>
-            <th style="text-align: right"><i>p</i>-value</th>
-            <th style="text-align: right"><i>p</i>-value (adj.)</th>
-            <th style="text-align: right"><i>q</i>-value</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:1901222"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:1901222<br>Click for external information from the Gene Ontology.">
-                        GO:1901222
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:1901222<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:1901222">
-                        regulation of NIK/NF-kappaB signaling
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">3.83e-08</td>
-                <td style="text-align: right">1.09e-05</td>
-                <td style="text-align: right">4.56e-06</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0035872"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0035872<br>Click for external information from the Gene Ontology.">
-                        GO:0035872
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0035872<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0035872">
-                        nucleotide-binding domain, leucine rich repeat containing receptor signaling pathway
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">2.18e-07</td>
-                <td style="text-align: right">6.20e-05</td>
-                <td style="text-align: right">9.94e-06</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0038061"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0038061<br>Click for external information from the Gene Ontology.">
-                        GO:0038061
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0038061<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0038061">
-                        NIK/NF-kappaB signaling
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">2.51e-07</td>
-                <td style="text-align: right">7.12e-05</td>
-                <td style="text-align: right">9.94e-06</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0002221"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0002221<br>Click for external information from the Gene Ontology.">
-                        GO:0002221
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0002221<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0002221">
-                        pattern recognition receptor signaling pathway
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">3.70e-07</td>
-                <td style="text-align: right">1.05e-04</td>
-                <td style="text-align: right">1.10e-05</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0002753"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0002753<br>Click for external information from the Gene Ontology.">
-                        GO:0002753
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0002753<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0002753">
-                        cytoplasmic pattern recognition receptor signaling pathway
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">1.15e-06</td>
-                <td style="text-align: right">3.27e-04</td>
-                <td style="text-align: right">2.50e-05</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0007249"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0007249<br>Click for external information from the Gene Ontology.">
-                        GO:0007249
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0007249<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0007249">
-                        I-kappaB kinase/NF-kappaB signaling
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">1.26e-06</td>
-                <td style="text-align: right">3.58e-04</td>
-                <td style="text-align: right">2.50e-05</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0002218"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0002218<br>Click for external information from the Gene Ontology.">
-                        GO:0002218
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0002218<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0002218">
-                        activation of innate immune response
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">2.51e-06</td>
-                <td style="text-align: right">7.12e-04</td>
-                <td style="text-align: right">4.26e-05</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0032088"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0032088<br>Click for external information from the Gene Ontology.">
-                        GO:0032088
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0032088<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0032088">
-                        negative regulation of NF-kappaB transcription factor activity
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">3.44e-06</td>
-                <td style="text-align: right">9.78e-04</td>
-                <td style="text-align: right">5.12e-05</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0045088"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0045088<br>Click for external information from the Gene Ontology.">
-                        GO:0045088
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0045088<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0045088">
-                        regulation of innate immune response
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">9.45e-06</td>
-                <td style="text-align: right">2.68e-03</td>
-                <td style="text-align: right">1.25e-04</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0002224"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0002224<br>Click for external information from the Gene Ontology.">
-                        GO:0002224
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0002224<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0002224">
-                        toll-like receptor signaling pathway
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">1.47e-05</td>
-                <td style="text-align: right">4.16e-03</td>
-                <td style="text-align: right">1.74e-04</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0043433"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0043433<br>Click for external information from the Gene Ontology.">
-                        GO:0043433
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0043433<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0043433">
-                        negative regulation of DNA-binding transcription factor activity
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">2.41e-05</td>
-                <td style="text-align: right">6.84e-03</td>
-                <td style="text-align: right">2.60e-04</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:1901223"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:1901223<br>Click for external information from the Gene Ontology.">
-                        GO:1901223
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:1901223<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:1901223">
-                        negative regulation of NIK/NF-kappaB signaling
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">4.71e-05</td>
-                <td style="text-align: right">1.34e-02</td>
-                <td style="text-align: right">4.67e-04</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0034142"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0034142<br>Click for external information from the Gene Ontology.">
-                        GO:0034142
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0034142<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0034142">
-                        toll-like receptor 4 signaling pathway
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">6.51e-05</td>
-                <td style="text-align: right">1.85e-02</td>
-                <td style="text-align: right">5.96e-04</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0002755"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0002755<br>Click for external information from the Gene Ontology.">
-                        GO:0002755
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0002755<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0002755">
-                        MyD88-dependent toll-like receptor signaling pathway
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">7.31e-05</td>
-                <td style="text-align: right">2.07e-02</td>
-                <td style="text-align: right">6.21e-04</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0030522"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0030522<br>Click for external information from the Gene Ontology.">
-                        GO:0030522
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0030522<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0030522">
-                        intracellular receptor signaling pathway
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">1.04e-04</td>
-                <td style="text-align: right">2.96e-02</td>
-                <td style="text-align: right">8.27e-04</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0070646"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0070646<br>Click for external information from the Gene Ontology.">
-                        GO:0070646
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0070646<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0070646">
-                        protein modification by small protein removal
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">1.29e-04</td>
-                <td style="text-align: right">3.67e-02</td>
-                <td style="text-align: right">9.13e-04</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0043124"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0043124<br>Click for external information from the Gene Ontology.">
-                        GO:0043124
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0043124<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0043124">
-                        negative regulation of I-kappaB kinase/NF-kappaB signaling
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">1.31e-04</td>
-                <td style="text-align: right">3.71e-02</td>
-                <td style="text-align: right">9.13e-04</td>
-            </tr>
-        
-        </tbody>
-    </table>
-        <h2>Knockdown Analysis</h2>
-        <p>
-            The following table shows the significantly differentially expressed genes after knocking
-            down TNFAIP3.
-        </p>
-        <table class="table table-striped table-hover" id="table-terms">
-            <thead>
-            <tr>
-                <th>Symbol</th>
-                <th>Name</th>
-                <th style="text-align: right">log<sub>2</sub>-fold-change</th>
-                <th style="text-align: right"><i>p</i>-value</th>
-                <th style="text-align: right"><i>p</i>-value (adj.)</th>
-            </tr>
-            </thead>
-            <tbody>
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0045088"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0045088<br>Click for external information from the Gene Ontology.">
+                                    GO:0045088
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0045088<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0045088">
+                                    regulation of innate immune response
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">9.45e-06</td>
+                            <td style="text-align: right">2.68e-03</td>
+                            <td style="text-align: right">1.25e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0002224"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0002224<br>Click for external information from the Gene Ontology.">
+                                    GO:0002224
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0002224<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0002224">
+                                    toll-like receptor signaling pathway
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">1.47e-05</td>
+                            <td style="text-align: right">4.16e-03</td>
+                            <td style="text-align: right">1.74e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0043433"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0043433<br>Click for external information from the Gene Ontology.">
+                                    GO:0043433
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0043433<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0043433">
+                                    negative regulation of DNA-binding transcription factor activity
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">2.41e-05</td>
+                            <td style="text-align: right">6.84e-03</td>
+                            <td style="text-align: right">2.60e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:1901223"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:1901223<br>Click for external information from the Gene Ontology.">
+                                    GO:1901223
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:1901223<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:1901223">
+                                    negative regulation of NIK/NF-kappaB signaling
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">4.71e-05</td>
+                            <td style="text-align: right">1.34e-02</td>
+                            <td style="text-align: right">4.67e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0034142"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0034142<br>Click for external information from the Gene Ontology.">
+                                    GO:0034142
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0034142<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0034142">
+                                    toll-like receptor 4 signaling pathway
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">6.51e-05</td>
+                            <td style="text-align: right">1.85e-02</td>
+                            <td style="text-align: right">5.96e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0002755"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0002755<br>Click for external information from the Gene Ontology.">
+                                    GO:0002755
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0002755<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0002755">
+                                    MyD88-dependent toll-like receptor signaling pathway
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">7.31e-05</td>
+                            <td style="text-align: right">2.07e-02</td>
+                            <td style="text-align: right">6.21e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0030522"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0030522<br>Click for external information from the Gene Ontology.">
+                                    GO:0030522
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0030522<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0030522">
+                                    intracellular receptor signaling pathway
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">1.04e-04</td>
+                            <td style="text-align: right">2.96e-02</td>
+                            <td style="text-align: right">8.27e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0070646"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0070646<br>Click for external information from the Gene Ontology.">
+                                    GO:0070646
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0070646<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0070646">
+                                    protein modification by small protein removal
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">1.29e-04</td>
+                            <td style="text-align: right">3.67e-02</td>
+                            <td style="text-align: right">9.13e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0043124"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0043124<br>Click for external information from the Gene Ontology.">
+                                    GO:0043124
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0043124<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0043124">
+                                    negative regulation of I-kappaB kinase/NF-kappaB signaling
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">1.31e-04</td>
+                            <td style="text-align: right">3.71e-02</td>
+                            <td style="text-align: right">9.13e-04</td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+                <h2>Knockdown Analysis</h2>
+                <p>
+                    The following table shows the significantly differentially expressed genes after knocking
+                    down TNFAIP3.
+                </p>
+                <table class="table table-striped table-hover" id="table-terms">
+                    <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th style="text-align: right">log<sub>2</sub>-fold-change</th>
+                        <th style="text-align: right"><i>p</i>-value</th>
+                        <th style="text-align: right"><i>p</i>-value (adj.)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:2434<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:2434">
+                                    CSF2
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:2434<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:2434">
+                                    colony stimulating factor 2
+                                </a>
+                            </td>
+                            <td style="text-align: right">1.51e+00</td>
+                            <td style="text-align: right">1.50e-22</td>
+                            <td style="text-align: right">2.08e-18</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:29898<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:29898">
+                                    C15orf48
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:29898<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:29898">
+                                    chromosome 15 open reading frame 48
+                                </a>
+                            </td>
+                            <td style="text-align: right">1.15e+00</td>
+                            <td style="text-align: right">7.38e-20</td>
+                            <td style="text-align: right">5.14e-16</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:6025<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:6025">
+                                    CXCL8
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:6025<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:6025">
+                                    C-X-C motif chemokine ligand 8
+                                </a>
+                            </td>
+                            <td style="text-align: right">1.64e+00</td>
+                            <td style="text-align: right">2.09e-19</td>
+                            <td style="text-align: right">9.69e-16</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:4602<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:4602">
+                                    CXCL1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:4602<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:4602">
+                                    C-X-C motif chemokine ligand 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">1.46e+00</td>
+                            <td style="text-align: right">4.52e-14</td>
+                            <td style="text-align: right">1.58e-10</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:4603<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:4603">
+                                    CXCL2
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:4603<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:4603">
+                                    C-X-C motif chemokine ligand 2
+                                </a>
+                            </td>
+                            <td style="text-align: right">1.33e+00</td>
+                            <td style="text-align: right">1.63e-11</td>
+                            <td style="text-align: right">4.54e-08</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:381<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:381">
+                                    AKR1B1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:381<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:381">
+                                    aldo-keto reductase family 1 member B
+                                </a>
+                            </td>
+                            <td style="text-align: right">5.51e-01</td>
+                            <td style="text-align: right">1.83e-10</td>
+                            <td style="text-align: right">4.26e-07</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10303<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10303">
+                                    RPL13
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10303<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10303">
+                                    ribosomal protein L13
+                                </a>
+                            </td>
+                            <td style="text-align: right">5.46e-01</td>
+                            <td style="text-align: right">6.63e-10</td>
+                            <td style="text-align: right">1.32e-06</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:7155<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:7155">
+                                    MMP1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:7155<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:7155">
+                                    matrix metallopeptidase 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">4.86e-01</td>
+                            <td style="text-align: right">1.22e-09</td>
+                            <td style="text-align: right">2.13e-06</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:11180<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:11180">
+                                    SOD2
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:11180<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:11180">
+                                    superoxide dismutase 2
+                                </a>
+                            </td>
+                            <td style="text-align: right">6.83e-01</td>
+                            <td style="text-align: right">1.66e-09</td>
+                            <td style="text-align: right">2.58e-06</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:591<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:591">
+                                    BIRC3
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:591<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:591">
+                                    baculoviral IAP repeat containing 3
+                                </a>
+                            </td>
+                            <td style="text-align: right">7.64e-01</td>
+                            <td style="text-align: right">4.35e-09</td>
+                            <td style="text-align: right">6.07e-06</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:991<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:991">
+                                    BCL2A1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:991<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:991">
+                                    BCL2 related protein A1
+                                </a>
+                            </td>
+                            <td style="text-align: right">1.05e+00</td>
+                            <td style="text-align: right">4.78e-08</td>
+                            <td style="text-align: right">6.06e-05</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:2438<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:2438">
+                                    CSF3
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:2438<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:2438">
+                                    colony stimulating factor 3
+                                </a>
+                            </td>
+                            <td style="text-align: right">1.24e+00</td>
+                            <td style="text-align: right">1.01e-07</td>
+                            <td style="text-align: right">1.17e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:30728<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:30728">
+                                    NSA2
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:30728<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:30728">
+                                    NSA2 ribosome biogenesis factor
+                                </a>
+                            </td>
+                            <td style="text-align: right">7.84e-01</td>
+                            <td style="text-align: right">1.16e-07</td>
+                            <td style="text-align: right">1.24e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:4604<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:4604">
+                                    CXCL3
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:4604<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:4604">
+                                    C-X-C motif chemokine ligand 3
+                                </a>
+                            </td>
+                            <td style="text-align: right">1.12e+00</td>
+                            <td style="text-align: right">3.18e-07</td>
+                            <td style="text-align: right">2.96e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10540<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10540">
+                                    SAT1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10540<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10540">
+                                    spermidine/spermine N1-acetyltransferase 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">5.59e-01</td>
+                            <td style="text-align: right">3.15e-07</td>
+                            <td style="text-align: right">2.96e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:4553<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:4553">
+                                    GPX1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:4553<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:4553">
+                                    glutathione peroxidase 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">6.04e-01</td>
+                            <td style="text-align: right">5.78e-07</td>
+                            <td style="text-align: right">5.04e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9692<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9692">
+                                    PTX3
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9692<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9692">
+                                    pentraxin 3
+                                </a>
+                            </td>
+                            <td style="text-align: right">6.69e-01</td>
+                            <td style="text-align: right">9.08e-07</td>
+                            <td style="text-align: right">7.45e-04</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10388<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10388">
+                                    RPS15
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10388<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10388">
+                                    ribosomal protein S15
+                                </a>
+                            </td>
+                            <td style="text-align: right">7.66e-01</td>
+                            <td style="text-align: right">1.52e-06</td>
+                            <td style="text-align: right">1.18e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:7797<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:7797">
+                                    NFKBIA
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:7797<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:7797">
+                                    NFKB inhibitor alpha
+                                </a>
+                            </td>
+                            <td style="text-align: right">6.37e-01</td>
+                            <td style="text-align: right">2.02e-06</td>
+                            <td style="text-align: right">1.49e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10513<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10513">
+                                    SAA1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10513<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10513">
+                                    serum amyloid A1
+                                </a>
+                            </td>
+                            <td style="text-align: right">8.55e-01</td>
+                            <td style="text-align: right">2.15e-06</td>
+                            <td style="text-align: right">1.50e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10363<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10363">
+                                    RPL7
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10363<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10363">
+                                    ribosomal protein L7
+                                </a>
+                            </td>
+                            <td style="text-align: right">3.93e-01</td>
+                            <td style="text-align: right">2.92e-06</td>
+                            <td style="text-align: right">1.94e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:18277<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:18277">
+                                    SEC61G
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:18277<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:18277">
+                                    SEC61 translocon subunit gamma
+                                </a>
+                            </td>
+                            <td style="text-align: right">3.61e-01</td>
+                            <td style="text-align: right">3.37e-06</td>
+                            <td style="text-align: right">2.13e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:49181<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:49181">
+                                    RPS10-NUDT3
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:49181<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:49181">
+                                    RPS10-NUDT3 readthrough
+                                </a>
+                            </td>
+                            <td style="text-align: right">-5.78e-01</td>
+                            <td style="text-align: right">4.28e-06</td>
+                            <td style="text-align: right">2.59e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:5344<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:5344">
+                                    ICAM1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:5344<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:5344">
+                                    intercellular adhesion molecule 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">8.68e-01</td>
+                            <td style="text-align: right">6.10e-06</td>
+                            <td style="text-align: right">3.54e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:29362<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:29362">
+                                    ZC3H12C
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:29362<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:29362">
+                                    zinc finger CCCH-type containing 12C
+                                </a>
+                            </td>
+                            <td style="text-align: right">9.87e-01</td>
+                            <td style="text-align: right">9.52e-06</td>
+                            <td style="text-align: right">5.31e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:2545<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:2545">
+                                    CTSS
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:2545<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:2545">
+                                    cathepsin S
+                                </a>
+                            </td>
+                            <td style="text-align: right">8.41e-01</td>
+                            <td style="text-align: right">1.03e-05</td>
+                            <td style="text-align: right">5.52e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9213<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9213">
+                                    POU2F2
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9213<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9213">
+                                    POU class 2 homeobox 2
+                                </a>
+                            </td>
+                            <td style="text-align: right">6.84e-01</td>
+                            <td style="text-align: right">1.39e-05</td>
+                            <td style="text-align: right">7.18e-03</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10514<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10514">
+                                    SAA2
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10514<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10514">
+                                    serum amyloid A2
+                                </a>
+                            </td>
+                            <td style="text-align: right">8.64e-01</td>
+                            <td style="text-align: right">2.33e-05</td>
+                            <td style="text-align: right">1.16e-02</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9052<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9052">
+                                    PLAU
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:9052<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:9052">
+                                    plasminogen activator, urokinase
+                                </a>
+                            </td>
+                            <td style="text-align: right">4.50e-01</td>
+                            <td style="text-align: right">2.59e-05</td>
+                            <td style="text-align: right">1.25e-02</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:16887<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:16887">
+                                    PDZK1IP1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:16887<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:16887">
+                                    PDZK1 interacting protein 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">9.52e-01</td>
+                            <td style="text-align: right">4.92e-05</td>
+                            <td style="text-align: right">2.28e-02</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:3420<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:3420">
+                                    EPS8
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:3420<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:3420">
+                                    epidermal growth factor receptor pathway substrate 8
+                                </a>
+                            </td>
+                            <td style="text-align: right">7.72e-01</td>
+                            <td style="text-align: right">5.90e-05</td>
+                            <td style="text-align: right">2.65e-02</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:11761<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:11761">
+                                    TFPI2
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:11761<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:11761">
+                                    tissue factor pathway inhibitor 2
+                                </a>
+                            </td>
+                            <td style="text-align: right">5.18e-01</td>
+                            <td style="text-align: right">7.72e-05</td>
+                            <td style="text-align: right">3.36e-02</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:24175<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:24175">
+                                    HACD3
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:24175<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:24175">
+                                    3-hydroxyacyl-CoA dehydratase 3
+                                </a>
+                            </td>
+                            <td style="text-align: right">4.66e-01</td>
+                            <td style="text-align: right">8.88e-05</td>
+                            <td style="text-align: right">3.75e-02</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:20249<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:20249">
+                                    SPRED1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:20249<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:20249">
+                                    sprouty related EVH1 domain containing 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">7.59e-01</td>
+                            <td style="text-align: right">9.22e-05</td>
+                            <td style="text-align: right">3.78e-02</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:6018<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:6018">
+                                    IL6
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:6018<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:6018">
+                                    interleukin 6
+                                </a>
+                            </td>
+                            <td style="text-align: right">8.71e-01</td>
+                            <td style="text-align: right">9.96e-05</td>
+                            <td style="text-align: right">3.97e-02</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:22229<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:22229">
+                                    ZMIZ2
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:22229<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:22229">
+                                    zinc finger MIZ-type containing 2
+                                </a>
+                            </td>
+                            <td style="text-align: right">7.55e-01</td>
+                            <td style="text-align: right">1.26e-04</td>
+                            <td style="text-align: right">4.88e-02</td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
             
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:2434<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:2434">
-                            CSF2
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:2434<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:2434">
-                            colony stimulating factor 2
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.51e+00</td>
-                    <td style="text-align: right">1.50e-22</td>
-                    <td style="text-align: right">2.08e-18</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:29898<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:29898">
-                            C15orf48
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:29898<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:29898">
-                            chromosome 15 open reading frame 48
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.15e+00</td>
-                    <td style="text-align: right">7.38e-20</td>
-                    <td style="text-align: right">5.14e-16</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:6025<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:6025">
-                            CXCL8
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:6025<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:6025">
-                            C-X-C motif chemokine ligand 8
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.64e+00</td>
-                    <td style="text-align: right">2.09e-19</td>
-                    <td style="text-align: right">9.69e-16</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:4602<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:4602">
-                            CXCL1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:4602<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:4602">
-                            C-X-C motif chemokine ligand 1
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.46e+00</td>
-                    <td style="text-align: right">4.52e-14</td>
-                    <td style="text-align: right">1.58e-10</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:4603<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:4603">
-                            CXCL2
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:4603<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:4603">
-                            C-X-C motif chemokine ligand 2
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.33e+00</td>
-                    <td style="text-align: right">1.63e-11</td>
-                    <td style="text-align: right">4.54e-08</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:381<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:381">
-                            AKR1B1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:381<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:381">
-                            aldo-keto reductase family 1 member B
-                        </a>
-                    </td>
-                    <td style="text-align: right">5.51e-01</td>
-                    <td style="text-align: right">1.83e-10</td>
-                    <td style="text-align: right">4.26e-07</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10303<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10303">
-                            RPL13
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10303<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10303">
-                            ribosomal protein L13
-                        </a>
-                    </td>
-                    <td style="text-align: right">5.46e-01</td>
-                    <td style="text-align: right">6.63e-10</td>
-                    <td style="text-align: right">1.32e-06</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:7155<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:7155">
-                            MMP1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:7155<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:7155">
-                            matrix metallopeptidase 1
-                        </a>
-                    </td>
-                    <td style="text-align: right">4.86e-01</td>
-                    <td style="text-align: right">1.22e-09</td>
-                    <td style="text-align: right">2.13e-06</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:11180<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:11180">
-                            SOD2
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:11180<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:11180">
-                            superoxide dismutase 2
-                        </a>
-                    </td>
-                    <td style="text-align: right">6.83e-01</td>
-                    <td style="text-align: right">1.66e-09</td>
-                    <td style="text-align: right">2.58e-06</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:591<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:591">
-                            BIRC3
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:591<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:591">
-                            baculoviral IAP repeat containing 3
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.64e-01</td>
-                    <td style="text-align: right">4.35e-09</td>
-                    <td style="text-align: right">6.07e-06</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:991<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:991">
-                            BCL2A1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:991<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:991">
-                            BCL2 related protein A1
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.05e+00</td>
-                    <td style="text-align: right">4.78e-08</td>
-                    <td style="text-align: right">6.06e-05</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:2438<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:2438">
-                            CSF3
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:2438<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:2438">
-                            colony stimulating factor 3
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.24e+00</td>
-                    <td style="text-align: right">1.01e-07</td>
-                    <td style="text-align: right">1.17e-04</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:30728<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:30728">
-                            NSA2
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:30728<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:30728">
-                            NSA2 ribosome biogenesis factor
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.84e-01</td>
-                    <td style="text-align: right">1.16e-07</td>
-                    <td style="text-align: right">1.24e-04</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:4604<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:4604">
-                            CXCL3
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:4604<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:4604">
-                            C-X-C motif chemokine ligand 3
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.12e+00</td>
-                    <td style="text-align: right">3.18e-07</td>
-                    <td style="text-align: right">2.96e-04</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10540<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10540">
-                            SAT1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10540<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10540">
-                            spermidine/spermine N1-acetyltransferase 1
-                        </a>
-                    </td>
-                    <td style="text-align: right">5.59e-01</td>
-                    <td style="text-align: right">3.15e-07</td>
-                    <td style="text-align: right">2.96e-04</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:4553<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:4553">
-                            GPX1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:4553<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:4553">
-                            glutathione peroxidase 1
-                        </a>
-                    </td>
-                    <td style="text-align: right">6.04e-01</td>
-                    <td style="text-align: right">5.78e-07</td>
-                    <td style="text-align: right">5.04e-04</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:9692<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:9692">
-                            PTX3
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:9692<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:9692">
-                            pentraxin 3
-                        </a>
-                    </td>
-                    <td style="text-align: right">6.69e-01</td>
-                    <td style="text-align: right">9.08e-07</td>
-                    <td style="text-align: right">7.45e-04</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10388<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10388">
-                            RPS15
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10388<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10388">
-                            ribosomal protein S15
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.66e-01</td>
-                    <td style="text-align: right">1.52e-06</td>
-                    <td style="text-align: right">1.18e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:7797<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:7797">
-                            NFKBIA
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:7797<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:7797">
-                            NFKB inhibitor alpha
-                        </a>
-                    </td>
-                    <td style="text-align: right">6.37e-01</td>
-                    <td style="text-align: right">2.02e-06</td>
-                    <td style="text-align: right">1.49e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10513<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10513">
-                            SAA1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10513<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10513">
-                            serum amyloid A1
-                        </a>
-                    </td>
-                    <td style="text-align: right">8.55e-01</td>
-                    <td style="text-align: right">2.15e-06</td>
-                    <td style="text-align: right">1.50e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10363<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10363">
-                            RPL7
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10363<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10363">
-                            ribosomal protein L7
-                        </a>
-                    </td>
-                    <td style="text-align: right">3.93e-01</td>
-                    <td style="text-align: right">2.92e-06</td>
-                    <td style="text-align: right">1.94e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:18277<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:18277">
-                            SEC61G
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:18277<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:18277">
-                            SEC61 translocon subunit gamma
-                        </a>
-                    </td>
-                    <td style="text-align: right">3.61e-01</td>
-                    <td style="text-align: right">3.37e-06</td>
-                    <td style="text-align: right">2.13e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:49181<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:49181">
-                            RPS10-NUDT3
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:49181<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:49181">
-                            RPS10-NUDT3 readthrough
-                        </a>
-                    </td>
-                    <td style="text-align: right">-5.78e-01</td>
-                    <td style="text-align: right">4.28e-06</td>
-                    <td style="text-align: right">2.59e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:5344<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:5344">
-                            ICAM1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:5344<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:5344">
-                            intercellular adhesion molecule 1
-                        </a>
-                    </td>
-                    <td style="text-align: right">8.68e-01</td>
-                    <td style="text-align: right">6.10e-06</td>
-                    <td style="text-align: right">3.54e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:29362<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:29362">
-                            ZC3H12C
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:29362<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:29362">
-                            zinc finger CCCH-type containing 12C
-                        </a>
-                    </td>
-                    <td style="text-align: right">9.87e-01</td>
-                    <td style="text-align: right">9.52e-06</td>
-                    <td style="text-align: right">5.31e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:2545<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:2545">
-                            CTSS
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:2545<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:2545">
-                            cathepsin S
-                        </a>
-                    </td>
-                    <td style="text-align: right">8.41e-01</td>
-                    <td style="text-align: right">1.03e-05</td>
-                    <td style="text-align: right">5.52e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:9213<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:9213">
-                            POU2F2
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:9213<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:9213">
-                            POU class 2 homeobox 2
-                        </a>
-                    </td>
-                    <td style="text-align: right">6.84e-01</td>
-                    <td style="text-align: right">1.39e-05</td>
-                    <td style="text-align: right">7.18e-03</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10514<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10514">
-                            SAA2
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:10514<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:10514">
-                            serum amyloid A2
-                        </a>
-                    </td>
-                    <td style="text-align: right">8.64e-01</td>
-                    <td style="text-align: right">2.33e-05</td>
-                    <td style="text-align: right">1.16e-02</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:9052<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:9052">
-                            PLAU
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:9052<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:9052">
-                            plasminogen activator, urokinase
-                        </a>
-                    </td>
-                    <td style="text-align: right">4.50e-01</td>
-                    <td style="text-align: right">2.59e-05</td>
-                    <td style="text-align: right">1.25e-02</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:16887<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:16887">
-                            PDZK1IP1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:16887<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:16887">
-                            PDZK1 interacting protein 1
-                        </a>
-                    </td>
-                    <td style="text-align: right">9.52e-01</td>
-                    <td style="text-align: right">4.92e-05</td>
-                    <td style="text-align: right">2.28e-02</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:3420<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:3420">
-                            EPS8
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:3420<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:3420">
-                            epidermal growth factor receptor pathway substrate 8
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.72e-01</td>
-                    <td style="text-align: right">5.90e-05</td>
-                    <td style="text-align: right">2.65e-02</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:11761<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:11761">
-                            TFPI2
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:11761<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:11761">
-                            tissue factor pathway inhibitor 2
-                        </a>
-                    </td>
-                    <td style="text-align: right">5.18e-01</td>
-                    <td style="text-align: right">7.72e-05</td>
-                    <td style="text-align: right">3.36e-02</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:24175<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:24175">
-                            HACD3
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:24175<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:24175">
-                            3-hydroxyacyl-CoA dehydratase 3
-                        </a>
-                    </td>
-                    <td style="text-align: right">4.66e-01</td>
-                    <td style="text-align: right">8.88e-05</td>
-                    <td style="text-align: right">3.75e-02</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:20249<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:20249">
-                            SPRED1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:20249<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:20249">
-                            sprouty related EVH1 domain containing 1
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.59e-01</td>
-                    <td style="text-align: right">9.22e-05</td>
-                    <td style="text-align: right">3.78e-02</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:6018<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:6018">
-                            IL6
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:6018<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:6018">
-                            interleukin 6
-                        </a>
-                    </td>
-                    <td style="text-align: right">8.71e-01</td>
-                    <td style="text-align: right">9.96e-05</td>
-                    <td style="text-align: right">3.97e-02</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:22229<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:22229">
-                            ZMIZ2
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:22229<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:22229">
-                            zinc finger MIZ-type containing 2
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.55e-01</td>
-                    <td style="text-align: right">1.26e-04</td>
-                    <td style="text-align: right">4.88e-02</td>
-                </tr>
-            
-            </tbody>
-        </table>
-    
-
+            </div>
+        </div>
     </div>
 
 

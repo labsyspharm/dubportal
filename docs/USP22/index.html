@@ -42,6 +42,10 @@
                     padding-top: 1em;
                     background-color: #f5f5f5;
                 }
+
+                nav[data-toggle="toc"] {
+                    top: 42px;
+                }
             </style>
 
         <script src="https://kit.fontawesome.com/4c86883252.js" crossorigin="anonymous"></script>
@@ -49,1045 +53,1052 @@
 </head>
 
 <body data-spy="scroll" data-target="#toc">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/dubportal">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/dubportal">
+        
+        DUB Portal
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/about/">About</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+    <div class="container" style="margin-top: 2.5em; margin-bottom: 2.5em">
+        <div class="row justify-content-center">
+            <!-- sidebar, which will move to the top on a small screen -->
+            <div class="col-sm-3 d-none d-sm-none d-md-block">
+                <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
+            </div>
+            <!-- main content area -->
+            <div class="col-sm-9">
+                <h1 style="margin-bottom: 1.5rem">Dependencies of USP22</h1>
+                <dl class="row">
+                    <dt class="col-4">HGNC Gene Name</dt>
+                    <dd class="col-8">ubiquitin specific peptidase 22</dd>
+                    <dt class="col-4">HGNC Gene Symbol</dt>
+                    <dd class="col-8">USP22</dd>
+                    <dt class="col-4">Identifiers</dt>
+                    <dd class="col-8">
+                        <a class="badge badge-info"
+                           href="https://bioregistry.io/hgnc:12621">hgnc:12621</a>
+                        <a class="badge badge-info"
+                           href="https://bioregistry.io/ncbigene:23326">ncbigene:23326</a>
+                        <a class="badge badge-info"
+                           href="https://bioregistry.io/uniprot:Q9UPT9">uniprot:Q9UPT9</a>
+                    </dd>
+                    
+                        <dt class="col-4">Orthologs</dt>
+                        <dd class="col-8">
+                            
+                                <a class="badge badge-info"
+                                   href="https://bioregistry.io/mgi:2144157">mgi:2144157</a>
+                            
+                            
+                                <a class="badge badge-info"
+                                   href="https://bioregistry.io/rgd:1310354">rgd:1310354</a>
+                            
+                        </dd>
+                    
+                    <dt class="col-4">NDEx Network</dt>
+                    <dd class="col-8"><a href="https://bioregistry.io/ndex:21048fde-cacf-11eb-9a85-0ac135e8bacf">21048fde-cacf-11eb-9a85-0ac135e8bacf</a></dd>
+                    <dt class="col-4">INDRA Statements</dt>
+                    <dd class="col-8">
+                        <a class="badge badge-info"
+                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&type=Deubiquitination">
+                            deubiquitinations</a>
+                        <a class="badge badge-info"
+                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22">
+                            all statements</a>
+                    </dd>
+                    <dt class="col-4">Pathway Commons</dt>
+                    <dd class="col-8">
+                        <a class="badge badge-info"
+                           href="https://apps.pathwaycommons.org/interactions?source=USP22">
+                            Search for USP22</a>
+                    </dd>
+                    <dt class="col-4">Number of Papers</dt>
+                    <dd class="col-8">152</dd>
+                    
+                    
+                </dl>
+                <h2>DepMap Correlation Analysis</h2>
+                <p>
+                    The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled
+                    CRISPR-Cas9 knockout proliferation screen conducted in more than 700 cancer cell lines spanning many
+                    different tumor lineages. Each cell line in the DepMap contains a unique barcode, and each gene
+                    knockout is assigned a “dependency score” on a per cell-line basis. The dependency score quantifies
+                    the rate of CRISPR-Cas9 guide drop out for each guide in each cell line. It has been found that
+                    proteins with similar DepMap scores across cell lines, a phenomenon known as co-dependent genes,
+                    have closely related biological functions. This can include activity in the same or parallel
+                    pathways or membership in the same protein complex or the same pathway.
+                </p>
+                <p>
+                    We identified the strongest seven co-dependent genes for DUBs and ran GO enrichment analysis in
+                    order to explore the pathways and complexes DUBs are correlated with in the DepMap. We sought to
+                    provide support for the co-dependent genes being in the same pathway or complex by leveraging
+                    additional datasets. We used BioGRID, IntAct, and Pathway Commons PPIDs, and the NURSA PPID to
+                    determine whether co-dependent genes interact with one another. As another approach to identify
+                    potential interactors, we looked at proteomics data from the Broad Institute's <a
+                        href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> for
+                    proteins whose expression across ~375 cell lines strongly correlated with the abundance of each DUB;
+                    it has previously been observed that proteins in the same complex are frequently significantly
+                    co-expressed. And, we determined whether co-dependent genes yield similar transcriptomic signatures
+                    in the Broad Institute's <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity
+                    Map (CMap)</a>.
+                </p>
+                <table class="table table-striped table-hover" id="table-terms">
+                    <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th style="text-align: right">DepMap Correlation</th>
+                        <th>Evidence</th>
+                        <th style="text-align: right">CCLE Correlation</th>
+                        <th style="text-align: right">CCLE Z-score</th>
+                        <th style="text-align: right">CCLE <i>p</i>-value (adj)</th>
+                        <th style="text-align: right">CCLE Significant</th>
+                        <th style="text-align: right">CMAP Score</th>
+                        <th>CMAP Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:20596<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:20596">
+                                    SUPT20H
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:20596<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:20596">
+                                    SPT20 homolog, SAGA complex component
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.542</td>
+                            <td>
+                                
+        <span class="badge badge-primary">BioGRID</span>
+    
+                                
+        <span class="badge badge-primary">IntAct</span>
+    
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,SUPT20H">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=SUPT20H">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.06</td>
+                                <td style="text-align: right">0.24</td>
+                                <td style="text-align: right">3.83e-01</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:30631<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:30631">
+                                    TADA1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:30631<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:30631">
+                                    transcriptional adaptor 1
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.509</td>
+                            <td>
+                                
+        <span class="badge badge-primary">BioGRID</span>
+    
+                                
+        <span class="badge badge-primary">IntAct</span>
+    
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TADA1">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TADA1">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.12</td>
+                                <td style="text-align: right">0.59</td>
+                                <td style="text-align: right">5.20e-02</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:17304<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:17304">
+                                    TAF5L
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:17304<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:17304">
+                                    TATA-box binding protein associated factor 5 like
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.496</td>
+                            <td>
+                                
+        <span class="badge badge-primary">BioGRID</span>
+    
+                                
+        <span class="badge badge-primary">IntAct</span>
+    
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TAF5L">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TAF5L">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.11</td>
+                                <td style="text-align: right">0.50</td>
+                                <td style="text-align: right">8.95e-02</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:30781<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:30781">
+                                    TADA2B
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:30781<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:30781">
+                                    transcriptional adaptor 2B
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.472</td>
+                            <td>
+                                
+        <span class="badge badge-primary">BioGRID</span>
+    
+                                
+        <span class="badge badge-primary">IntAct</span>
+    
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TADA2B">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TADA2B">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.19</td>
+                                <td style="text-align: right">0.95</td>
+                                <td style="text-align: right">2.41e-03</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:17305<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:17305">
+                                    TAF6L
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:17305<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:17305">
+                                    TATA-box binding protein associated factor 6 like
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.462</td>
+                            <td>
+                                
+        <span class="badge badge-primary">BioGRID</span>
+    
+                                
+        <span class="badge badge-primary">IntAct</span>
+    
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TAF6L">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TAF6L">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.34</td>
+                                <td style="text-align: right">1.77</td>
+                                <td style="text-align: right">9.52e-10</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:19422<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:19422">
+                                    TADA3
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:19422<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:19422">
+                                    transcriptional adaptor 3
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.444</td>
+                            <td>
+                                
+        <span class="badge badge-primary">BioGRID</span>
+    
+                                
+        <span class="badge badge-primary">IntAct</span>
+    
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TADA3">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TADA3">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.07</td>
+                                <td style="text-align: right">0.30</td>
+                                <td style="text-align: right">2.92e-01</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10560<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10560">
+                                    ATXN7
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:10560<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:10560">
+                                    ataxin 7
+                                </a>
+                            </td>
+                            <td style="text-align: right">0.438</td>
+                            <td>
+                                
+        <span class="badge badge-primary">BioGRID</span>
+    
+                                
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,ATXN7">
+                                        Pathway Commons
+                                    </a>
+                                
+                                
+                                    <a class="badge badge-primary"
+                                       href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=ATXN7">
+                                        INDRA
+                                    </a>
+                                
+                            </td>
+                            
+                                <td style="text-align: right">0.11</td>
+                                <td style="text-align: right">0.52</td>
+                                <td style="text-align: right">8.76e-02</td>
+                                <td style="text-align: right">
+                                    
+                                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                                    
+                                </td>
+                            
+                            
+                                <td></td>
+                                <td></td>
+                            
+                        </tr>
+                    
+                    </tbody>
+                </table>
+                <h2>GO Term Enrichment</h2>
+                <p>
+                    Gene set enrichment analysis was done on the genes correlated with USP22using the
+                    terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the<a
+                        href="http://geneontology.org/docs/go-annotations/">Gene Ontology Annotations database</a>via <a
+                        href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp">MSigDB</a>.
+                </p>
+                <p>
+                    Using the biological processes and other Gene Ontology terms from well characterized DUBs as a
+                    positive control, several gene set enrichment analyses were considered. Threshold-less methods
+                    like<a href="https://www.gsea-msigdb.org/gsea/index.jsp">GSEA</a> had relatively poor results.
+                    Over-representation analysis with a threshold of of the top 7 highest absolute value Dependency Map
+                    correlations yielded the best results and is reported below.
+                </p>
+                <table class="table table-striped table-hover" id="gsea-enrichment">
+                    <thead>
+                    <tr>
+                        <th>GO Identifier</th>
+                        <th>GO Name</th>
+                        <th>GO Type</th>
+                        <th style="text-align: right"><i>p</i>-value</th>
+                        <th style="text-align: right"><i>p</i>-value (adj.)</th>
+                        <th style="text-align: right"><i>q</i>-value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0070461"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0070461<br>Click for external information from the Gene Ontology.">
+                                    GO:0070461
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0070461<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0070461">
+                                    SAGA-type complex
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Cellular Component</span></td>
+                            <td style="text-align: right">4.07e-17</td>
+                            <td style="text-align: right">3.70e-15</td>
+                            <td style="text-align: right">1.07e-15</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0030914"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0030914<br>Click for external information from the Gene Ontology.">
+                                    GO:0030914
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0030914<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0030914">
+                                    STAGA complex
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Cellular Component</span></td>
+                            <td style="text-align: right">8.12e-16</td>
+                            <td style="text-align: right">7.38e-14</td>
+                            <td style="text-align: right">1.07e-14</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0031248"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0031248<br>Click for external information from the Gene Ontology.">
+                                    GO:0031248
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0031248<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0031248">
+                                    protein acetyltransferase complex
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Cellular Component</span></td>
+                            <td style="text-align: right">8.77e-14</td>
+                            <td style="text-align: right">7.98e-12</td>
+                            <td style="text-align: right">7.69e-13</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0000124"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0000124<br>Click for external information from the Gene Ontology.">
+                                    GO:0000124
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0000124<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0000124">
+                                    SAGA complex
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Cellular Component</span></td>
+                            <td style="text-align: right">8.84e-12</td>
+                            <td style="text-align: right">8.04e-10</td>
+                            <td style="text-align: right">5.81e-11</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0034212"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0034212<br>Click for external information from the Gene Ontology.">
+                                    GO:0034212
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0034212<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0034212">
+                                    peptide N-acetyltransferase activity
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Molecular Function</span></td>
+                            <td style="text-align: right">1.64e-11</td>
+                            <td style="text-align: right">1.49e-09</td>
+                            <td style="text-align: right">8.64e-11</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0008080"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0008080<br>Click for external information from the Gene Ontology.">
+                                    GO:0008080
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0008080<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0008080">
+                                    N-acetyltransferase activity
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Molecular Function</span></td>
+                            <td style="text-align: right">4.22e-11</td>
+                            <td style="text-align: right">3.84e-09</td>
+                            <td style="text-align: right">1.85e-10</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0016407"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0016407<br>Click for external information from the Gene Ontology.">
+                                    GO:0016407
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0016407<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0016407">
+                                    acetyltransferase activity
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Molecular Function</span></td>
+                            <td style="text-align: right">1.13e-10</td>
+                            <td style="text-align: right">1.03e-08</td>
+                            <td style="text-align: right">3.90e-10</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0016410"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0016410<br>Click for external information from the Gene Ontology.">
+                                    GO:0016410
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0016410<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0016410">
+                                    N-acyltransferase activity
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Molecular Function</span></td>
+                            <td style="text-align: right">1.19e-10</td>
+                            <td style="text-align: right">1.08e-08</td>
+                            <td style="text-align: right">3.90e-10</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0018394"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0018394<br>Click for external information from the Gene Ontology.">
+                                    GO:0018394
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0018394<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0018394">
+                                    peptidyl-lysine acetylation
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">9.99e-10</td>
+                            <td style="text-align: right">9.09e-08</td>
+                            <td style="text-align: right">2.92e-09</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0016569"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0016569<br>Click for external information from the Gene Ontology.">
+                                    GO:0016569
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0016569<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0016569">
+                                    covalent chromatin modification
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">1.48e-09</td>
+                            <td style="text-align: right">1.34e-07</td>
+                            <td style="text-align: right">3.89e-09</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0006473"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0006473<br>Click for external information from the Gene Ontology.">
+                                    GO:0006473
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0006473<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0006473">
+                                    protein acetylation
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">2.49e-09</td>
+                            <td style="text-align: right">2.27e-07</td>
+                            <td style="text-align: right">5.96e-09</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0043966"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0043966<br>Click for external information from the Gene Ontology.">
+                                    GO:0043966
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0043966<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0043966">
+                                    histone H3 acetylation
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">2.73e-09</td>
+                            <td style="text-align: right">2.49e-07</td>
+                            <td style="text-align: right">5.99e-09</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0043543"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0043543<br>Click for external information from the Gene Ontology.">
+                                    GO:0043543
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0043543<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0043543">
+                                    protein acylation
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">6.80e-09</td>
+                            <td style="text-align: right">6.19e-07</td>
+                            <td style="text-align: right">1.38e-08</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0016746"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0016746<br>Click for external information from the Gene Ontology.">
+                                    GO:0016746
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0016746<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0016746">
+                                    transferase activity, transferring acyl groups
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Molecular Function</span></td>
+                            <td style="text-align: right">9.55e-09</td>
+                            <td style="text-align: right">8.69e-07</td>
+                            <td style="text-align: right">1.79e-08</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:1905368"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:1905368<br>Click for external information from the Gene Ontology.">
+                                    GO:1905368
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:1905368<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:1905368">
+                                    peptidase complex
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Cellular Component</span></td>
+                            <td style="text-align: right">1.64e-08</td>
+                            <td style="text-align: right">1.49e-06</td>
+                            <td style="text-align: right">2.87e-08</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0003713"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0003713<br>Click for external information from the Gene Ontology.">
+                                    GO:0003713
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0003713<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0003713">
+                                    transcription coactivator activity
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">2.58e-08</td>
+                            <td style="text-align: right">2.35e-06</td>
+                            <td style="text-align: right">4.24e-08</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0018205"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0018205<br>Click for external information from the Gene Ontology.">
+                                    GO:0018205
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0018205<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0018205">
+                                    peptidyl-lysine modification
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">7.26e-08</td>
+                            <td style="text-align: right">6.61e-06</td>
+                            <td style="text-align: right">1.12e-07</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0016591"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0016591<br>Click for external information from the Gene Ontology.">
+                                    GO:0016591
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0016591<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0016591">
+                                    RNA polymerase II, holoenzyme
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Cellular Component</span></td>
+                            <td style="text-align: right">2.79e-06</td>
+                            <td style="text-align: right">2.54e-04</td>
+                            <td style="text-align: right">4.08e-06</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0030880"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0030880<br>Click for external information from the Gene Ontology.">
+                                    GO:0030880
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0030880<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0030880">
+                                    RNA polymerase complex
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Cellular Component</span></td>
+                            <td style="text-align: right">6.70e-06</td>
+                            <td style="text-align: right">6.10e-04</td>
+                            <td style="text-align: right">9.29e-06</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0033276"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0033276<br>Click for external information from the Gene Ontology.">
+                                    GO:0033276
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0033276<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0033276">
+                                    transcription factor TFTC complex
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Cellular Component</span></td>
+                            <td style="text-align: right">1.06e-05</td>
+                            <td style="text-align: right">9.64e-04</td>
+                            <td style="text-align: right">1.39e-05</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0061695"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0061695<br>Click for external information from the Gene Ontology.">
+                                    GO:0061695
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0061695<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0061695">
+                                    transferase complex, transferring phosphorus-containing groups
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Cellular Component</span></td>
+                            <td style="text-align: right">8.16e-05</td>
+                            <td style="text-align: right">7.43e-03</td>
+                            <td style="text-align: right">9.34e-05</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a href="https://bioregistry.io/GO:0070646"
+                                   data-toggle="tooltip" data-html="true"
+                                   title="GO:0070646<br>Click for external information from the Gene Ontology.">
+                                    GO:0070646
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="GO:0070646<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/GO:0070646">
+                                    protein modification by small protein removal
+                                </a>
+                            </td>
+                            <td><span class="badge badge-info">Biological Process</span></td>
+                            <td style="text-align: right">1.29e-04</td>
+                            <td style="text-align: right">1.18e-02</td>
+                            <td style="text-align: right">1.42e-04</td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+                <h2>Knockdown Analysis</h2>
+                <p>
+                    The following table shows the significantly differentially expressed genes after knocking
+                    down USP22.
+                </p>
+                <table class="table table-striped table-hover" id="table-terms">
+                    <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th style="text-align: right">log<sub>2</sub>-fold-change</th>
+                        <th style="text-align: right"><i>p</i>-value</th>
+                        <th style="text-align: right"><i>p</i>-value (adj.)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:12621<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:12621">
+                                    USP22
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:12621<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:12621">
+                                    ubiquitin specific peptidase 22
+                                </a>
+                            </td>
+                            <td style="text-align: right">-1.60e+00</td>
+                            <td style="text-align: right">7.36e-14</td>
+                            <td style="text-align: right">1.62e-09</td>
+                        </tr>
+                    
+                        <tr>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:5270<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:5270">
+                                    DNAJB1
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="tooltip" data-html="true"
+                                   title="HGNC:5270<br>Click for external information from HGNC."
+                                   href="https://bioregistry.io/hgnc:5270">
+                                    DnaJ heat shock protein family (Hsp40) member B1
+                                </a>
+                            </td>
+                            <td style="text-align: right">1.02e+00</td>
+                            <td style="text-align: right">9.34e-10</td>
+                            <td style="text-align: right">1.03e-05</td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
             
-            DUB Portal
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/dubportal">Home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/dubportal/about/">About</a>
-                </li>
-            </ul>
+            </div>
         </div>
-    </nav>
-
-
-    <div class="container" style="margin-top: 50px; margin-bottom: 50px">
-        
-    <h1 style="margin-bottom: 1.5rem">
-        <a href="/dubportal"><i class="fas fa-home"></i></a> <small><i class="fas fa-chevron-right"></i></small>
-        Dependencies of USP22
-    </h1>
-    <dl class="row">
-        <dt class="col-4">HGNC Gene Name</dt>
-        <dd class="col-8">ubiquitin specific peptidase 22</dd>
-        <dt class="col-4">HGNC Gene Symbol</dt>
-        <dd class="col-8">USP22</dd>
-        <dt class="col-4">Identifiers</dt>
-        <dd class="col-8">
-            <a class="badge badge-info"
-               href="https://bioregistry.io/hgnc:12621">hgnc:12621</a>
-            <a class="badge badge-info"
-               href="https://bioregistry.io/ncbigene:23326">ncbigene:23326</a>
-            <a class="badge badge-info"
-               href="https://bioregistry.io/uniprot:Q9UPT9">uniprot:Q9UPT9</a>
-        </dd>
-        
-            <dt class="col-4">Orthologs</dt>
-            <dd class="col-8">
-                
-                    <a class="badge badge-info"
-                       href="https://bioregistry.io/mgi:2144157">mgi:2144157</a>
-                
-                
-                    <a class="badge badge-info"
-                       href="https://bioregistry.io/rgd:1310354">rgd:1310354</a>
-                
-            </dd>
-        
-        <dt class="col-4">NDEx Network</dt>
-        <dd class="col-8"><a href="https://bioregistry.io/ndex:21048fde-cacf-11eb-9a85-0ac135e8bacf">21048fde-cacf-11eb-9a85-0ac135e8bacf</a></dd>
-        <dt class="col-4">INDRA Statements</dt>
-        <dd class="col-8">
-            <a class="badge badge-info"
-               href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&type=Deubiquitination">
-                deubiquitinations</a>
-            <a class="badge badge-info"
-               href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22">
-                all statements</a>
-        </dd>
-        <dt class="col-4">Pathway Commons</dt>
-        <dd class="col-8">
-            <a class="badge badge-info"
-               href="https://apps.pathwaycommons.org/interactions?source=USP22">
-                Search for USP22</a>
-        </dd>
-        <dt class="col-4">Number of Papers</dt>
-        <dd class="col-8">152</dd>
-        
-        
-    </dl>
-    <h2>DepMap Correlation Analysis</h2>
-    <p>
-        The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled CRISPR-Cas9
-        knockout proliferation screen conducted in more than 700 cancer cell lines spanning many different tumor
-        lineages. Each cell line in the DepMap contains a unique barcode, and each gene knockout is assigned a
-        “dependency score” on a per cell-line basis. The dependency score quantifies the rate of CRISPR-Cas9 guide drop
-        out for each guide in each cell line. It has been found that proteins with similar DepMap scores across cell
-        lines, a phenomenon known as co-dependent genes, have closely related biological functions. This can include
-        activity in the same or parallel pathways or membership in the same protein complex or the same pathway.
-    </p>
-    <p>
-        We identified the strongest seven co-dependent genes for DUBs and ran GO enrichment analysis in order to explore
-        the pathways and complexes DUBs are correlated with in the DepMap. We sought to provide support for the
-        co-dependent genes being in the same pathway or complex by leveraging additional datasets. We used BioGRID,
-        IntAct, and Pathway Commons PPIDs, and the NURSA PPID to determine whether co-dependent genes interact with one
-        another. As another approach to identify potential interactors, we looked at proteomics data from the Broad
-        Institute's <a href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> for
-        proteins whose expression across ~375 cell lines strongly correlated with the abundance of each DUB; it has
-        previously been observed that proteins in the same complex are frequently significantly co-expressed. And, we
-        determined whether co-dependent genes yield similar transcriptomic signatures in the Broad Institute's
-        <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity Map (CMap)</a>.
-    </p>
-    <table class="table table-striped table-hover" id="table-terms">
-        <thead>
-        <tr>
-            <th>Symbol</th>
-            <th>Name</th>
-            <th style="text-align: right">DepMap Correlation</th>
-            <th>Evidence</th>
-            <th style="text-align: right">CCLE Correlation</th>
-            <th style="text-align: right">CCLE Z-score</th>
-            <th style="text-align: right">CCLE <i>p</i>-value (adj)</th>
-            <th style="text-align: right">CCLE Significant</th>
-            <th style="text-align: right">CMAP Score</th>
-            <th>CMAP Type</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:20596<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:20596">
-                        SUPT20H
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:20596<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:20596">
-                        SPT20 homolog, SAGA complex component
-                    </a>
-                </td>
-                <td style="text-align: right">0.542</td>
-                <td>
-                    
-        <span class="badge badge-primary">BioGRID</span>
-    
-                    
-        <span class="badge badge-primary">IntAct</span>
-    
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,SUPT20H">
-                            Pathway Commons
-                        </a>
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=SUPT20H">
-                            INDRA
-                        </a>
-                    
-                </td>
-                
-                    <td style="text-align: right">0.06</td>
-                    <td style="text-align: right">0.24</td>
-                    <td style="text-align: right">3.83e-01</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:30631<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:30631">
-                        TADA1
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:30631<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:30631">
-                        transcriptional adaptor 1
-                    </a>
-                </td>
-                <td style="text-align: right">0.509</td>
-                <td>
-                    
-        <span class="badge badge-primary">BioGRID</span>
-    
-                    
-        <span class="badge badge-primary">IntAct</span>
-    
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TADA1">
-                            Pathway Commons
-                        </a>
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TADA1">
-                            INDRA
-                        </a>
-                    
-                </td>
-                
-                    <td style="text-align: right">0.12</td>
-                    <td style="text-align: right">0.59</td>
-                    <td style="text-align: right">5.20e-02</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:17304<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:17304">
-                        TAF5L
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:17304<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:17304">
-                        TATA-box binding protein associated factor 5 like
-                    </a>
-                </td>
-                <td style="text-align: right">0.496</td>
-                <td>
-                    
-        <span class="badge badge-primary">BioGRID</span>
-    
-                    
-        <span class="badge badge-primary">IntAct</span>
-    
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TAF5L">
-                            Pathway Commons
-                        </a>
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TAF5L">
-                            INDRA
-                        </a>
-                    
-                </td>
-                
-                    <td style="text-align: right">0.11</td>
-                    <td style="text-align: right">0.50</td>
-                    <td style="text-align: right">8.95e-02</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:30781<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:30781">
-                        TADA2B
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:30781<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:30781">
-                        transcriptional adaptor 2B
-                    </a>
-                </td>
-                <td style="text-align: right">0.472</td>
-                <td>
-                    
-        <span class="badge badge-primary">BioGRID</span>
-    
-                    
-        <span class="badge badge-primary">IntAct</span>
-    
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TADA2B">
-                            Pathway Commons
-                        </a>
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TADA2B">
-                            INDRA
-                        </a>
-                    
-                </td>
-                
-                    <td style="text-align: right">0.19</td>
-                    <td style="text-align: right">0.95</td>
-                    <td style="text-align: right">2.41e-03</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:17305<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:17305">
-                        TAF6L
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:17305<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:17305">
-                        TATA-box binding protein associated factor 6 like
-                    </a>
-                </td>
-                <td style="text-align: right">0.462</td>
-                <td>
-                    
-        <span class="badge badge-primary">BioGRID</span>
-    
-                    
-        <span class="badge badge-primary">IntAct</span>
-    
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TAF6L">
-                            Pathway Commons
-                        </a>
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TAF6L">
-                            INDRA
-                        </a>
-                    
-                </td>
-                
-                    <td style="text-align: right">0.34</td>
-                    <td style="text-align: right">1.77</td>
-                    <td style="text-align: right">9.52e-10</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:19422<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:19422">
-                        TADA3
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:19422<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:19422">
-                        transcriptional adaptor 3
-                    </a>
-                </td>
-                <td style="text-align: right">0.444</td>
-                <td>
-                    
-        <span class="badge badge-primary">BioGRID</span>
-    
-                    
-        <span class="badge badge-primary">IntAct</span>
-    
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,TADA3">
-                            Pathway Commons
-                        </a>
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=TADA3">
-                            INDRA
-                        </a>
-                    
-                </td>
-                
-                    <td style="text-align: right">0.07</td>
-                    <td style="text-align: right">0.30</td>
-                    <td style="text-align: right">2.92e-01</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-            <tr>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:10560<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:10560">
-                        ATXN7
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="HGNC:10560<br>Click for external information from HGNC."
-                       href="https://bioregistry.io/hgnc:10560">
-                        ataxin 7
-                    </a>
-                </td>
-                <td style="text-align: right">0.438</td>
-                <td>
-                    
-        <span class="badge badge-primary">BioGRID</span>
-    
-                    
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://apps.pathwaycommons.org/search?type=Pathway&q=USP22,ATXN7">
-                            Pathway Commons
-                        </a>
-                    
-                    
-                        <a class="badge badge-primary"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject=USP22&object=ATXN7">
-                            INDRA
-                        </a>
-                    
-                </td>
-                
-                    <td style="text-align: right">0.11</td>
-                    <td style="text-align: right">0.52</td>
-                    <td style="text-align: right">8.76e-02</td>
-                    <td style="text-align: right">
-                        
-                            <span style="color: red;"><i class="fas fa-times-circle"></i></span>
-                        
-                    </td>
-                
-                
-                    <td></td>
-                    <td></td>
-                
-            </tr>
-        
-        </tbody>
-    </table>
-    <h2>GO Term Enrichment</h2>
-    <p>
-        Gene set enrichment analysis was done on the genes correlated with USP22
-        using the terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the
-        <a href="http://geneontology.org/docs/go-annotations/">Gene Ontology Annotations database</a>
-        via <a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp">MSigDB</a>.
-    </p>
-    <p>
-        Using the biological processes and other Gene Ontology terms from well characterized DUBs as a positive
-        control, several gene set enrichment analyses were considered. Threshold-less methods like
-        <a href="https://www.gsea-msigdb.org/gsea/index.jsp">GSEA</a> had relatively poor results. Over-representation
-        analysis with a threshold of of the top 7 highest absolute value Dependency Map correlations yielded the best
-        results and is reported below.
-    </p>
-    <table class="table table-striped table-hover" id="gsea-enrichment">
-        <thead>
-        <tr>
-            <th>GO Identifier</th>
-            <th>GO Name</th>
-            <th>GO Type</th>
-            <th style="text-align: right"><i>p</i>-value</th>
-            <th style="text-align: right"><i>p</i>-value (adj.)</th>
-            <th style="text-align: right"><i>q</i>-value</th>
-        </tr>
-        </thead>
-        <tbody>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0070461"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0070461<br>Click for external information from the Gene Ontology.">
-                        GO:0070461
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0070461<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0070461">
-                        SAGA-type complex
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Cellular Component</span></td>
-                <td style="text-align: right">4.07e-17</td>
-                <td style="text-align: right">3.70e-15</td>
-                <td style="text-align: right">1.07e-15</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0030914"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0030914<br>Click for external information from the Gene Ontology.">
-                        GO:0030914
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0030914<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0030914">
-                        STAGA complex
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Cellular Component</span></td>
-                <td style="text-align: right">8.12e-16</td>
-                <td style="text-align: right">7.38e-14</td>
-                <td style="text-align: right">1.07e-14</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0031248"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0031248<br>Click for external information from the Gene Ontology.">
-                        GO:0031248
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0031248<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0031248">
-                        protein acetyltransferase complex
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Cellular Component</span></td>
-                <td style="text-align: right">8.77e-14</td>
-                <td style="text-align: right">7.98e-12</td>
-                <td style="text-align: right">7.69e-13</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0000124"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0000124<br>Click for external information from the Gene Ontology.">
-                        GO:0000124
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0000124<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0000124">
-                        SAGA complex
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Cellular Component</span></td>
-                <td style="text-align: right">8.84e-12</td>
-                <td style="text-align: right">8.04e-10</td>
-                <td style="text-align: right">5.81e-11</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0034212"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0034212<br>Click for external information from the Gene Ontology.">
-                        GO:0034212
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0034212<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0034212">
-                        peptide N-acetyltransferase activity
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Molecular Function</span></td>
-                <td style="text-align: right">1.64e-11</td>
-                <td style="text-align: right">1.49e-09</td>
-                <td style="text-align: right">8.64e-11</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0008080"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0008080<br>Click for external information from the Gene Ontology.">
-                        GO:0008080
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0008080<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0008080">
-                        N-acetyltransferase activity
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Molecular Function</span></td>
-                <td style="text-align: right">4.22e-11</td>
-                <td style="text-align: right">3.84e-09</td>
-                <td style="text-align: right">1.85e-10</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0016407"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0016407<br>Click for external information from the Gene Ontology.">
-                        GO:0016407
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0016407<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0016407">
-                        acetyltransferase activity
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Molecular Function</span></td>
-                <td style="text-align: right">1.13e-10</td>
-                <td style="text-align: right">1.03e-08</td>
-                <td style="text-align: right">3.90e-10</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0016410"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0016410<br>Click for external information from the Gene Ontology.">
-                        GO:0016410
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0016410<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0016410">
-                        N-acyltransferase activity
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Molecular Function</span></td>
-                <td style="text-align: right">1.19e-10</td>
-                <td style="text-align: right">1.08e-08</td>
-                <td style="text-align: right">3.90e-10</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0018394"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0018394<br>Click for external information from the Gene Ontology.">
-                        GO:0018394
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0018394<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0018394">
-                        peptidyl-lysine acetylation
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">9.99e-10</td>
-                <td style="text-align: right">9.09e-08</td>
-                <td style="text-align: right">2.92e-09</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0016569"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0016569<br>Click for external information from the Gene Ontology.">
-                        GO:0016569
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0016569<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0016569">
-                        covalent chromatin modification
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">1.48e-09</td>
-                <td style="text-align: right">1.34e-07</td>
-                <td style="text-align: right">3.89e-09</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0006473"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0006473<br>Click for external information from the Gene Ontology.">
-                        GO:0006473
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0006473<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0006473">
-                        protein acetylation
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">2.49e-09</td>
-                <td style="text-align: right">2.27e-07</td>
-                <td style="text-align: right">5.96e-09</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0043966"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0043966<br>Click for external information from the Gene Ontology.">
-                        GO:0043966
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0043966<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0043966">
-                        histone H3 acetylation
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">2.73e-09</td>
-                <td style="text-align: right">2.49e-07</td>
-                <td style="text-align: right">5.99e-09</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0043543"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0043543<br>Click for external information from the Gene Ontology.">
-                        GO:0043543
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0043543<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0043543">
-                        protein acylation
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">6.80e-09</td>
-                <td style="text-align: right">6.19e-07</td>
-                <td style="text-align: right">1.38e-08</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0016746"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0016746<br>Click for external information from the Gene Ontology.">
-                        GO:0016746
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0016746<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0016746">
-                        transferase activity, transferring acyl groups
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Molecular Function</span></td>
-                <td style="text-align: right">9.55e-09</td>
-                <td style="text-align: right">8.69e-07</td>
-                <td style="text-align: right">1.79e-08</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:1905368"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:1905368<br>Click for external information from the Gene Ontology.">
-                        GO:1905368
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:1905368<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:1905368">
-                        peptidase complex
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Cellular Component</span></td>
-                <td style="text-align: right">1.64e-08</td>
-                <td style="text-align: right">1.49e-06</td>
-                <td style="text-align: right">2.87e-08</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0003713"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0003713<br>Click for external information from the Gene Ontology.">
-                        GO:0003713
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0003713<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0003713">
-                        transcription coactivator activity
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">2.58e-08</td>
-                <td style="text-align: right">2.35e-06</td>
-                <td style="text-align: right">4.24e-08</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0018205"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0018205<br>Click for external information from the Gene Ontology.">
-                        GO:0018205
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0018205<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0018205">
-                        peptidyl-lysine modification
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">7.26e-08</td>
-                <td style="text-align: right">6.61e-06</td>
-                <td style="text-align: right">1.12e-07</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0016591"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0016591<br>Click for external information from the Gene Ontology.">
-                        GO:0016591
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0016591<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0016591">
-                        RNA polymerase II, holoenzyme
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Cellular Component</span></td>
-                <td style="text-align: right">2.79e-06</td>
-                <td style="text-align: right">2.54e-04</td>
-                <td style="text-align: right">4.08e-06</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0030880"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0030880<br>Click for external information from the Gene Ontology.">
-                        GO:0030880
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0030880<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0030880">
-                        RNA polymerase complex
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Cellular Component</span></td>
-                <td style="text-align: right">6.70e-06</td>
-                <td style="text-align: right">6.10e-04</td>
-                <td style="text-align: right">9.29e-06</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0033276"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0033276<br>Click for external information from the Gene Ontology.">
-                        GO:0033276
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0033276<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0033276">
-                        transcription factor TFTC complex
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Cellular Component</span></td>
-                <td style="text-align: right">1.06e-05</td>
-                <td style="text-align: right">9.64e-04</td>
-                <td style="text-align: right">1.39e-05</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0061695"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0061695<br>Click for external information from the Gene Ontology.">
-                        GO:0061695
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0061695<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0061695">
-                        transferase complex, transferring phosphorus-containing groups
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Cellular Component</span></td>
-                <td style="text-align: right">8.16e-05</td>
-                <td style="text-align: right">7.43e-03</td>
-                <td style="text-align: right">9.34e-05</td>
-            </tr>
-        
-            <tr>
-                <td>
-                    <a href="https://bioregistry.io/GO:0070646"
-                       data-toggle="tooltip" data-html="true"
-                       title="GO:0070646<br>Click for external information from the Gene Ontology.">
-                        GO:0070646
-                    </a>
-                </td>
-                <td>
-                    <a data-toggle="tooltip" data-html="true"
-                       title="GO:0070646<br>Click for external information from the Gene Ontology."
-                       href="https://bioregistry.io/GO:0070646">
-                        protein modification by small protein removal
-                    </a>
-                </td>
-                <td><span class="badge badge-info">Biological Process</span></td>
-                <td style="text-align: right">1.29e-04</td>
-                <td style="text-align: right">1.18e-02</td>
-                <td style="text-align: right">1.42e-04</td>
-            </tr>
-        
-        </tbody>
-    </table>
-        <h2>Knockdown Analysis</h2>
-        <p>
-            The following table shows the significantly differentially expressed genes after knocking
-            down USP22.
-        </p>
-        <table class="table table-striped table-hover" id="table-terms">
-            <thead>
-            <tr>
-                <th>Symbol</th>
-                <th>Name</th>
-                <th style="text-align: right">log<sub>2</sub>-fold-change</th>
-                <th style="text-align: right"><i>p</i>-value</th>
-                <th style="text-align: right"><i>p</i>-value (adj.)</th>
-            </tr>
-            </thead>
-            <tbody>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:12621<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:12621">
-                            USP22
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:12621<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:12621">
-                            ubiquitin specific peptidase 22
-                        </a>
-                    </td>
-                    <td style="text-align: right">-1.60e+00</td>
-                    <td style="text-align: right">7.36e-14</td>
-                    <td style="text-align: right">1.62e-09</td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:5270<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:5270">
-                            DNAJB1
-                        </a>
-                    </td>
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="HGNC:5270<br>Click for external information from HGNC."
-                           href="https://bioregistry.io/hgnc:5270">
-                            DnaJ heat shock protein family (Hsp40) member B1
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.02e+00</td>
-                    <td style="text-align: right">9.34e-10</td>
-                    <td style="text-align: right">1.03e-05</td>
-                </tr>
-            
-            </tbody>
-        </table>
-    
-
     </div>
 
 
