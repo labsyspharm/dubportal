@@ -112,6 +112,9 @@ def get_processed_data():
         for (hgnc_id, hgnc_symbol), gsea_df in all_gsea_groups
     }
 
+    with DATA_DUR.joinpath('dgea.json').open() as file:
+        symbol_to_dgea = json.load(file)
+
     df = pd.read_csv(DATA, sep="\t")
     df["fraction_cell_lines_dependent_on_DUB"].fillna(0.0, inplace=True)
 
@@ -209,6 +212,7 @@ def get_processed_data():
             fraction_cell_lines_dependent=fraction_dependent,
             go=go,
             depmap=depmap_results,
+            dgea=symbol_to_dgea.get(dub_hgnc_symbol),
         )
     return rv
 

@@ -50,6 +50,7 @@
             <th style="text-align: right">GSEA <i>p</i>-value (adj.)</th>
             <th style="text-align: right">GSEA <i>q</i>-value</th>
             <th style="text-align: right"># Papers</th>
+            <th>DGEA</th>
         </tr>
         </thead>
         <tbody>
@@ -95,6 +96,13 @@
                     <td></td>
                 {% endif %}
                 <td>{{ row.papers }}</td>
+                <td>
+                    {% if row.dgea %}
+                        <span style="color: green;"><i class="fas fa-check-circle"></i></span>
+                    {% else %}
+                        <span style="color: red;"><i class="fas fa-times-circle"></i></span>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
