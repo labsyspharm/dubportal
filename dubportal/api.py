@@ -116,7 +116,7 @@ def get_processed_data():
         symbol_to_dgea = json.load(file)
 
     df = pd.read_csv(DATA, sep="\t")
-    df["fraction_cell_lines_dependent_on_DUB"].fillna(0.0, inplace=True)
+    df["fraction_cell_lines_dependent_on_DUB"].fillna('Unmeasured', inplace=True)
 
     df["dub_hgnc_id"] = df["DUB"].map(hgnc_client.get_current_hgnc_id)
     df["dub_hgnc_symbol"] = df["dub_hgnc_id"].map(hgnc_client.get_hgnc_name)
@@ -268,7 +268,7 @@ def main(force: bool):
 
     for row in rows:
         gene_html = gene_template.render(
-            record=row, ndex=ndex_links[row["hgnc_symbol"]]
+            record=row, ndex=ndex_links.get(row["hgnc_symbol"])
         )
         directory = DOCS.joinpath(row["hgnc_symbol"])
         directory.mkdir(exist_ok=True, parents=True)

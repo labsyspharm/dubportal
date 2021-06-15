@@ -67,8 +67,10 @@
                             {% endif %}
                         </dd>
                     {% endif %}
-                    <dt class="col-4">NDEx Network</dt>
-                    <dd class="col-8"><a href="https://bioregistry.io/ndex:{{ ndex }}">{{ ndex }}</a></dd>
+                    {% if ndex %}
+                        <dt class="col-4">NDEx Network</dt>
+                        <dd class="col-8"><a href="https://bioregistry.io/ndex:{{ ndex }}">{{ ndex }}</a></dd>
+                    {% endif %}
                     <dt class="col-4">INDRA Statements</dt>
                     <dd class="col-8">
                         <a class="badge badge-info"
