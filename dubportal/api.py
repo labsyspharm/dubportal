@@ -359,6 +359,7 @@ def main(force: bool):
 
     for row in tqdm(rows):
         gene_stmts = get_cached_stmts_single(row["hgnc_id"])
+        gene_stmts = ac.filter_grounded_only(gene_stmts)
         assembler = HtmlAssembler(gene_stmts, db_rest_url="https://db.indra.bio")
         stmt_html = assembler.make_model(
             template=stmt_template, grouping_level="relation"
