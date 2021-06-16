@@ -21,10 +21,7 @@ from indra.assemblers.html import HtmlAssembler
 from indra.databases import hgnc_client
 from indra.sources.indra_db_rest import get_statements
 from indra.statements import (
-    Statement,
-    stmts_from_json,
-    stmts_from_json_file,
-    stmts_to_json_file,
+    Desumoylation, Deubiquitination, Statement, stmts_from_json, stmts_from_json_file, stmts_to_json_file,
 )
 
 logger = logging.getLogger(__name__)
@@ -94,13 +91,36 @@ def get_cached_stmts_single(hgnc_id, force: bool = False) -> list[Statement]:
         stmts = stmts_from_json_file(path)
     else:
         ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=10000)
-        stmts = filter_out_medscan(ip.statements)
+        stmts = ip.statements
         stmts_to_json_file(stmts, path)
+
+    stmts = dubportal_assembly(stmts)
+    return stmts
+
+
+def dubportal_assembly(stmts: list[Statement]) -> list[Statement]:
+    stmts = filter_out_medscan(stmts)
+    stmts = only_dubbing(stmts)
+    stmts = first_n_evidences(stmts)
+    return stmts
+
+
+def only_dubbing(stmts: list[Statement]) -> list[Statement]:
+    return [
+        stmt
+        for stmt in stmts
+        if isinstance(stmt, (Deubiquitination, Desumoylation))
+    ]
+
+
+def first_n_evidences(stmts: list[Statement], n: int = 10) -> list[Statement]:
+    for stmt in stmts:
+        stmt.evidence = stmt.evidence[:n]
     return stmts
 
 
 def filter_out_medscan(stmts: list[Statement]) -> list[Statement]:
-    logger.info("Starting medscan filter with %d statements" % len(stmts))
+    logger.debug("Starting medscan filter with %d statements" % len(stmts))
     new_stmts = []
     for stmt in stmts:
         new_evidence = []
@@ -312,7 +332,6 @@ def main(force: bool):
 
     for row in tqdm(rows):
         gene_stmts = get_cached_stmts_single(row["hgnc_id"])
-        gene_stmts = gene_stmts[:10]
         assembler = HtmlAssembler(gene_stmts)
         stmt_html = assembler.make_model(template=stmt_template)
         import markupsafe
