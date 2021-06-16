@@ -38,6 +38,7 @@ index_template = environment.get_template("index.html")
 gene_template = environment.get_template("gene.html")
 about_template = environment.get_template("about.html")
 
+DUB = 'Deubiquitinase'
 GENE_FIXES = {
     "KRTAP21": "KRTAP21-1",  # This record has been split, apparently
     "KRTAP12": "KRTAP12-1",  # This record has been split, apparently
@@ -48,7 +49,7 @@ GENE_FIXES = {
 #: based on HGNC gene family annotations
 FAMPLEX_DUBS = {
     identifier
-    for prefix, identifier in famplex.descendant_terms("FPLX", "DUB")
+    for prefix, identifier in famplex.descendant_terms("FPLX", DUB)
     if prefix == "HGNC"
 }
 
@@ -59,7 +60,7 @@ def get_dub_type(gene_symbol: str) -> Optional[str]:
         return None
     ancestors = list(famplex.ancestral_terms("HGNC", gene_symbol))
     # FIXME this might no work on the ones that have multiple trees
-    if ancestors[-1] != ("FPLX", "DUB"):
+    if ancestors[-1] != ("FPLX", DUB):
         return None
     try:
         return ancestors[-2][1]
