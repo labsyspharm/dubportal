@@ -362,7 +362,7 @@ def main(force: bool):
         gene_stmts = ac.filter_grounded_only(gene_stmts)
         assembler = HtmlAssembler(gene_stmts, db_rest_url="https://db.indra.bio")
         stmt_html = assembler.make_model(
-            template=stmt_template, grouping_level="relation"
+            template=stmt_template, grouping_level="statement"
         )
         gene_html = gene_template.render(
             record=row,
