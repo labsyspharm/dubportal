@@ -3,7 +3,6 @@ import pickle
 import pandas
 import logging
 from indra.tools import assemble_corpus as ac
-from indra.belief import BeliefEngine
 from indra.databases import hgnc_client
 from indra.sources.indra_db_rest import get_statements
 from indra_db.client.principal.curation import get_curations
@@ -46,15 +45,6 @@ def filter_out_medscan(stmts):
             new_stmts.append(stmt)
     logger.info("Finished medscan filter with %d statements" % len(new_stmts))
     return new_stmts
-
-
-def assemble_statements(stmts):
-    """Run assembly steps on statements."""
-    be = BeliefEngine()
-    for kinase, kinase_stmts in stmts.items():
-        stmts[kinase] = ac.filter_human_only(kinase_stmts)
-        be.set_prior_probs(stmts[kinase])
-    return stmts
 
 
 def upload_network(dub, stmts):
