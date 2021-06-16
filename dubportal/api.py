@@ -23,12 +23,8 @@ from indra.assemblers.html import HtmlAssembler
 from indra.databases import hgnc_client
 from indra.sources.indra_db_rest import get_statements
 from indra.statements import (
-    Desumoylation,
-    Deubiquitination,
-    Statement,
-    stmts_from_json,
-    stmts_from_json_file,
-    stmts_to_json_file,
+    Desumoylation, Deubiquitination, RegulateActivity, RegulateAmount, RemoveModification, Statement, stmts_from_json,
+    stmts_from_json_file, stmts_to_json_file,
 )
 from indra.tools import assemble_corpus as ac
 
@@ -116,7 +112,11 @@ def dubportal_assembly(stmts: list[Statement]) -> list[Statement]:
 
 def only_dubbing(stmts: list[Statement]) -> list[Statement]:
     return [
-        stmt for stmt in stmts if isinstance(stmt, (Deubiquitination, Desumoylation))
+        stmt
+        for stmt in stmts
+        if isinstance(
+            stmt, (Deubiquitination, Desumoylation, RegulateActivity, RegulateAmount)
+        )
     ]
 
 
@@ -145,7 +145,7 @@ def filter_out_medscan(stmts: list[Statement]) -> list[Statement]:
 def filter_curations(stmts: list[Statement]) -> list[Statement]:
     curs = safe_get_curations()
     if curs is not None:
-        logger.info('filtering %d curations', len(curs))
+        logger.info("filtering %d curations", len(curs))
         stmts = ac.filter_by_curation(stmts, curs)
     return stmts
 
@@ -338,6 +338,17 @@ def _d(symbols):
 def main(force: bool):
     rv = get_rv(force=force)
 
+    dub_symbol_statments = {}
+    for key, value in rv.items():
+        gene_stmts = get_cached_stmts_single(value["hgnc_id"])
+        gene_stmts = ac.filter_grounded_only(gene_stmts)
+        dub_symbol_statments[value["hgnc_symbol"]] = gene_stmts
+        rv[key]["n_statements"] = len(gene_stmts)
+        rv[key]["n_dub_statements"] = sum(
+            isinstance(s, Deubiquitination) for s in gene_stmts
+        )
+        rv[key]["n_other_statements"] = len(gene_stmts) - rv[key]["n_dub_statements"]
+
     rows = sorted(rv.values(), key=itemgetter("hgnc_symbol"))
     index_html = index_template.render(rows=rows)
     with open(os.path.join(DOCS, "index.html"), "w") as file:
@@ -358,16 +369,25 @@ def main(force: bool):
         print(about_html, file=file)
 
     for row in tqdm(rows):
-        gene_stmts = get_cached_stmts_single(row["hgnc_id"])
-        gene_stmts = ac.filter_grounded_only(gene_stmts)
-        assembler = HtmlAssembler(gene_stmts, db_rest_url="https://db.indra.bio")
-        stmt_html = assembler.make_model(
+        stmts = dub_symbol_statments.get(row["hgnc_symbol"], [])
+        dub_assembler = HtmlAssembler(
+            [stmt for stmt in stmts if isinstance(stmt, RemoveModification)],
+            db_rest_url="https://db.indra.bio",
+        )
+        dub_stmt_html = dub_assembler.make_model(
             template=stmt_template, grouping_level="statement"
         )
+        other_assembler = HtmlAssembler(
+            [stmt for stmt in stmts if not isinstance(stmt, RemoveModification)],
+            db_rest_url="https://db.indra.bio",
+        )
+        other_stmt_html = other_assembler.make_model(template=stmt_template)
+
         gene_html = gene_template.render(
             record=row,
             ndex=ndex_links.get(row["hgnc_symbol"]),
-            stmt_html=markupsafe.Markup(stmt_html),
+            dub_stmt_html=markupsafe.Markup(dub_stmt_html),
+            other_stmt_html=markupsafe.Markup(other_stmt_html),
         )
         directory = DOCS.joinpath(row["hgnc_symbol"])
         directory.mkdir(exist_ok=True, parents=True)

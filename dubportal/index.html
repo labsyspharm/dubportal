@@ -48,6 +48,8 @@
             <th>DUB Name</th>
             <th>DUB Family</th>
             <th style="text-align: right"># Papers</th>
+            <th style="text-align: right"># DUB Stmts.</th>
+            <th style="text-align: right"># Other Stmts.</th>
             <th style="text-align: right">Dependent Cell Lines</th>
             <th>Top GSEA Result for Co-dependent Genes</th>
             <th style="text-align: right">GSEA <i>p</i>-value (adj.)</th>
@@ -81,6 +83,9 @@
                         </a>
                     {% endif %}
                 </td>
+                <td style="text-align: right">{{ row.papers }}</td>
+                <td style="text-align: right">{{ row.n_dub_statements }}</td>
+                <td style="text-align: right">{{ row.n_other_statements }}</td>
                 <td style="text-align: right">
                     {% if row.fraction_cell_lines_dependent == "Unmeasured" %}
                     {% else %}
@@ -102,7 +107,6 @@
                     <td></td>
                     <td></td>
                 {% endif %}
-                <td style="text-align: right">{{ row.papers }}</td>
                 <td style="text-align: center">
                     {% if row.dgea %}
                         <span style="color: green;"><i class="fas fa-check-circle"></i></span>
