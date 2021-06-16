@@ -2,10 +2,12 @@ import json
 import logging
 import os
 import pathlib
+from functools import lru_cache
 from operator import itemgetter
 from typing import List, Optional
 
 import click
+import markupsafe
 import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
@@ -21,8 +23,14 @@ from indra.assemblers.html import HtmlAssembler
 from indra.databases import hgnc_client
 from indra.sources.indra_db_rest import get_statements
 from indra.statements import (
-    Desumoylation, Deubiquitination, Statement, stmts_from_json, stmts_from_json_file, stmts_to_json_file,
+    Desumoylation,
+    Deubiquitination,
+    Statement,
+    stmts_from_json,
+    stmts_from_json_file,
+    stmts_to_json_file,
 )
+from indra.tools import assemble_corpus as ac
 
 logger = logging.getLogger(__name__)
 HERE = pathlib.Path(__file__).parent.resolve()
@@ -100,6 +108,7 @@ def get_cached_stmts_single(hgnc_id, force: bool = False) -> list[Statement]:
 
 def dubportal_assembly(stmts: list[Statement]) -> list[Statement]:
     stmts = filter_out_medscan(stmts)
+    stmts = filter_curations(stmts)
     stmts = only_dubbing(stmts)
     stmts = first_n_evidences(stmts)
     return stmts
@@ -107,9 +116,7 @@ def dubportal_assembly(stmts: list[Statement]) -> list[Statement]:
 
 def only_dubbing(stmts: list[Statement]) -> list[Statement]:
     return [
-        stmt
-        for stmt in stmts
-        if isinstance(stmt, (Deubiquitination, Desumoylation))
+        stmt for stmt in stmts if isinstance(stmt, (Deubiquitination, Desumoylation))
     ]
 
 
@@ -133,6 +140,26 @@ def filter_out_medscan(stmts: list[Statement]) -> list[Statement]:
             new_stmts.append(stmt)
     logger.debug("Finished medscan filter with %d statements" % len(new_stmts))
     return new_stmts
+
+
+def filter_curations(stmts: list[Statement]) -> list[Statement]:
+    curs = safe_get_curations()
+    if curs is not None:
+        logger.info('filtering %d curations', len(curs))
+        stmts = ac.filter_by_curation(stmts, curs)
+    return stmts
+
+
+@lru_cache(maxsize=1)
+def safe_get_curations():
+    try:
+        from indra_db.client.principal.curation import get_curations
+    except ImportError:
+        return None
+    try:
+        return get_curations()
+    except:
+        return None
 
 
 def get_cached_stmts(source: str, target: str, force: bool = False) -> List[Statement]:
@@ -332,9 +359,10 @@ def main(force: bool):
 
     for row in tqdm(rows):
         gene_stmts = get_cached_stmts_single(row["hgnc_id"])
-        assembler = HtmlAssembler(gene_stmts, db_rest_url='https://db.indra.bio')
-        stmt_html = assembler.make_model(template=stmt_template, grouping_level='relation')
-        import markupsafe
+        assembler = HtmlAssembler(gene_stmts, db_rest_url="https://db.indra.bio")
+        stmt_html = assembler.make_model(
+            template=stmt_template, grouping_level="relation"
+        )
         gene_html = gene_template.render(
             record=row,
             ndex=ndex_links.get(row["hgnc_symbol"]),
