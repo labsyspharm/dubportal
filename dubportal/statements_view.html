@@ -331,7 +331,22 @@
             <hr>
             <div class="row evidence-text" data-source_hash="{{ ev['source_hash'] }}"
                  id="ev-{{ i_pair }}-{{ i_type }}-{{ i_stmt }}-{{ loop.index0 }}">
-            <div class="col-1">{{ ev['source_api'] }}</div>
+            <div class="col-1">
+                <div class="row">
+                    <div class="col-3 nvm curation_toggle"
+                       id="ev-{{ i_pair }}-{{ i_type }}-{{ i_stmt }}-{{ loop.index0 }}-click"
+                       data-parent_id="ev-{{ i_pair }}-{{ i_type }}-{{ i_stmt }}-{{ loop.index0 }}">
+                      <a href="{% if db_rest_url %}{{ db_rest_url }}/from_hash/{{ stmt_info['hash'] }}?format=html{% else %}#{% endif %}"
+                         {% if db_rest_url %}target="_blank"{% endif %}>
+                          &#10166;
+                      </a>
+                    </div>
+                    <div class="col-9 nvm src-api"
+                       title="{{ ev['source_api'] }}">
+                      {{ ev['source_api'] }}
+                    </div>
+                </div>
+            </div>
 
             {% if add_full_text_search_link %}
 

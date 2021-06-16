@@ -131,7 +131,7 @@ def filter_out_medscan(stmts: list[Statement]) -> list[Statement]:
         stmt.evidence = new_evidence
         if new_evidence:
             new_stmts.append(stmt)
-    logger.info("Finished medscan filter with %d statements" % len(new_stmts))
+    logger.debug("Finished medscan filter with %d statements" % len(new_stmts))
     return new_stmts
 
 
@@ -332,8 +332,8 @@ def main(force: bool):
 
     for row in tqdm(rows):
         gene_stmts = get_cached_stmts_single(row["hgnc_id"])
-        assembler = HtmlAssembler(gene_stmts)
-        stmt_html = assembler.make_model(template=stmt_template)
+        assembler = HtmlAssembler(gene_stmts, db_rest_url='https://db.indra.bio')
+        stmt_html = assembler.make_model(template=stmt_template, grouping_level='relation')
         import markupsafe
         gene_html = gene_template.render(
             record=row,
