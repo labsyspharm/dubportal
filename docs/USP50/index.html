@@ -135,7 +135,7 @@
                     
                     
                 </dl>
-                <h2>DepMap Correlation Analysis</h2>
+                <h2>DepMap Analysis</h2>
                 <p>
                     The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled
                     CRISPR-Cas9 knockout proliferation screen conducted in more than 700 cancer cell lines spanning many
@@ -160,6 +160,7 @@
                     in the Broad Institute's <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity
                     Map (CMap)</a>.
                 </p>
+                <h3>DepMap Correlations</h3>
                 <table class="table table-striped table-hover" id="table-terms">
                     <thead>
                     <tr>
@@ -424,7 +425,7 @@
                     
                     </tbody>
                 </table>
-                <h2>GO Term Enrichment</h2>
+                <h2>Dependency GO Term Enrichment</h2>
                 <p>
                     Gene set enrichment analysis was done on the genes correlated with USP50using the
                     terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the<a
@@ -453,11 +454,12 @@
                     
                     </tbody>
                 </table>
-                <h2>Knockdown Analysis</h2>
+                <h2>Transcriptomics</h2>
                 <p>
                     The following table shows the significantly differentially expressed genes after knocking
                     down USP50.
                 </p>
+                <h3>Knockdown Differtial Expression</h3>
                 <table class="table table-striped table-hover" id="dgea">
                     <thead>
                     <tr>
@@ -512,6 +514,4912 @@
                     
                     </tbody>
                 </table>
+                <h2>INDRA Statements</h2>
+                
+    <!-- Toggle a hidden element -->
+    <script>
+        let ALL_COLLAPSED = true;
+
+        function toggler(short_name_key) {
+            /**
+             * Toggle the info list elements by changing their class.
+             */
+                // Find the group associated with this heading.
+            let el = document.getElementById(short_name_key + "_group");
+
+            // Toggle the group class between the invisible one and the visible one.
+            if (el.classList.contains("group"))
+                el.classList.replace("group", "group_shown");
+            else
+                el.classList.replace("group_shown", "group");
+        }
+
+        async function getPubmedInfoByPMID(pmid) {
+            /**
+             * Get the Pubmed title and author from Entrez.
+             */
+                // Trim the PMID because it may have a lot of spaces in it.
+            let id = pmid.trim();
+
+            // Get the data from entrez in JSON format.
+            const entrez_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi';
+            let url = `${entrez_url}?id=${id}&retmode=json&db=pubmed`;
+            const resp = await fetch(url, {method: 'POST'});
+            if (resp.status !== 200)
+                return "Failed to load.";
+            const data = await resp.json();
+
+            // Extract and format the title from the result.
+            const pmd = data.result[id];
+            let auth_str = '';
+            let n = 0;
+            if (pmd.authors)
+                for (let author of pmd.authors) {
+                    if (n > 2) {
+                        auth_str += ', ...';
+                        break;
+                    }
+                    auth_str += author.name;
+                    if (n < pmd.authors.length) {
+                        auth_str += ', ';
+                    }
+                    n += 1;
+                }
+            return `${auth_str}, "${pmd.title}", ${pmd.source}, ${pmd.pubdate}`;
+        }
+
+        function setPMIDlinkTitle(pmid, link_tag) {
+            // Modify link hover text
+            getPubmedInfoByPMID(pmid).then(title => link_tag.title = title);
+        }
+
+        function populatePMIDlinkTitles() {
+            // Loop all pmid link nodes and set title
+            let pmid_link_array = document.getElementsByClassName("pmid_link");
+            for (let link_obj of pmid_link_array) {
+                let pmid = link_obj.textContent;
+                setPMIDlinkTitle(pmid, link_obj)
+            }
+        }
+
+        // Expand/collapse all
+        function expandCollapseAll() {
+            let expColBtn = document.getElementById('expand-collapse-all');
+
+            // Expand all; set ALL_COLLAPSED = false;
+            let show = ALL_COLLAPSED;
+            if (ALL_COLLAPSED) {
+                ALL_COLLAPSED = false;
+                expColBtn.textContent = 'Collapse All';
+                // Collapse all; set ALL_COLLAPSED = true;
+            } else {
+                ALL_COLLAPSED = true;
+                expColBtn.textContent = 'Expand All';
+            }
+
+            // Loop all tags
+            let old_c, new_c;
+            if (show) {
+                old_c = "group";
+                new_c = "group_shown";
+            } else {
+                old_c = "group_shown";
+                new_c = "group";
+            }
+
+            let elements = document.getElementsByClassName(old_c);
+            let elem_arr = Array();
+            for (let el of elements) {
+                elem_arr.push(el);
+            }
+            elem_arr.forEach(el => {
+                el.classList.replace(old_c, new_c);
+            });
+        }
+
+        
+    </script>
+    <style>
+        
+            
+                .source-psp {
+                    background-color: #bebada;
+                    color: black;
+                }
+            
+                .source-cbn {
+                    background-color: #fdb462;
+                    color: black;
+                }
+            
+                .source-pc {
+                    background-color: #b3de69;
+                    color: black;
+                }
+            
+                .source-bel_lc {
+                    background-color: #80b1d3;
+                    color: black;
+                }
+            
+                .source-signor {
+                    background-color: #bc80bd;
+                    color: black;
+                }
+            
+                .source-biogrid {
+                    background-color: #fccde5;
+                    color: black;
+                }
+            
+                .source-lincs_drug {
+                    background-color: #fb8072;
+                    color: black;
+                }
+            
+                .source-tas {
+                    background-color: #d9d9d9;
+                    color: black;
+                }
+            
+                .source-hprd {
+                    background-color: #8dd3c7;
+                    color: black;
+                }
+            
+                .source-trrust {
+                    background-color: #ffed6f;
+                    color: black;
+                }
+            
+                .source-ctd {
+                    background-color: #ccebc5;
+                    color: black;
+                }
+            
+                .source-vhn {
+                    background-color: #e0e03d;
+                    color: black;
+                }
+            
+                .source-pe {
+                    background-color: #ffe8f4;
+                    color: black;
+                }
+            
+                .source-drugbank {
+                    background-color: #acfcfc;
+                    color: black;
+                }
+            
+                .source-omnipath {
+                    background-color: #dd99ff;
+                    color: black;
+                }
+            
+                .source-conib {
+                    background-color: #00d4a6;
+                    color: black;
+                }
+            
+                .source-crog {
+                    background-color: #bebada;
+                    color: black;
+                }
+            
+                .source-dgi {
+                    background-color: #fdb462;
+                    color: black;
+                }
+            
+        
+            
+                .source-rlimsp {
+                    background-color: #8dd3c7;
+                    color: white;
+                }
+            
+                .source-isi {
+                    background-color: #d9d9d9;
+                    color: white;
+                }
+            
+                .source-tees {
+                    background-color: #fb8072;
+                    color: white;
+                }
+            
+                .source-geneways {
+                    background-color: #fccde5;
+                    color: white;
+                }
+            
+                .source-eidos {
+                    background-color: #bc80bd;
+                    color: white;
+                }
+            
+                .source-trips {
+                    background-color: #80b1d3;
+                    color: white;
+                }
+            
+                .source-medscan {
+                    background-color: #b3de69;
+                    color: white;
+                }
+            
+                .source-sparser {
+                    background-color: #fdb462;
+                    color: white;
+                }
+            
+                .source-reach {
+                    background-color: #bebada;
+                    color: white;
+                }
+            
+        
+
+        .badge-source {
+            font-size: 8pt;
+            margin: 0;
+        }
+
+
+        .nvp {
+        }
+
+        .nvm {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .src-api {
+            overflow-x: hidden;
+        }
+
+        .group, .group-shown {
+        }
+
+        .group {
+            display: none;
+        }
+
+        .super_group_heading, .group_heading, .statement, .evidence {
+        }
+
+        .evidence, .evidence-text {
+            margin-bottom: 10px;
+        }
+
+        .evidence-text {
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+
+        .super_group_heading, .group_heading {
+            cursor: pointer;
+        }
+
+        .super_group_heading:hover, .group_heading:hover {
+            background-color: #f2f2f2;
+        }
+
+        .badge-subject {
+            background-color: #4a36aa;
+            color: #FFFFFF;
+        }
+
+        .badge-object {
+            background-color: #2d8e4c;
+            color: #FFFFFF;
+        }
+
+        .badge-other {
+            background-color: #606060;
+            color: #FFFFFF;
+        }
+
+        .curation-row {
+            overflow-y: hidden;
+        }
+
+        .curation_toggle {
+            cursor: pointer;
+        }
+
+        .pmid_link, .pmcid_link, .doi_link {
+            display: block;
+        }
+
+    </style>
+
+
+
+
+
+
+    <div class="statements-header">
+        <div class="col col-auto text-center">
+    
+        
+        
+            
+                <span class="badge badge-source source-psp" title="psp">
+                      psp
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-cbn" title="cbn">
+                      cbn
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-pc" title="pc">
+                      pc
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-bel_lc" title="bel_lc">
+                      bel_lc
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-signor" title="signor">
+                      signor
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      biogrid
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-lincs_drug" title="lincs_drug">
+                      lincs_drug
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-tas" title="tas">
+                      tas
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      hprd
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-trrust" title="trrust">
+                      trrust
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-ctd" title="ctd">
+                      ctd
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-vhn" title="vhn">
+                      vhn
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-pe" title="pe">
+                      pe
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-drugbank" title="drugbank">
+                      drugbank
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-omnipath" title="omnipath">
+                      omnipath
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-conib" title="conib">
+                      conib
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-crog" title="crog">
+                      crog
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-dgi" title="dgi">
+                      dgi
+                </span>
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+                <span class="badge badge-source source-rlimsp" title="rlimsp">
+                      rlimsp
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-isi" title="isi">
+                      isi
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-tees" title="tees">
+                      tees
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-geneways" title="geneways">
+                      geneways
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-eidos" title="eidos">
+                      eidos
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-trips" title="trips">
+                      trips
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-medscan" title="medscan">
+                      medscan
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      sparser
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      reach
+                </span>
+            
+        
+    
+</div>
+    </div>
+
+
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-49712354-64e5-45bc-a509-0db5f17e3ffd"
+             onclick="toggler('tl-49712354-64e5-45bc-a509-0db5f17e3ffd')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> affects <a href='https://identifiers.org/hgnc:16608' target='_blank'>PYCARD</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      6
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      8
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-49712354-64e5-45bc-a509-0db5f17e3ffd_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('246bad1f-436f-4061-8d75-207d6caead73');"
+               id="246bad1f-436f-4061-8d75-207d6caead73_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://identifiers.org/hgnc:16608' target='_blank'>PYCARD</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      6
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      1
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="246bad1f-436f-4061-8d75-207d6caead73_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="29216685286229434"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '246bad1f-436f-4061-8d75-207d6caead73-29216685286229434' )"
+               id="246bad1f-436f-4061-8d75-207d6caead73-29216685286229434_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:16608' target='_blank'>PYCARD</a> binds <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">9 / 9</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      6
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      1
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="246bad1f-436f-4061-8d75-207d6caead73-29216685286229434_group">
+          <div class="col">
+          <div class="container bars" id="stmt-0-0-0"
+               data-stmt_hash="29216685286229434">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8374450088797742479"
+                 id="ev-0-0-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Coimmunoprecipitation assays indicated that <span class="badge badge-other">USP50</span> strongly binds to the <span class="badge badge-other">ASC</span> adaptor protein, although it also interacted weakly with NLRP3 (Fig. xref A).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1915765356403952830"
+                 id="ev-0-0-0-1">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            A recent report further suggested that <span class="badge badge-other">USP50</span> binds <span class="badge badge-other">ASC</span> and deubiquitinates K63-linked polyubiquitin chains on <span class="badge badge-other">ASC</span> (citation).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29031697"
+               target="_blank">
+                                  29031697</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-397634468724635087"
+                 id="ev-0-0-0-2">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3978892578050113468"
+                 id="ev-0-0-0-3">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Therefore, these results show that the binding of <span class="badge badge-other">USP50</span> with <span class="badge badge-other">ASC</span> protein to deubiquitinate K63‐linked polyubiquitination is a crucial step for inflammasome activation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1933587753835004087"
+                 id="ev-0-0-0-4">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            We here demonstrate that the deubiquitinating enzyme <span class="badge badge-other">USP50</span> binds to the <span class="badge badge-other">ASC</span> protein and subsequently regulates the inflammasome signaling pathway by deubiquitinating the lysine 63-linked polyubiquitination of <span class="badge badge-other">ASC</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8199723018305531852"
+                 id="ev-0-0-0-5">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Based on the interaction between <span class="badge badge-other">USP50</span> and <span class="badge badge-other">ASC</span> protein, we next investigated whether <span class="badge badge-other">USP50</span> knockdown affects inflammasome activation by analyzing the formation of <span class="badge badge-other">ASC</span> specks.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1644407180801919416"
+                 id="ev-0-0-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Therefore, these results show that the binding of <span class="badge badge-other">USP50</span> with <span class="badge badge-other">ASC</span> protein to deubiquitinate K63 linked polyubiquitination is a crucial step for inflammasome activation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="400917189951445129"
+                 id="ev-0-0-0-7">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">USP50</span> binds to the <span class="badge badge-other">ASC</span> adaptor protein and is required for NLRP3‐induced <span class="badge badge-other">ASC</span> speck formation and oligomerization.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1836832006599095532"
+                 id="ev-0-0-0-8">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('c96177a5-f05d-4f63-891e-6f60a44ce527');"
+               id="c96177a5-f05d-4f63-891e-6f60a44ce527_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> deubiquitinates <a href='https://identifiers.org/hgnc:16608' target='_blank'>PYCARD</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      6
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="c96177a5-f05d-4f63-891e-6f60a44ce527_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="25249104637136932"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'c96177a5-f05d-4f63-891e-6f60a44ce527-25249104637136932' )"
+               id="c96177a5-f05d-4f63-891e-6f60a44ce527-25249104637136932_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> deubiquitinates <a href='https://identifiers.org/hgnc:16608' target='_blank'>PYCARD</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">6 / 6</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      6
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="c96177a5-f05d-4f63-891e-6f60a44ce527-25249104637136932_group">
+          <div class="col">
+          <div class="container bars" id="stmt-0-1-0"
+               data-stmt_hash="25249104637136932">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4120239177554789807"
+                 id="ev-0-1-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP50</span> deubiquitinates the <span class="badge badge-object">ASC</span> protein.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7349093465529634466"
+                 id="ev-0-1-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            However, the Flag-<span class="badge badge-subject">USP50</span> (C53S) mutant, did not affect polyubiquitination of the <span class="badge badge-object">ASC</span> protein, indicating that the Cys residue at position 53 is critical for the catalytic activity of <span class="badge badge-subject">USP50</span> deubiquitination of the <span class="badge badge-object">ASC</span> protein.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7579570137551167078"
+                 id="ev-0-1-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To further confirm our finding that <span class="badge badge-subject">USP50</span> deubiquitinates the <span class="badge badge-object">ASC</span> protein, we performed in vitro deubiquitination assays.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6161739919490647001"
+                 id="ev-0-1-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Ubiquitination of Flag-<span class="badge badge-object">ASC</span> proteins was significantly decreased in the presence of Flag-<span class="badge badge-subject">USP50</span> protein, indicating that <span class="badge badge-subject">USP50</span> directly deubiquitinates the polyubiquitination of the <span class="badge badge-object">ASC</span> protein.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6464958765528921829"
+                 id="ev-0-1-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Wild-type <span class="badge badge-subject">USP50</span> and the Flag-<span class="badge badge-subject">USP50</span> (H322A) mutant significantly deubiquitinated the <span class="badge badge-object">ASC</span> protein.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4740383441959626183"
+                 id="ev-0-1-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In conclusion, we here demonstrate a novel regulatory mechanism regarding the <span class="badge badge-object">ASC</span> protein which is deubiquitinated by <span class="badge badge-subject">USP50</span> and provide experimental evidence emphasizing the importance of a regulatory mechanism mediated by ubiquitination and deubiquitination in inflammasome activation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('ebe527d3-bbc0-478c-8c32-428a3073894b');"
+               id="ebe527d3-bbc0-478c-8c32-428a3073894b_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> inhibits <a href='https://identifiers.org/hgnc:16608' target='_blank'>PYCARD</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      1
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="ebe527d3-bbc0-478c-8c32-428a3073894b_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="27057477488323809"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'ebe527d3-bbc0-478c-8c32-428a3073894b-27057477488323809' )"
+               id="ebe527d3-bbc0-478c-8c32-428a3073894b-27057477488323809_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> inhibits <a href='https://identifiers.org/hgnc:16608' target='_blank'>PYCARD</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">1 / 1</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      1
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="ebe527d3-bbc0-478c-8c32-428a3073894b-27057477488323809_group">
+          <div class="col">
+          <div class="container bars" id="stmt-0-2-0"
+               data-stmt_hash="27057477488323809">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3126223965229170021"
+                 id="ev-0-2-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Taken together with our results that <span class="badge badge-subject">USP50</span> depletion decreases the formation of <span class="badge badge-object">ASC</span> specks as well as the secretion of IL-lbeta, our findings strongly suggest the possibility that removal of these polyubiquitin chains from <span class="badge badge-object">ASC</span> protein by <span class="badge badge-subject">USP50</span> is a crucial step for inflammasome activation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28094437"
+               target="_blank">
+                                  28094437</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-f5c488f6-8f56-4562-91c5-c038dfd51255"
+             onclick="toggler('tl-f5c488f6-8f56-4562-91c5-c038dfd51255')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> affects <a href='https://identifiers.org/hgnc:4055' target='_blank'>XRCC6</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      5
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-f5c488f6-8f56-4562-91c5-c038dfd51255_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('67ca0d49-f6c8-4fae-bc99-4177c3fcb4e8');"
+               id="67ca0d49-f6c8-4fae-bc99-4177c3fcb4e8_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> inhibits <a href='https://identifiers.org/hgnc:4055' target='_blank'>XRCC6</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="67ca0d49-f6c8-4fae-bc99-4177c3fcb4e8_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-19828972502996920"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '67ca0d49-f6c8-4fae-bc99-4177c3fcb4e8--19828972502996920' )"
+               id="67ca0d49-f6c8-4fae-bc99-4177c3fcb4e8--19828972502996920_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> inhibits <a href='https://identifiers.org/hgnc:4055' target='_blank'>XRCC6</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">4 / 4</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="67ca0d49-f6c8-4fae-bc99-4177c3fcb4e8--19828972502996920_group">
+          <div class="col">
+          <div class="container bars" id="stmt-1-0-0"
+               data-stmt_hash="-19828972502996920">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4902017051059709707"
+                 id="ev-1-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interestingly, <span class="badge badge-subject">USP50</span> associates with the <span class="badge badge-object">Ku70</span> protein and reduces the half-life of <span class="badge badge-object">Ku70</span> protein.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1073725819228994069"
+                 id="ev-1-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Thus, we hypothesize that <span class="badge badge-subject">USP50</span> mediated <span class="badge badge-object">Ku70</span> degradation might be through targeting a ubiquitin E3 ligase that ubiquitinates and degrades <span class="badge badge-object">Ku70</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4079754769305012523"
+                 id="ev-1-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP50</span> reduces <span class="badge badge-object">Ku70</span> protein stability without affecting its mRNA levels.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5409883327435900821"
+                 id="ev-1-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            These data suggest that <span class="badge badge-subject">USP50</span> reduces <span class="badge badge-object">Ku70</span> protein stability.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('d70b4b11-006d-48c0-8f78-de518918699c');"
+               id="d70b4b11-006d-48c0-8f78-de518918699c_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://identifiers.org/hgnc:4055' target='_blank'>XRCC6</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      1
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="d70b4b11-006d-48c0-8f78-de518918699c_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-28677198367425523"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'd70b4b11-006d-48c0-8f78-de518918699c--28677198367425523' )"
+               id="d70b4b11-006d-48c0-8f78-de518918699c--28677198367425523_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://identifiers.org/hgnc:4055' target='_blank'>XRCC6</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">1 / 1</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      1
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="d70b4b11-006d-48c0-8f78-de518918699c--28677198367425523_group">
+          <div class="col">
+          <div class="container bars" id="stmt-1-1-0"
+               data-stmt_hash="-28677198367425523">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4442230957868362140"
+                 id="ev-1-1-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            This is also the first study to demonstrate an interaction between <span class="badge badge-other">USP50</span> and <span class="badge badge-other">Ku70</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-4290cb0e-a707-4417-88ff-b89c31df8e1b"
+             onclick="toggler('tl-4290cb0e-a707-4417-88ff-b89c31df8e1b')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> affects <a href='https://www.nextprot.org/term/FA-02002' target='_blank'>Ku-70</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      4
+                </span>
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-4290cb0e-a707-4417-88ff-b89c31df8e1b_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="944a146b-6829-453e-9958-d9ac5f765083_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-3506708146484918"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '944a146b-6829-453e-9958-d9ac5f765083--3506708146484918' )"
+               id="944a146b-6829-453e-9958-d9ac5f765083--3506708146484918_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://www.nextprot.org/term/FA-02002' target='_blank'>Ku-70</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">4 / 4</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      4
+                </span>
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="944a146b-6829-453e-9958-d9ac5f765083--3506708146484918_group">
+          <div class="col">
+          <div class="container bars" id="stmt-2-0-0"
+               data-stmt_hash="-3506708146484918">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2952838855767666643"
+                 id="ev-2-0-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The <span class="badge badge-other">Ku70</span> forms a heterodimer with Ku80, which binds to chromosomal replication origins  xref  and plays a critical role in cell cycle and DNA replication.  xref  The current study reveals that <span class="badge badge-other">USP50</span> is associated with <span class="badge badge-other">Ku70</span> and overexpression of <span class="badge badge-other">USP50</span> reduces <span class="badge badge-other">Ku70</span> protein stability.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3842014036900163020"
+                 id="ev-2-0-0-1">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interestingly, <span class="badge badge-other">Ku70</span> has been implicated in the deubiquitination and stabilization of Mcl-1, which is an antiapoptotic member of the BCL-2 protein family.  xref  Mcl-1 plays a critical role as a suppressor of apoptosis during erythropoiesis.  xref  These observations suggest that the interaction of <span class="badge badge-other">Ku70</span> with <span class="badge badge-other">USP50</span> may play a critical role in stabilizing Mcl-1 and controlling apoptosis during erythropoiesis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2474384894038971166"
+                 id="ev-2-0-0-2">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Coimmunoprecipitation and proteomics analyses reveal that <span class="badge badge-other">Ku70</span>, a DNA-binding protein, is associated with <span class="badge badge-other">USP50</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3567511909320042788"
+                 id="ev-2-0-0-3">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interestingly, <span class="badge badge-other">USP50</span> associates with the <span class="badge badge-other">Ku70</span> protein and reduces the half-life of <span class="badge badge-other">Ku70</span> protein.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-13d1ef77-c328-442d-bae3-59f01042b98c"
+             onclick="toggler('tl-13d1ef77-c328-442d-bae3-59f01042b98c')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> affects <a href='https://identifiers.org/hgnc:12761' target='_blank'>WEE1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-13d1ef77-c328-442d-bae3-59f01042b98c_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="09709a9c-c6c3-456b-ac93-b9994b790ff0_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="33791654310273373"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '09709a9c-c6c3-456b-ac93-b9994b790ff0-33791654310273373' )"
+               id="09709a9c-c6c3-456b-ac93-b9994b790ff0-33791654310273373_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> activates <a href='https://identifiers.org/hgnc:12761' target='_blank'>WEE1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">3 / 3</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="09709a9c-c6c3-456b-ac93-b9994b790ff0-33791654310273373_group">
+          <div class="col">
+          <div class="container bars" id="stmt-3-0-0"
+               data-stmt_hash="33791654310273373">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3329668710116912904"
+                 id="ev-3-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            We propose that <span class="badge badge-subject">USP50</span> may act through a HSP90 dependent mechanism to counteract CDC25B mitotic inducing activity and prevent <span class="badge badge-object">Wee1</span> degradation, thereby repressing entry into mitosis following activation of the DNA damage checkpoint.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/20930503"
+               target="_blank">
+                                  20930503</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3999599902920457954"
+                 id="ev-3-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In response to DNA damage, <span class="badge badge-subject">USP50</span> accumulates in the nucleus and may act through an HSP90 dependent mechanism to counteract CDC25B mitotic inducing activity and prevent <span class="badge badge-object">Wee1</span> degradation, thereby repressing entry into mitosis following activation of the DNA damage checkpoint [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28031783"
+               target="_blank">
+                                  28031783</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5390907153828566667"
+                 id="ev-3-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP50</span> (ubiquitin specific protease 50), a deubiqitinating enzyme (DUB), prevents <span class="badge badge-object">Wee1</span> degradation, thereby repressing entry into mitosis following activation of the G2/M DNA damage checkpoint.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26358502"
+               target="_blank">
+                                  26358502</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-2e08db54-edf6-48cb-95d1-a753138ebf98"
+             onclick="toggler('tl-2e08db54-edf6-48cb-95d1-a753138ebf98')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> affects <a href='https://identifiers.org/hgnc:5258' target='_blank'>HSP90AB1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-2e08db54-edf6-48cb-95d1-a753138ebf98_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="fda95af6-474d-4498-9800-7642c83d7847_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="26446854189838729"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'fda95af6-474d-4498-9800-7642c83d7847-26446854189838729' )"
+               id="fda95af6-474d-4498-9800-7642c83d7847-26446854189838729_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://identifiers.org/hgnc:5258' target='_blank'>HSP90AB1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">2 / 2</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="fda95af6-474d-4498-9800-7642c83d7847-26446854189838729_group">
+          <div class="col">
+          <div class="container bars" id="stmt-4-0-0"
+               data-stmt_hash="26446854189838729">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5267349552425861849"
+                 id="ev-4-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/20930503"
+               target="_blank">
+                                  20930503</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1718129171944793539"
+                 id="ev-4-0-0-1">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/20930503"
+               target="_blank">
+                                  20930503</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-ea8c8e64-2bb2-46e9-9430-4cfadb664c59"
+             onclick="toggler('tl-ea8c8e64-2bb2-46e9-9430-4cfadb664c59')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:4055' target='_blank'>XRCC6</a> affects <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      1
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-ea8c8e64-2bb2-46e9-9430-4cfadb664c59_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="f95594e7-76bd-43a7-afd6-893f238ac09c_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-28677198367425523"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'f95594e7-76bd-43a7-afd6-893f238ac09c--28677198367425523' )"
+               id="f95594e7-76bd-43a7-afd6-893f238ac09c--28677198367425523_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://identifiers.org/hgnc:4055' target='_blank'>XRCC6</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">1 / 1</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      1
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="f95594e7-76bd-43a7-afd6-893f238ac09c--28677198367425523_group">
+          <div class="col">
+          <div class="container bars" id="stmt-5-0-0"
+               data-stmt_hash="-28677198367425523">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4442230957868362140"
+                 id="ev-5-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            This is also the first study to demonstrate an interaction between <span class="badge badge-other">USP50</span> and <span class="badge badge-other">Ku70</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29101126"
+               target="_blank">
+                                  29101126</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-6d6577b1-1cfe-46a6-bb46-6c5f8d23366d"
+             onclick="toggler('tl-6d6577b1-1cfe-46a6-bb46-6c5f8d23366d')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> affects <a href='https://identifiers.org/hgnc:2962' target='_blank'>DYNC2H1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-6d6577b1-1cfe-46a6-bb46-6c5f8d23366d_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="48a080da-c678-4c52-9bf2-563a7998b436_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-27694913966550025"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '48a080da-c678-4c52-9bf2-563a7998b436--27694913966550025' )"
+               id="48a080da-c678-4c52-9bf2-563a7998b436--27694913966550025_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://identifiers.org/hgnc:2962' target='_blank'>DYNC2H1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">1 / 1</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="48a080da-c678-4c52-9bf2-563a7998b436--27694913966550025_group">
+          <div class="col">
+          <div class="container bars" id="stmt-6-0-0"
+               data-stmt_hash="-27694913966550025">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4441192411610087936"
+                 id="ev-6-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19615732"
+               target="_blank">
+                                  19615732</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-a3f76749-fc53-4569-a4a3-f14d69974d86"
+             onclick="toggler('tl-a3f76749-fc53-4569-a4a3-f14d69974d86')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> affects <a href='https://identifiers.org/hgnc:25990' target='_blank'>AMBRA1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-a3f76749-fc53-4569-a4a3-f14d69974d86_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="58f886f7-fc3b-4367-bd8b-c38d22d751a2_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-25282937392422395"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '58f886f7-fc3b-4367-bd8b-c38d22d751a2--25282937392422395' )"
+               id="58f886f7-fc3b-4367-bd8b-c38d22d751a2--25282937392422395_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://identifiers.org/hgnc:25990' target='_blank'>AMBRA1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">1 / 1</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="58f886f7-fc3b-4367-bd8b-c38d22d751a2--25282937392422395_group">
+          <div class="col">
+          <div class="container bars" id="stmt-7-0-0"
+               data-stmt_hash="-25282937392422395">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6049126237764995940"
+                 id="ev-7-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19615732"
+               target="_blank">
+                                  19615732</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-d32827a1-fc29-4996-9a46-e6c5176de6f3"
+             onclick="toggler('tl-d32827a1-fc29-4996-9a46-e6c5176de6f3')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:2962' target='_blank'>DYNC2H1</a> affects <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-d32827a1-fc29-4996-9a46-e6c5176de6f3_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="e49cd31b-2aaa-45f2-b1c1-7b0ccac26d97_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-27694913966550025"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'e49cd31b-2aaa-45f2-b1c1-7b0ccac26d97--27694913966550025' )"
+               id="e49cd31b-2aaa-45f2-b1c1-7b0ccac26d97--27694913966550025_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://identifiers.org/hgnc:2962' target='_blank'>DYNC2H1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">1 / 1</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="e49cd31b-2aaa-45f2-b1c1-7b0ccac26d97--27694913966550025_group">
+          <div class="col">
+          <div class="container bars" id="stmt-8-0-0"
+               data-stmt_hash="-27694913966550025">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4441192411610087936"
+                 id="ev-8-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19615732"
+               target="_blank">
+                                  19615732</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-231e8d10-a098-4250-9a73-e46626468496"
+             onclick="toggler('tl-231e8d10-a098-4250-9a73-e46626468496')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:25990' target='_blank'>AMBRA1</a> affects <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-231e8d10-a098-4250-9a73-e46626468496_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="94bdb7b2-3bd0-48ee-b8b3-4076d4d4e45c_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-25282937392422395"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '94bdb7b2-3bd0-48ee-b8b3-4076d4d4e45c--25282937392422395' )"
+               id="94bdb7b2-3bd0-48ee-b8b3-4076d4d4e45c--25282937392422395_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20079' target='_blank'>USP50</a> binds <a href='https://identifiers.org/hgnc:25990' target='_blank'>AMBRA1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">1 / 1</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="94bdb7b2-3bd0-48ee-b8b3-4076d4d4e45c--25282937392422395_group">
+          <div class="col">
+          <div class="container bars" id="stmt-9-0-0"
+               data-stmt_hash="-25282937392422395">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6049126237764995940"
+                 id="ev-9-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19615732"
+               target="_blank">
+                                  19615732</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
             
             </div>
         </div>

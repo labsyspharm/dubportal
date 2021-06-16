@@ -135,7 +135,7 @@
                     
                     
                 </dl>
-                <h2>DepMap Correlation Analysis</h2>
+                <h2>DepMap Analysis</h2>
                 <p>
                     The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled
                     CRISPR-Cas9 knockout proliferation screen conducted in more than 700 cancer cell lines spanning many
@@ -160,6 +160,7 @@
                     in the Broad Institute's <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity
                     Map (CMap)</a>.
                 </p>
+                <h3>DepMap Correlations</h3>
                 <table class="table table-striped table-hover" id="table-terms">
                     <thead>
                     <tr>
@@ -459,7 +460,7 @@
                     
                     </tbody>
                 </table>
-                <h2>GO Term Enrichment</h2>
+                <h2>Dependency GO Term Enrichment</h2>
                 <p>
                     Gene set enrichment analysis was done on the genes correlated with USP39using the
                     terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the<a
@@ -488,11 +489,12 @@
                     
                     </tbody>
                 </table>
-                <h2>Knockdown Analysis</h2>
+                <h2>Transcriptomics</h2>
                 <p>
                     The following table shows the significantly differentially expressed genes after knocking
                     down USP39.
                 </p>
+                <h3>Knockdown Differtial Expression</h3>
                 <table class="table table-striped table-hover" id="dgea">
                     <thead>
                     <tr>
@@ -707,6 +709,7836 @@
                     
                     </tbody>
                 </table>
+                <h2>INDRA Statements</h2>
+                
+    <!-- Toggle a hidden element -->
+    <script>
+        let ALL_COLLAPSED = true;
+
+        function toggler(short_name_key) {
+            /**
+             * Toggle the info list elements by changing their class.
+             */
+                // Find the group associated with this heading.
+            let el = document.getElementById(short_name_key + "_group");
+
+            // Toggle the group class between the invisible one and the visible one.
+            if (el.classList.contains("group"))
+                el.classList.replace("group", "group_shown");
+            else
+                el.classList.replace("group_shown", "group");
+        }
+
+        async function getPubmedInfoByPMID(pmid) {
+            /**
+             * Get the Pubmed title and author from Entrez.
+             */
+                // Trim the PMID because it may have a lot of spaces in it.
+            let id = pmid.trim();
+
+            // Get the data from entrez in JSON format.
+            const entrez_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi';
+            let url = `${entrez_url}?id=${id}&retmode=json&db=pubmed`;
+            const resp = await fetch(url, {method: 'POST'});
+            if (resp.status !== 200)
+                return "Failed to load.";
+            const data = await resp.json();
+
+            // Extract and format the title from the result.
+            const pmd = data.result[id];
+            let auth_str = '';
+            let n = 0;
+            if (pmd.authors)
+                for (let author of pmd.authors) {
+                    if (n > 2) {
+                        auth_str += ', ...';
+                        break;
+                    }
+                    auth_str += author.name;
+                    if (n < pmd.authors.length) {
+                        auth_str += ', ';
+                    }
+                    n += 1;
+                }
+            return `${auth_str}, "${pmd.title}", ${pmd.source}, ${pmd.pubdate}`;
+        }
+
+        function setPMIDlinkTitle(pmid, link_tag) {
+            // Modify link hover text
+            getPubmedInfoByPMID(pmid).then(title => link_tag.title = title);
+        }
+
+        function populatePMIDlinkTitles() {
+            // Loop all pmid link nodes and set title
+            let pmid_link_array = document.getElementsByClassName("pmid_link");
+            for (let link_obj of pmid_link_array) {
+                let pmid = link_obj.textContent;
+                setPMIDlinkTitle(pmid, link_obj)
+            }
+        }
+
+        // Expand/collapse all
+        function expandCollapseAll() {
+            let expColBtn = document.getElementById('expand-collapse-all');
+
+            // Expand all; set ALL_COLLAPSED = false;
+            let show = ALL_COLLAPSED;
+            if (ALL_COLLAPSED) {
+                ALL_COLLAPSED = false;
+                expColBtn.textContent = 'Collapse All';
+                // Collapse all; set ALL_COLLAPSED = true;
+            } else {
+                ALL_COLLAPSED = true;
+                expColBtn.textContent = 'Expand All';
+            }
+
+            // Loop all tags
+            let old_c, new_c;
+            if (show) {
+                old_c = "group";
+                new_c = "group_shown";
+            } else {
+                old_c = "group_shown";
+                new_c = "group";
+            }
+
+            let elements = document.getElementsByClassName(old_c);
+            let elem_arr = Array();
+            for (let el of elements) {
+                elem_arr.push(el);
+            }
+            elem_arr.forEach(el => {
+                el.classList.replace(old_c, new_c);
+            });
+        }
+
+        
+    </script>
+    <style>
+        
+            
+                .source-psp {
+                    background-color: #bebada;
+                    color: black;
+                }
+            
+                .source-cbn {
+                    background-color: #fdb462;
+                    color: black;
+                }
+            
+                .source-pc {
+                    background-color: #b3de69;
+                    color: black;
+                }
+            
+                .source-bel_lc {
+                    background-color: #80b1d3;
+                    color: black;
+                }
+            
+                .source-signor {
+                    background-color: #bc80bd;
+                    color: black;
+                }
+            
+                .source-biogrid {
+                    background-color: #fccde5;
+                    color: black;
+                }
+            
+                .source-lincs_drug {
+                    background-color: #fb8072;
+                    color: black;
+                }
+            
+                .source-tas {
+                    background-color: #d9d9d9;
+                    color: black;
+                }
+            
+                .source-hprd {
+                    background-color: #8dd3c7;
+                    color: black;
+                }
+            
+                .source-trrust {
+                    background-color: #ffed6f;
+                    color: black;
+                }
+            
+                .source-ctd {
+                    background-color: #ccebc5;
+                    color: black;
+                }
+            
+                .source-vhn {
+                    background-color: #e0e03d;
+                    color: black;
+                }
+            
+                .source-pe {
+                    background-color: #ffe8f4;
+                    color: black;
+                }
+            
+                .source-drugbank {
+                    background-color: #acfcfc;
+                    color: black;
+                }
+            
+                .source-omnipath {
+                    background-color: #dd99ff;
+                    color: black;
+                }
+            
+                .source-conib {
+                    background-color: #00d4a6;
+                    color: black;
+                }
+            
+                .source-crog {
+                    background-color: #bebada;
+                    color: black;
+                }
+            
+                .source-dgi {
+                    background-color: #fdb462;
+                    color: black;
+                }
+            
+        
+            
+                .source-rlimsp {
+                    background-color: #8dd3c7;
+                    color: white;
+                }
+            
+                .source-isi {
+                    background-color: #d9d9d9;
+                    color: white;
+                }
+            
+                .source-tees {
+                    background-color: #fb8072;
+                    color: white;
+                }
+            
+                .source-geneways {
+                    background-color: #fccde5;
+                    color: white;
+                }
+            
+                .source-eidos {
+                    background-color: #bc80bd;
+                    color: white;
+                }
+            
+                .source-trips {
+                    background-color: #80b1d3;
+                    color: white;
+                }
+            
+                .source-medscan {
+                    background-color: #b3de69;
+                    color: white;
+                }
+            
+                .source-sparser {
+                    background-color: #fdb462;
+                    color: white;
+                }
+            
+                .source-reach {
+                    background-color: #bebada;
+                    color: white;
+                }
+            
+        
+
+        .badge-source {
+            font-size: 8pt;
+            margin: 0;
+        }
+
+
+        .nvp {
+        }
+
+        .nvm {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .src-api {
+            overflow-x: hidden;
+        }
+
+        .group, .group-shown {
+        }
+
+        .group {
+            display: none;
+        }
+
+        .super_group_heading, .group_heading, .statement, .evidence {
+        }
+
+        .evidence, .evidence-text {
+            margin-bottom: 10px;
+        }
+
+        .evidence-text {
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+
+        .super_group_heading, .group_heading {
+            cursor: pointer;
+        }
+
+        .super_group_heading:hover, .group_heading:hover {
+            background-color: #f2f2f2;
+        }
+
+        .badge-subject {
+            background-color: #4a36aa;
+            color: #FFFFFF;
+        }
+
+        .badge-object {
+            background-color: #2d8e4c;
+            color: #FFFFFF;
+        }
+
+        .badge-other {
+            background-color: #606060;
+            color: #FFFFFF;
+        }
+
+        .curation-row {
+            overflow-y: hidden;
+        }
+
+        .curation_toggle {
+            cursor: pointer;
+        }
+
+        .pmid_link, .pmcid_link, .doi_link {
+            display: block;
+        }
+
+    </style>
+
+
+
+
+
+
+    <div class="statements-header">
+        <div class="col col-auto text-center">
+    
+        
+        
+            
+                <span class="badge badge-source source-psp" title="psp">
+                      psp
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-cbn" title="cbn">
+                      cbn
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-pc" title="pc">
+                      pc
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-bel_lc" title="bel_lc">
+                      bel_lc
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-signor" title="signor">
+                      signor
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      biogrid
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-lincs_drug" title="lincs_drug">
+                      lincs_drug
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-tas" title="tas">
+                      tas
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      hprd
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-trrust" title="trrust">
+                      trrust
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-ctd" title="ctd">
+                      ctd
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-vhn" title="vhn">
+                      vhn
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-pe" title="pe">
+                      pe
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-drugbank" title="drugbank">
+                      drugbank
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-omnipath" title="omnipath">
+                      omnipath
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-conib" title="conib">
+                      conib
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-crog" title="crog">
+                      crog
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-dgi" title="dgi">
+                      dgi
+                </span>
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+                <span class="badge badge-source source-rlimsp" title="rlimsp">
+                      rlimsp
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-isi" title="isi">
+                      isi
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-tees" title="tees">
+                      tees
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-geneways" title="geneways">
+                      geneways
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-eidos" title="eidos">
+                      eidos
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-trips" title="trips">
+                      trips
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-medscan" title="medscan">
+                      medscan
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      sparser
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      reach
+                </span>
+            
+        
+    
+</div>
+    </div>
+
+
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-a60df1b9-d40a-4afd-a218-1f7da7d983a4"
+             onclick="toggler('tl-a60df1b9-d40a-4afd-a218-1f7da7d983a4')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> affects <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      2
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      33
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-a60df1b9-d40a-4afd-a218-1f7da7d983a4_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('fbaa79d7-febb-4960-88c7-9a25189efcbb');"
+               id="fbaa79d7-febb-4960-88c7-9a25189efcbb_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> activates <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      24
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="fbaa79d7-febb-4960-88c7-9a25189efcbb_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-31691289594965293"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'fbaa79d7-febb-4960-88c7-9a25189efcbb--31691289594965293' )"
+               id="fbaa79d7-febb-4960-88c7-9a25189efcbb--31691289594965293_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> activates <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">24 / 24</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      24
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="fbaa79d7-febb-4960-88c7-9a25189efcbb--31691289594965293_group">
+          <div class="col">
+          <div class="container bars" id="stmt-0-0-0"
+               data-stmt_hash="-31691289594965293">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7807232284375057954"
+                 id="ev-0-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, <span class="badge badge-subject">USP39</span> knockdown in VSMCs significantly reduced <span class="badge badge-object">proliferation</span> compared with cells transfected with control siRNA (P = 0.0238; XREF_FIG).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28447728"
+               target="_blank">
+                                  28447728</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7981528714463830955"
+                 id="ev-0-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Reduced <span class="badge badge-subject">USP39</span> expression inhibits malignant <span class="badge badge-object">proliferation</span> of medullary thyroid carcinoma in vitro.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4098551251844125704"
+                 id="ev-0-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            A sumosylated <span class="badge badge-subject">USP39</span> has been shown to promote the <span class="badge badge-object">proliferation</span> of PC-3 and LNcap cells [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26959883"
+               target="_blank">
+                                  26959883</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7063112884320803705"
+                 id="ev-0-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP39</span> silencing via lentivirus mediated short hairpin RNA (shRNA) significantly suppressed melanoma <span class="badge badge-object">cell proliferation</span>, induced G0/G1 cell cycle phase arrest, and increased apoptosis in vitro.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27456357"
+               target="_blank">
+                                  27456357</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4611720244608016331"
+                 id="ev-0-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The inducible shRNA mediated downregulation of <span class="badge badge-subject">USP39</span> expression markedly reduced the proliferation and colony forming ability of MDA-MB-231 cells, while overexpression of <span class="badge badge-subject">USP39</span> by the inducible system did not promote cancer <span class="badge badge-object">cell proliferation</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25812575"
+               target="_blank">
+                                  25812575</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7231430598221474901"
+                 id="ev-0-0-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Mutation of these SUMO modification sites of <span class="badge badge-subject">USP39</span> further promoted the <span class="badge badge-object">proliferation</span> enhancing effect of <span class="badge badge-subject">USP39</span> on prostate cancer cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25027693"
+               target="_blank">
+                                  25027693</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8767431310282993620"
+                 id="ev-0-0-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In conclusion, the present study has revealed that <span class="badge badge-subject">USP39</span> silencing suppressed CRC <span class="badge badge-object">cell proliferation</span> via activating the caspase cascade and upregulating the expression of p53.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29556295"
+               target="_blank">
+                                  29556295</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3847818099520676967"
+                 id="ev-0-0-0-7">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, these results suggested that suppression of <span class="badge badge-subject">USP39</span> could inhibit <span class="badge badge-object">cell proliferation</span> and colony formation of HCC cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25889525"
+               target="_blank">
+                                  25889525</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5093558893746163404"
+                 id="ev-0-0-0-8">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Suppression of <span class="badge badge-subject">USP39</span> expression significantly decreased the <span class="badge badge-object">proliferation</span> and colony forming ability of MGC80-3 cells as indicated by an MTT and a clonogenic assay, respectively.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27175747"
+               target="_blank">
+                                  27175747</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8400694063631935779"
+                 id="ev-0-0-0-9">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Notably, the deacetylation of <span class="badge badge-subject">USP39</span> by SIRT7 promotes its stability and thereby accelerates HCC <span class="badge badge-object">cell proliferation</span> and tumorigenesis invitro and invivo.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/32711345"
+               target="_blank">
+                                  32711345</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4157951871776491123"
+                 id="ev-0-0-0-10">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Taken together, our findings implicate that <span class="badge badge-subject">USP39</span> promotes the development of human leukemia by regulating cell cycle, survival, and <span class="badge badge-object">proliferation</span> of the cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6491616378833329519"
+                 id="ev-0-0-0-11">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            MTT assay showed that <span class="badge badge-subject">USP39</span> knockdown inhibited <span class="badge badge-object">cell proliferation</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26959883"
+               target="_blank">
+                                  26959883</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1053852094423353447"
+                 id="ev-0-0-0-12">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Silencing <span class="badge badge-subject">USP39</span> can inhibit the <span class="badge badge-object">proliferation</span> of melanoma cells in vitro and in vivo, induce G0/G1 arrest, and promote apoptosis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30214236"
+               target="_blank">
+                                  30214236</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4116612913607859500"
+                 id="ev-0-0-0-13">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Wen et al demonstrated that the overexpression of <span class="badge badge-subject">USP39</span> promoted the <span class="badge badge-object">proliferation</span> of prostate cancer cells, which is in accord with a study by Wang et al in breast cancer cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29556295"
+               target="_blank">
+                                  29556295</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4606186108539259598"
+                 id="ev-0-0-0-14">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The results showed that <span class="badge badge-subject">USP39</span> knockdown markedly repressed the <span class="badge badge-object">proliferation</span> rate of HL-60 and Jurkat cells since day 3 (XREF_FIG C, D).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5215784856093026004"
+                 id="ev-0-0-0-15">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In conclusion, our studies indicated that suppression of <span class="badge badge-subject">USP39</span> through recombinant lentivirus taking sh<span class="badge badge-subject">USP39</span> inhibited <span class="badge badge-object">cell proliferation</span> and colony formation of HCC cells along with cell cycle arrest at G 2 / M phase.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25889525"
+               target="_blank">
+                                  25889525</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6915115073967418302"
+                 id="ev-0-0-0-16">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Lentivirus mediated knockdown of <span class="badge badge-subject">USP39</span> repressed the <span class="badge badge-object">proliferation</span> and colony formation of human leukemia cell lines HL-60 and Jurkat cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4208468326297929947"
+                 id="ev-0-0-0-17">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            miR-133a, directly targeted <span class="badge badge-subject">USP39</span>, suppresses <span class="badge badge-object">cell proliferation</span> and predicts prognosis of gastric cancer.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2852510260444965505"
+                 id="ev-0-0-0-18">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP39</span> overexpression promotes <span class="badge badge-object">cell proliferation</span> and predicts poor prognosis, which is consistent with present research.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6111315577903180400"
+                 id="ev-0-0-0-19">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Wen et al. demonstrated that the overexpression of <span class="badge badge-subject">USP39</span> could enhance the <span class="badge badge-object">proliferation</span> of prostate cancer cells, suggesting that <span class="badge badge-subject">USP39</span> may also play a role in prostate cancer development [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="572521751505391705"
+                 id="ev-0-0-0-20">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            This indicates that knockdown of <span class="badge badge-subject">USP39</span> could strongly decrease the <span class="badge badge-object">proliferation</span> of TT cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1078152863082886638"
+                 id="ev-0-0-0-21">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To test the mechanism by which <span class="badge badge-subject">USP39</span> modulating <span class="badge badge-object">cell proliferation</span>, the flow cytometry assay was used to determine the cell cycle of TT cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8939375434420078576"
+                 id="ev-0-0-0-22">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Taken together, these results suggest that knockdown of <span class="badge badge-subject">USP39</span> could inhibit TT <span class="badge badge-object">cell proliferation</span> by inducing G2/M phase cell cycle arrest.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="9089909097182639391"
+                 id="ev-0-0-0-23">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, high <span class="badge badge-subject">USP39</span> expression was observed in PC cell lines and ectopic expression of <span class="badge badge-subject">USP39</span> significantly enhanced invitro <span class="badge badge-object">cell proliferation</span> and promoted invivo tumor growth, whereas silencing <span class="badge badge-subject">USP39</span> suppressed growth of PC cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28286270"
+               target="_blank">
+                                  28286270</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('7398c1cc-6b34-45ad-a7e3-c281edd5f869');"
+               id="7398c1cc-6b34-45ad-a7e3-c281edd5f869_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> inhibits <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      2
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      9
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="7398c1cc-6b34-45ad-a7e3-c281edd5f869_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="16374957179483507"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '7398c1cc-6b34-45ad-a7e3-c281edd5f869-16374957179483507' )"
+               id="7398c1cc-6b34-45ad-a7e3-c281edd5f869-16374957179483507_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> inhibits <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">11 / 11</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      2
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      9
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="7398c1cc-6b34-45ad-a7e3-c281edd5f869-16374957179483507_group">
+          <div class="col">
+          <div class="container bars" id="stmt-0-1-0"
+               data-stmt_hash="16374957179483507">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6578774734385638550"
+                 id="ev-0-1-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP39</span> overexpression deprived miR-133a inhibitor mediated suppression of <span class="badge badge-object">cell proliferation</span>, suggesting that <span class="badge badge-subject">USP39</span> is involved in miR-133a-mediated biological role in gastric cancer cell HGC-27 (P &lt; 0.0001) (XREF_FIG).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2706707934232297510"
+                 id="ev-0-1-0-1">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, knockdown of <span class="badge badge-subject">USP39</span> inhibited VSMC <span class="badge badge-object">cell proliferation</span> and the expression of cyclin D1 and cyclin-dependent kinase 4, as analyzed via cell counting, MTT assay and western blotting.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28447728"
+               target="_blank">
+                                  28447728</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4329842687589489366"
+                 id="ev-0-1-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In addition, it has been reported that overexpression of MGC-803 cells and knockdown of <span class="badge badge-subject">USP39</span> may inhibit MGC-803 <span class="badge badge-object">cell proliferation</span> and induce cell cycle arrest.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1994681909352677905"
+                 id="ev-0-1-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> suppressed the <span class="badge badge-object">proliferation</span> and cell cycle progression, and induced apoptosis, accompanied by the reduction of EGFR in both mRNA and protein levels in PC-3 and DU145 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26959883"
+               target="_blank">
+                                  26959883</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2070969119878516614"
+                 id="ev-0-1-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> significantly inhibited <span class="badge badge-object">proliferation</span> of TT cells in vitro.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="9132123437426766591"
+                 id="ev-0-1-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> significantly decreased <span class="badge badge-object">cell proliferation</span> and caused cell cycle arrest at G2/M phase.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-29058012325730150"
+                 id="ev-0-1-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> remarkably inhibited the <span class="badge badge-object">cell proliferation</span> of osteosarcoma cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-658406112290972943"
+                 id="ev-0-1-0-7">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Down-regulation of <span class="badge badge-subject">USP39</span> suppresses the <span class="badge badge-object">proliferation</span> and induces the apoptosis of human colorectal cancer cells [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1927169303022264310"
+                 id="ev-0-1-0-8">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Down-regulation of <span class="badge badge-subject">USP39</span> inhibited <span class="badge badge-object">cell proliferation</span> and colony formation ability of SMMC-7721 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25889525"
+               target="_blank">
+                                  25889525</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8304693741750036185"
+                 id="ev-0-1-0-9">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The SUMOylation of spliceosome factors <span class="badge badge-subject">USP39</span> decreases the <span class="badge badge-object">proliferation</span> enhancing effect of <span class="badge badge-subject">USP39</span> on prostate cancer cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29484374"
+               target="_blank">
+                                  29484374</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7752368558775078239"
+                 id="ev-0-1-0-10">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> expression in U2OS cell significantly decreased <span class="badge badge-object">cell proliferation</span>, impaired colony formation ability.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-5d4e81b9-cd00-458a-8ea1-f8c21c01ff5a"
+             onclick="toggler('tl-5d4e81b9-cd00-458a-8ea1-f8c21c01ff5a')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> affects <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      34
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-5d4e81b9-cd00-458a-8ea1-f8c21c01ff5a_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('ac23f8e6-1c2f-43f0-b1dc-6fdc55c66302');"
+               id="ac23f8e6-1c2f-43f0-b1dc-6fdc55c66302_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> inhibits <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      28
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="ac23f8e6-1c2f-43f0-b1dc-6fdc55c66302_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-2419799077802667"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'ac23f8e6-1c2f-43f0-b1dc-6fdc55c66302--2419799077802667' )"
+               id="ac23f8e6-1c2f-43f0-b1dc-6fdc55c66302--2419799077802667_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> inhibits <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">28 / 28</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      28
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="ac23f8e6-1c2f-43f0-b1dc-6fdc55c66302--2419799077802667_group">
+          <div class="col">
+          <div class="container bars" id="stmt-1-0-0"
+               data-stmt_hash="-2419799077802667">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1956679637958250390"
+                 id="ev-1-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Meanwhile, knockdown of <span class="badge badge-subject">USP39</span> could arrest cell cycle at G2/M via cyclin dependent pathway and promoted <span class="badge badge-object">apoptosis</span> through PARP cleavage [XREF_BIBR - XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1053852094423353447"
+                 id="ev-1-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Silencing <span class="badge badge-subject">USP39</span> can inhibit the proliferation of melanoma cells in vitro and in vivo, induce G0/G1 arrest, and promote <span class="badge badge-object">apoptosis</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30214236"
+               target="_blank">
+                                  30214236</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7974399366459901517"
+                 id="ev-1-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            These results suggested <span class="badge badge-subject">USP39</span> knockdown could promote U2OS cell <span class="badge badge-object">apoptosis</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2969409107092744048"
+                 id="ev-1-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Mechanism study showed that <span class="badge badge-subject">USP39</span> knockdown induced the arrest of cell cycle and <span class="badge badge-object">apoptosis</span> of leukemia cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2407695136429558905"
+                 id="ev-1-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            These results suggested that knockdown of <span class="badge badge-subject">USP39</span> in SMMC-7721 cells could induce cell <span class="badge badge-object">apoptosis</span> via altering the expression of Bax, Caspase 9, Caspase 3 and PARP.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25889525"
+               target="_blank">
+                                  25889525</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3285139076919046669"
+                 id="ev-1-0-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In addition, the inhibition of <span class="badge badge-subject">USP39</span> induced G0/G1-phase arrest and <span class="badge badge-object">apoptosis</span> of the cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24126978"
+               target="_blank">
+                                  24126978</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6977201457855870983"
+                 id="ev-1-0-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Besides, our experimental data revealed that knockdown of <span class="badge badge-subject">USP39</span> induced cell <span class="badge badge-object">apoptosis</span> through inhibition of AKT signaling pathway in PC cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28286270"
+               target="_blank">
+                                  28286270</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2060407460446267428"
+                 id="ev-1-0-0-7">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, <span class="badge badge-subject">USP39</span> silencing induced <span class="badge badge-object">apoptosis</span> of CAL27 cells via activations of Caspase 3 and PARP.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26835714"
+               target="_blank">
+                                  26835714</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-656351475539885233"
+                 id="ev-1-0-0-8">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP39</span> knockdown promotes <span class="badge badge-object">apoptosis</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29556295"
+               target="_blank">
+                                  29556295</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2413998020680677290"
+                 id="ev-1-0-0-9">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> inhibited the growth of osteosarcoma cells and induced <span class="badge badge-object">apoptosis</span> in vitro [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5407688637950449747"
+                 id="ev-1-0-0-10">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In addition, <span class="badge badge-subject">USP39</span> knockdown significantly induced <span class="badge badge-object">apoptosis</span> of leukemia cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7063112884320803705"
+                 id="ev-1-0-0-11">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP39</span> silencing via lentivirus mediated short hairpin RNA (shRNA) significantly suppressed melanoma cell proliferation, induced G0/G1 cell cycle phase arrest, and increased <span class="badge badge-object">apoptosis</span> in vitro.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27456357"
+               target="_blank">
+                                  27456357</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2703280778437887867"
+                 id="ev-1-0-0-12">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, western blot analysis demonstrated that <span class="badge badge-subject">USP39</span> knockdown may have induced <span class="badge badge-object">apoptosis</span> through the upregulation of p53, p-p53, PARP and caspase-3 expression in SW1116 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29556295"
+               target="_blank">
+                                  29556295</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5584796952046760707"
+                 id="ev-1-0-0-13">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In melanoma, knockdown <span class="badge badge-subject">USP39</span> inhibited cell growth and induced cell cycle arrest and <span class="badge badge-object">apoptosis</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4732958084150422583"
+                 id="ev-1-0-0-14">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Flow cytometric analysis showed that <span class="badge badge-subject">USP39</span> knockdown induced cell cycle arrest at G2/M phase and enhanced cell <span class="badge badge-object">apoptosis</span> in 95D cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27629785"
+               target="_blank">
+                                  27629785</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8990182272299441017"
+                 id="ev-1-0-0-15">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Thus, it was demonstrated that the knockdown of <span class="badge badge-subject">USP39</span> in SW1116 cells induced <span class="badge badge-object">apoptosis</span> via altering the expression of <span class="badge badge-object">apoptosis</span> associated proteins.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29556295"
+               target="_blank">
+                                  29556295</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-624271166727340312"
+                 id="ev-1-0-0-16">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            This data demonstrated that <span class="badge badge-subject">USP39</span> silencing induced <span class="badge badge-object">apoptosis</span> in SW1116 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29556295"
+               target="_blank">
+                                  29556295</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3623028201954455385"
+                 id="ev-1-0-0-17">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            It was found that <span class="badge badge-subject">USP39</span> silencing induced G2/M phase arrest and <span class="badge badge-object">apoptosis</span>, implying that the growth inhibition might be associated with increased cell cycle arrest and <span class="badge badge-object">apoptosis</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26959883"
+               target="_blank">
+                                  26959883</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4599767692280979831"
+                 id="ev-1-0-0-18">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Our loss-of-function experiments demonstrated that knockdown of the expression of <span class="badge badge-subject">USP39</span> repressed the proliferation of leukemia cells, induced cell cycle arrest, and cell <span class="badge badge-object">apoptosis</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5820064461841465172"
+                 id="ev-1-0-0-19">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Indeed, knockdown of <span class="badge badge-subject">USP39</span> induces cell cycle arrest and <span class="badge badge-object">apoptosis</span> in melanoma [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6558057456260234858"
+                 id="ev-1-0-0-20">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Moreover, <span class="badge badge-subject">USP39</span> silencing could promote U2OS cell <span class="badge badge-object">apoptosis</span> by PARP cleavage, which were reliable indicators of <span class="badge badge-object">apoptosis</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5979633983782131428"
+                 id="ev-1-0-0-21">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            FCM indicated that <span class="badge badge-subject">USP39</span> knockdown led to G2/M arrest and induced <span class="badge badge-object">apoptosis</span> in SMMC-7721 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28413501"
+               target="_blank">
+                                  28413501</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6827459326582229609"
+                 id="ev-1-0-0-22">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            FCM assay showed that <span class="badge badge-subject">USP39</span> knockdown led to G2/M arrest and induced <span class="badge badge-object">apoptosis</span> in the HepG2 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26081192"
+               target="_blank">
+                                  26081192</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-590258839857190383"
+                 id="ev-1-0-0-23">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, inhibition of <span class="badge badge-subject">USP39</span> induced G0/G1-phase arrest and <span class="badge badge-object">apoptosis</span> in breast cancer cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28447728"
+               target="_blank">
+                                  28447728</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2822647040630772491"
+                 id="ev-1-0-0-24">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In osteosarcoma cells, a decreased <span class="badge badge-subject">USP39</span> expression inhibited cell growth and induced <span class="badge badge-object">apoptosis</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3408276398087346032"
+                 id="ev-1-0-0-25">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Silencing of <span class="badge badge-subject">USP39</span> induced cell <span class="badge badge-object">apoptosis</span> and cell cycle arrest at G2/M phase.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29328477"
+               target="_blank">
+                                  29328477</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6348601632773200333"
+                 id="ev-1-0-0-26">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Further analysis confirmed that <span class="badge badge-subject">USP39</span> silencing significantly promoted the <span class="badge badge-object">apoptosis</span> of SW1116 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29556295"
+               target="_blank">
+                                  29556295</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="683658215029330447"
+                 id="ev-1-0-0-27">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In addition, the results of Annexin V/7-AAD staining suggested the knockdown of <span class="badge badge-subject">USP39</span> could promote U2OS cell <span class="badge badge-object">apoptosis</span> through PARP cleavage.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('22b88582-17cb-4a6f-8fca-bd4a8e1e0e3c');"
+               id="22b88582-17cb-4a6f-8fca-bd4a8e1e0e3c_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> activates <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      6
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="22b88582-17cb-4a6f-8fca-bd4a8e1e0e3c_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-7968179963958394"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '22b88582-17cb-4a6f-8fca-bd4a8e1e0e3c--7968179963958394' )"
+               id="22b88582-17cb-4a6f-8fca-bd4a8e1e0e3c--7968179963958394_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> activates <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">6 / 6</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      6
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="22b88582-17cb-4a6f-8fca-bd4a8e1e0e3c--7968179963958394_group">
+          <div class="col">
+          <div class="container bars" id="stmt-1-1-0"
+               data-stmt_hash="-7968179963958394">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="501790018981217465"
+                 id="ev-1-1-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> induces cell cycle arrest and <span class="badge badge-object">apoptosis</span> in melanoma.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27456357"
+               target="_blank">
+                                  27456357</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2027077535257176232"
+                 id="ev-1-1-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Down-regulation of <span class="badge badge-subject">USP39</span> induced SMMC-7721 cells <span class="badge badge-object">apoptosis</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25889525"
+               target="_blank">
+                                  25889525</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1994681909352677905"
+                 id="ev-1-1-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> suppressed the proliferation and cell cycle progression, and induced <span class="badge badge-object">apoptosis</span>, accompanied by the reduction of EGFR in both mRNA and protein levels in PC-3 and DU145 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26959883"
+               target="_blank">
+                                  26959883</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8756567931081040117"
+                 id="ev-1-1-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The group of silencing <span class="badge badge-subject">USP39</span> increased the apoptotic cells (early <span class="badge badge-object">apoptosis</span> and late <span class="badge badge-object">apoptosis</span>) by 13-fold, as compared to the group of shCon (Additional file 1 : Figure S1A and B).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25889525"
+               target="_blank">
+                                  25889525</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2681742886348188058"
+                 id="ev-1-1-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Depletion of <span class="badge badge-subject">USP39</span> promotes <span class="badge badge-object">apoptosis</span> of U2OS cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-658406112290972943"
+                 id="ev-1-1-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Down-regulation of <span class="badge badge-subject">USP39</span> suppresses the proliferation and induces the <span class="badge badge-object">apoptosis</span> of human colorectal cancer cells [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-cebe5889-ac50-41d0-88c6-cb7be4d5bef9"
+             onclick="toggler('tl-cebe5889-ac50-41d0-88c6-cb7be4d5bef9')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> affects <a href='https://identifiers.org/GO:0007049' target='_blank'>cell cycle</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      27
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-cebe5889-ac50-41d0-88c6-cb7be4d5bef9_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('397f57b2-79b1-4f51-9f4b-b7727fab6251');"
+               id="397f57b2-79b1-4f51-9f4b-b7727fab6251_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> inhibits <a href='https://identifiers.org/GO:0007049' target='_blank'>cell cycle</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      15
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="397f57b2-79b1-4f51-9f4b-b7727fab6251_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-19579870297502368"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '397f57b2-79b1-4f51-9f4b-b7727fab6251--19579870297502368' )"
+               id="397f57b2-79b1-4f51-9f4b-b7727fab6251--19579870297502368_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> inhibits <a href='https://identifiers.org/GO:0007049' target='_blank'>cell cycle</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">15 / 15</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      15
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="397f57b2-79b1-4f51-9f4b-b7727fab6251--19579870297502368_group">
+          <div class="col">
+          <div class="container bars" id="stmt-2-0-0"
+               data-stmt_hash="-19579870297502368">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8590998168268295366"
+                 id="ev-2-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In addition, flow cytometry analysis in the present study identified that the knockdown of <span class="badge badge-subject">USP39</span> induced <span class="badge badge-object">cell cycle</span> arrest in the G 2 / M phases, which may have induced the inhibition of proliferation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29556295"
+               target="_blank">
+                                  29556295</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5584796952046760707"
+                 id="ev-2-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In melanoma, knockdown <span class="badge badge-subject">USP39</span> inhibited cell growth and induced <span class="badge badge-object">cell cycle</span> arrest and apoptosis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5927428470617926069"
+                 id="ev-2-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            A further analysis indicated suppression of <span class="badge badge-subject">USP39</span> arrested <span class="badge badge-object">cell cycle</span> progression at G2/M phase via p21 dependent way.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4599767692280979831"
+                 id="ev-2-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Our loss-of-function experiments demonstrated that knockdown of the expression of <span class="badge badge-subject">USP39</span> repressed the proliferation of leukemia cells, induced <span class="badge badge-object">cell cycle</span> arrest, and cell apoptosis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-9089344557581246890"
+                 id="ev-2-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            These results indicate that knockdown of <span class="badge badge-subject">USP39</span> induced G2/M phase <span class="badge badge-object">cell cycle</span> arrest via suppression of the CDK1 and Cyclin B1 complex.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4605877940555336885"
+                 id="ev-2-0-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Similarly, we observed that <span class="badge badge-subject">USP39</span> knockdown induced <span class="badge badge-object">cell cycle</span> arrest at G2/M phase in Jurkat cells (XREF_FIG C, D).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4732958084150422583"
+                 id="ev-2-0-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Flow cytometric analysis showed that <span class="badge badge-subject">USP39</span> knockdown induced <span class="badge badge-object">cell cycle</span> arrest at G2/M phase and enhanced cell apoptosis in 95D cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27629785"
+               target="_blank">
+                                  27629785</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7395066814963216944"
+                 id="ev-2-0-0-7">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To evaluate the role of <span class="badge badge-object">cell cycle</span>-regulatory molecules in knockdown of <span class="badge badge-subject">USP39</span> induced G2/M <span class="badge badge-object">cell cycle</span> arrest, we examined the effect of <span class="badge badge-subject">USP39</span> knockdown on <span class="badge badge-object">cell cycle</span>-regulatory molecules, including p21, CDK1 and cyclin A2.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8097351959925163549"
+                 id="ev-2-0-0-8">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            We showed that <span class="badge badge-subject">USP39</span> knockdown induced the <span class="badge badge-object">cell cycle</span> arrest at G2/M phase in two lines of leukemia cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1994681909352677905"
+                 id="ev-2-0-0-9">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> suppressed the proliferation and <span class="badge badge-object">cell cycle</span> progression, and induced apoptosis, accompanied by the reduction of EGFR in both mRNA and protein levels in PC-3 and DU145 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26959883"
+               target="_blank">
+                                  26959883</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5820064461841465172"
+                 id="ev-2-0-0-10">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Indeed, knockdown of <span class="badge badge-subject">USP39</span> induces <span class="badge badge-object">cell cycle</span> arrest and apoptosis in melanoma [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1107478267313282297"
+                 id="ev-2-0-0-11">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            This indicates that <span class="badge badge-subject">USP39</span> shRNA could strongly block (p &lt; 0.01) the <span class="badge badge-object">cell cycle</span> progression of TT cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7063112884320803705"
+                 id="ev-2-0-0-12">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP39</span> silencing via lentivirus mediated short hairpin RNA (shRNA) significantly suppressed melanoma cell proliferation, induced G0/G1 <span class="badge badge-object">cell cycle</span> phase arrest, and increased apoptosis in vitro.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27456357"
+               target="_blank">
+                                  27456357</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3408276398087346032"
+                 id="ev-2-0-0-13">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Silencing of <span class="badge badge-subject">USP39</span> induced cell apoptosis and <span class="badge badge-object">cell cycle</span> arrest at G2/M phase.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29328477"
+               target="_blank">
+                                  29328477</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2969409107092744048"
+                 id="ev-2-0-0-14">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Mechanism study showed that <span class="badge badge-subject">USP39</span> knockdown induced the arrest of <span class="badge badge-object">cell cycle</span> and apoptosis of leukemia cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('06e32d1d-1923-4d3c-a551-92ef5fb4721e');"
+               id="06e32d1d-1923-4d3c-a551-92ef5fb4721e_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> activates <a href='https://identifiers.org/GO:0007049' target='_blank'>cell cycle</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      12
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="06e32d1d-1923-4d3c-a551-92ef5fb4721e_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-27461311771019746"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '06e32d1d-1923-4d3c-a551-92ef5fb4721e--27461311771019746' )"
+               id="06e32d1d-1923-4d3c-a551-92ef5fb4721e--27461311771019746_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> activates <a href='https://identifiers.org/GO:0007049' target='_blank'>cell cycle</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">12 / 12</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      12
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="06e32d1d-1923-4d3c-a551-92ef5fb4721e--27461311771019746_group">
+          <div class="col">
+          <div class="container bars" id="stmt-2-1-0"
+               data-stmt_hash="-27461311771019746">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="501790018981217465"
+                 id="ev-2-1-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> induces <span class="badge badge-object">cell cycle</span> arrest and apoptosis in melanoma.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27456357"
+               target="_blank">
+                                  27456357</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2254894336874582025"
+                 id="ev-2-1-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, suppression of <span class="badge badge-subject">USP39</span> arrested <span class="badge badge-object">cell cycle</span> progression at G 2 / M phase in SMMC-7721cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25889525"
+               target="_blank">
+                                  25889525</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1956679637958250390"
+                 id="ev-2-1-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Meanwhile, knockdown of <span class="badge badge-subject">USP39</span> could arrest <span class="badge badge-object">cell cycle</span> at G2/M via cyclin dependent pathway and promoted apoptosis through PARP cleavage [XREF_BIBR - XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7616290970164829585"
+                 id="ev-2-1-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of endogenous <span class="badge badge-subject">USP39</span> expression could suppress the oncogenic properties of osteosarcoma cells and induce <span class="badge badge-object">cell cycle</span> arrest at G2/M phase, promote apoptosis through PARP cleavage.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4495367042678769504"
+                 id="ev-2-1-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> induced <span class="badge badge-object">cell cycle</span> arrest and its effect on <span class="badge badge-object">cell cycle</span>-regulatory molecules.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8905988855766578903"
+                 id="ev-2-1-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            This observation indicated that the <span class="badge badge-object">cell cycle</span> was blocked at the G2/M phase by <span class="badge badge-subject">USP39</span> knockdown in HL-60 cells (XREF_FIG A, B).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4157951871776491123"
+                 id="ev-2-1-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Taken together, our findings implicate that <span class="badge badge-subject">USP39</span> promotes the development of human leukemia by regulating <span class="badge badge-object">cell cycle</span>, survival, and proliferation of the cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30898977"
+               target="_blank">
+                                  30898977</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="9132123437426766591"
+                 id="ev-2-1-0-7">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Knockdown of <span class="badge badge-subject">USP39</span> significantly decreased cell proliferation and caused <span class="badge badge-object">cell cycle</span> arrest at G2/M phase.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4488769880386635969"
+                 id="ev-2-1-0-8">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP39</span> knockdown inhibits <span class="badge badge-object">cell cycle</span> progression.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29556295"
+               target="_blank">
+                                  29556295</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8939375434420078576"
+                 id="ev-2-1-0-9">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Taken together, these results suggest that knockdown of <span class="badge badge-subject">USP39</span> could inhibit TT cell proliferation by inducing G2/M phase <span class="badge badge-object">cell cycle</span> arrest.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4329842687589489366"
+                 id="ev-2-1-0-10">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In addition, it has been reported that overexpression of MGC-803 cells and knockdown of <span class="badge badge-subject">USP39</span> may inhibit MGC-803 cell proliferation and induce <span class="badge badge-object">cell cycle</span> arrest.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5810629240475403907"
+                 id="ev-2-1-0-11">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The mechanism by which <span class="badge badge-subject">USP39</span> knockdown arrested <span class="badge badge-object">cell cycle</span> might also affect the expression of negative and positive regulators of the <span class="badge badge-object">cell cycle</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-328cae82-2899-4c38-bae8-cb8391a3dbde"
+             onclick="toggler('tl-328cae82-2899-4c38-bae8-cb8391a3dbde')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> affects <a href='https://identifiers.org/GO:0016049' target='_blank'>cell growth</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      1
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      9
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-328cae82-2899-4c38-bae8-cb8391a3dbde_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('d3933516-039a-4d2b-a185-44b68fc2ce0f');"
+               id="d3933516-039a-4d2b-a185-44b68fc2ce0f_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> inhibits <a href='https://identifiers.org/GO:0016049' target='_blank'>cell growth</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      1
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="d3933516-039a-4d2b-a185-44b68fc2ce0f_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-11943877052105236"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'd3933516-039a-4d2b-a185-44b68fc2ce0f--11943877052105236' )"
+               id="d3933516-039a-4d2b-a185-44b68fc2ce0f--11943877052105236_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> inhibits <a href='https://identifiers.org/GO:0016049' target='_blank'>cell growth</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">5 / 5</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      1
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="d3933516-039a-4d2b-a185-44b68fc2ce0f--11943877052105236_group">
+          <div class="col">
+          <div class="container bars" id="stmt-3-0-0"
+               data-stmt_hash="-11943877052105236">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6748948112350107764"
+                 id="ev-3-0-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In melanoma, knockdown <span class="badge badge-subject">USP39</span> inhibited <span class="badge badge-object">cell growth</span> and induced cell cycle arrest and apoptosis ( xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7872299593085582750"
+                 id="ev-3-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Depletion of <span class="badge badge-subject">USP39</span> by siRNA significantly suppressed <span class="badge badge-object">cell growth</span> and decreased invasive capacity of RCC cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29328477"
+               target="_blank">
+                                  29328477</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7102090512126686270"
+                 id="ev-3-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Previous studies found that down-regulation of <span class="badge badge-subject">USP39</span> could inhibit <span class="badge badge-object">cell growth</span> and colony formation of human breast cancer cells [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25889525"
+               target="_blank">
+                                  25889525</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2505246722137690435"
+                 id="ev-3-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">USP39</span> knockdown inhibited cell proliferation and colony formation in vitro in the HepG2 cells, while upregulation of <span class="badge badge-subject">USP39</span> promoted tumor <span class="badge badge-object">cell growth</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26081192"
+               target="_blank">
+                                  26081192</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8332187135963276124"
+                 id="ev-3-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Recently, scientists reported aberrant <span class="badge badge-subject">USP39</span> expression could inhibit breast cancer <span class="badge badge-object">cell growth</span> in vitro [XREF_BIBR], however, little is known about how <span class="badge badge-subject">USP39</span> functions in human osteosarcoma and whether it can be used as an potential therapeutic target.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('89690461-514d-434b-985e-c31fa867626f');"
+               id="89690461-514d-434b-985e-c31fa867626f_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> activates <a href='https://identifiers.org/GO:0016049' target='_blank'>cell growth</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      5
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="89690461-514d-434b-985e-c31fa867626f_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-27746672561198694"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '89690461-514d-434b-985e-c31fa867626f--27746672561198694' )"
+               id="89690461-514d-434b-985e-c31fa867626f--27746672561198694_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> activates <a href='https://identifiers.org/GO:0016049' target='_blank'>cell growth</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">5 / 5</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      5
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="89690461-514d-434b-985e-c31fa867626f--27746672561198694_group">
+          <div class="col">
+          <div class="container bars" id="stmt-3-1-0"
+               data-stmt_hash="-27746672561198694">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5584796952046760707"
+                 id="ev-3-1-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In melanoma, knockdown <span class="badge badge-subject">USP39</span> inhibited <span class="badge badge-object">cell growth</span> and induced cell cycle arrest and apoptosis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="228087029149929758"
+                 id="ev-3-1-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            These findings are in agreement with <span class="badge badge-object">cell growth</span> inhibition, which suggest that <span class="badge badge-subject">USP39</span> could modulate osteosarcoma <span class="badge badge-object">cell growth</span> via cell cycle control.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28403900"
+               target="_blank">
+                                  28403900</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1928541048747527621"
+                 id="ev-3-1-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In conclusion, knockdown of <span class="badge badge-subject">USP39</span> by RNAi inhibited <span class="badge badge-object">cell growth</span> due to inactivation of the CDK1 and CyclinB complex.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26303214"
+               target="_blank">
+                                  26303214</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2822647040630772491"
+                 id="ev-3-1-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In osteosarcoma cells, a decreased <span class="badge badge-subject">USP39</span> expression inhibited <span class="badge badge-object">cell growth</span> and induced apoptosis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29805563"
+               target="_blank">
+                                  29805563</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-9157723346252744059"
+                 id="ev-3-1-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In conclusion, the inhibition of <span class="badge badge-subject">USP39</span> in CAL27 cells suppressed <span class="badge badge-object">cell growth</span> probably via induction cell cycle arrest and apoptosis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26835714"
+               target="_blank">
+                                  26835714</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-1ad94873-313e-475c-b8eb-b60b886c30b5"
+             onclick="toggler('tl-1ad94873-313e-475c-b8eb-b60b886c30b5')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> is modified</h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      8
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-1ad94873-313e-475c-b8eb-b60b886c30b5_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="c4af1cee-73a9-46d5-a99c-7fc6cfa672d0_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="31310969538868416"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'c4af1cee-73a9-46d5-a99c-7fc6cfa672d0-31310969538868416' )"
+               id="c4af1cee-73a9-46d5-a99c-7fc6cfa672d0-31310969538868416_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> is phosphorylated on S82.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">8 / 8</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      8
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="c4af1cee-73a9-46d5-a99c-7fc6cfa672d0-31310969538868416_group">
+          <div class="col">
+          <div class="container bars" id="stmt-4-0-0"
+               data-stmt_hash="31310969538868416">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2272935762649463217"
+                 id="ev-4-0-0-0">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18767875"
+               target="_blank">
+                                  18767875</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="210337549882015508"
+                 id="ev-4-0-0-1">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/17322306"
+               target="_blank">
+                                  17322306</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1036513737771771598"
+                 id="ev-4-0-0-2">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18452278"
+               target="_blank">
+                                  18452278</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8706796025979479961"
+                 id="ev-4-0-0-3">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/20058876"
+               target="_blank">
+                                  20058876</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4506639791794223941"
+                 id="ev-4-0-0-4">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18669648"
+               target="_blank">
+                                  18669648</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7549237724655339571"
+                 id="ev-4-0-0-5">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/20068231"
+               target="_blank">
+                                  20068231</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7613369796365706635"
+                 id="ev-4-0-0-6">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/17287340"
+               target="_blank">
+                                  17287340</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5901341939338485731"
+                 id="ev-4-0-0-7">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19651622"
+               target="_blank">
+                                  19651622</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-8377230b-4f9c-4964-8190-c9aaa5f68583"
+             onclick="toggler('tl-8377230b-4f9c-4964-8190-c9aaa5f68583')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> affects <a href='https://identifiers.org/hgnc:3236' target='_blank'>EGFR</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-8377230b-4f9c-4964-8190-c9aaa5f68583_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="7ee9453f-45ff-4e33-b5b7-87126cd1bfc3_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-2315912069498841"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '7ee9453f-45ff-4e33-b5b7-87126cd1bfc3--2315912069498841' )"
+               id="7ee9453f-45ff-4e33-b5b7-87126cd1bfc3--2315912069498841_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:20071' target='_blank'>USP39</a> activates <a href='https://identifiers.org/hgnc:3236' target='_blank'>EGFR</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">3 / 3</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="7ee9453f-45ff-4e33-b5b7-87126cd1bfc3--2315912069498841_group">
+          <div class="col">
+          <div class="container bars" id="stmt-5-0-0"
+               data-stmt_hash="-2315912069498841">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3012466490946041872"
+                 id="ev-5-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The results demonstrated that the level of the 3 &#x27;-end of <span class="badge badge-object">EGFR</span> decreased (P = 0.0015) more sharply than that of the 5 &#x27;-end (P = 0.0069), and the ratio ofthe 3 &#x27;-end to 5 &#x27;-end levels was significant decreased (P = 0.0297), implying that knockdown of <span class="badge badge-subject">USP39</span> might inhibit the transcription elongation of <span class="badge badge-object">EGFR</span>, and might produce unstable <span class="badge badge-object">EGFR</span> mRNA fragments lacking the 3 &#x27;-UTR.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26959883"
+               target="_blank">
+                                  26959883</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1158993533772883551"
+                 id="ev-5-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To verify whether the regulatory effect of <span class="badge badge-subject">USP39</span> was <span class="badge badge-object">EGFR</span> specific, ectopic expression of <span class="badge badge-subject">USP39</span> were performed in PC-3 and DU145 cells, which showed that overexpressed <span class="badge badge-subject">USP39</span> upregulated <span class="badge badge-object">EGFR</span> mRNA and protein levels, indicating that <span class="badge badge-object">EGFR</span> is a downstream target of <span class="badge badge-subject">USP39</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26959883"
+               target="_blank">
+                                  26959883</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3480725434144947012"
+                 id="ev-5-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            We hypothesized that <span class="badge badge-subject">USP39</span> could up-regulate <span class="badge badge-object">EGFR</span> by increasing the pre-mRNA splicing.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26959883"
+               target="_blank">
+                                  26959883</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
             
             </div>
         </div>

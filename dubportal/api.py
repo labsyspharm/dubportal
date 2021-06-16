@@ -9,6 +9,7 @@ import click
 import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
+import pystow
 import requests
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
@@ -16,8 +17,15 @@ from more_click import force_option, verbose_option
 from tqdm import tqdm
 
 import famplex
+from indra.assemblers.html import HtmlAssembler
 from indra.databases import hgnc_client
-from indra.statements import Statement, stmts_from_json
+from indra.sources.indra_db_rest import get_statements
+from indra.statements import (
+    Statement,
+    stmts_from_json,
+    stmts_from_json_file,
+    stmts_to_json_file,
+)
 
 logger = logging.getLogger(__name__)
 HERE = pathlib.Path(__file__).parent.resolve()
@@ -27,7 +35,7 @@ DATA = DATA_DUR.joinpath("DUB_website_main_v2.tsv")
 DATA_PROCESSED = DATA_DUR.joinpath("data.json")
 NDEX_LINKS = DOCS.joinpath("network_index.json")
 
-STATEMENTS_DIR = DATA_DUR.joinpath('statements')
+STATEMENTS_DIR = DATA_DUR.joinpath("statements")
 STATEMENTS_DIR.mkdir(exist_ok=True, parents=True)
 
 environment = Environment(
@@ -37,8 +45,9 @@ environment = Environment(
 index_template = environment.get_template("index.html")
 gene_template = environment.get_template("gene.html")
 about_template = environment.get_template("about.html")
+stmt_template = environment.get_template("statements_view.html")
 
-DUB = 'Deubiquitinase'
+DUB = "Deubiquitinase"
 GENE_FIXES = {
     "KRTAP21": "KRTAP21-1",  # This record has been split, apparently
     "KRTAP12": "KRTAP12-1",  # This record has been split, apparently
@@ -69,28 +78,55 @@ def get_dub_type(gene_symbol: str) -> Optional[str]:
 
 
 def get_go_type(identifier: str) -> str:
-    if pyobo.has_ancestor('go', identifier, 'go', '0008150'):
-        return 'Biological Process'
-    elif pyobo.has_ancestor('go', identifier, 'go', '0005575'):
-        return 'Cellular Component'
-    elif pyobo.has_ancestor('go', identifier, 'go', '0003674'):
-        return 'Molecular Function'
+    if pyobo.has_ancestor("go", identifier, "go", "0008150"):
+        return "Biological Process"
+    elif pyobo.has_ancestor("go", identifier, "go", "0005575"):
+        return "Cellular Component"
+    elif pyobo.has_ancestor("go", identifier, "go", "0003674"):
+        return "Molecular Function"
     else:
-        return 'Other'
+        return "Other"
+
+
+def get_cached_stmts_single(hgnc_id, force: bool = False) -> list[Statement]:
+    path = pystow.join("dubportal", "single", name=f"{hgnc_id}.json")
+    if path.is_file() and not force:
+        stmts = stmts_from_json_file(path)
+    else:
+        ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=10000)
+        stmts = filter_out_medscan(ip.statements)
+        stmts_to_json_file(stmts, path)
+    return stmts
+
+
+def filter_out_medscan(stmts: list[Statement]) -> list[Statement]:
+    logger.info("Starting medscan filter with %d statements" % len(stmts))
+    new_stmts = []
+    for stmt in stmts:
+        new_evidence = []
+        for ev in stmt.evidence:
+            if ev.source_api == "medscan":
+                continue
+            new_evidence.append(ev)
+        stmt.evidence = new_evidence
+        if new_evidence:
+            new_stmts.append(stmt)
+    logger.info("Finished medscan filter with %d statements" % len(new_stmts))
+    return new_stmts
 
 
 def get_cached_stmts(source: str, target: str, force: bool = False) -> List[Statement]:
-    path = STATEMENTS_DIR.joinpath(source, f'{target}.json')
+    path = STATEMENTS_DIR.joinpath(source, f"{target}.json")
     if path.is_file() and not force:
         with path.open() as file:
             res = json.load(file)
     else:
-        url = f'https://db.indra.bio/statements/from_agents?format=json&subject={source}&object={target}'
+        url = f"https://db.indra.bio/statements/from_agents?format=json&subject={source}&object={target}"
         res = requests.get(url).json()
         path.parent.mkdir(exist_ok=True, parents=True)
-        with path.open('w') as file:
+        with path.open("w") as file:
             json.dump(res, file, indent=2, sort_keys=True)
-    return stmts_from_json(res['statements'].values())
+    return stmts_from_json(res["statements"].values())
 
 
 def process_symbol_list(symbols):
@@ -106,46 +142,47 @@ def process_symbol_list(symbols):
 
 
 def get_processed_data():
-    all_gsea_df = pd.read_csv(DATA_DUR.joinpath('gsea.tsv'), sep='\t')
-    all_gsea_groups = all_gsea_df.groupby(by=['hgnc_id', 'hgnc_symbol'])
+    all_gsea_df = pd.read_csv(DATA_DUR.joinpath("gsea.tsv"), sep="\t")
+    all_gsea_groups = all_gsea_df.groupby(by=["hgnc_id", "hgnc_symbol"])
     symbol_to_gsea = {
-        hgnc_symbol: gsea_df
-        for (hgnc_id, hgnc_symbol), gsea_df in all_gsea_groups
+        hgnc_symbol: gsea_df for (hgnc_id, hgnc_symbol), gsea_df in all_gsea_groups
     }
 
-    with DATA_DUR.joinpath('dgea.json').open() as file:
+    with DATA_DUR.joinpath("dgea.json").open() as file:
         symbol_to_dgea = json.load(file)
 
     df = pd.read_csv(DATA, sep="\t")
-    df["fraction_cell_lines_dependent_on_DUB"].fillna('Unmeasured', inplace=True)
+    df["fraction_cell_lines_dependent_on_DUB"].fillna("Unmeasured", inplace=True)
 
     df["dub_hgnc_id"] = df["DUB"].map(hgnc_client.get_current_hgnc_id)
     df["dub_hgnc_symbol"] = df["dub_hgnc_id"].map(hgnc_client.get_hgnc_name)
     del df["DUB"]
 
     rv = {}
-    for (dub_hgnc_id, dub_hgnc_symbol), sdf in tqdm(df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]), unit='DUB'):
+    for (dub_hgnc_id, dub_hgnc_symbol), sdf in tqdm(
+        df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]), unit="DUB"
+    ):
         gsea_df: pd.DataFrame = symbol_to_gsea.get(dub_hgnc_symbol)
         if gsea_df is None:
             go = []
         else:
             go = [
                 dict(
-                    identifier=row['go_id'],
-                    name=row['go_name'],
-                    type=get_go_type(row['go_id'].removeprefix('GO:')),
-                    p=row['pvalue'],
-                    p_adj=row['p.adjust'],
-                    q=row['qvalue'],
+                    identifier=row["go_id"],
+                    name=row["go_name"],
+                    type=get_go_type(row["go_id"].removeprefix("GO:")),
+                    p=row["pvalue"],
+                    p_adj=row["p.adjust"],
+                    q=row["qvalue"],
                 )
-                for _, row in gsea_df.sort_values('qvalue', ascending=True).iterrows()
+                for _, row in gsea_df.sort_values("qvalue", ascending=True).iterrows()
             ]
 
         fraction_dependent = sdf.iloc[0]["fraction_cell_lines_dependent_on_DUB"]
-        papers = int(sdf.iloc[0]['PubMed_papers'].replace(",", ""))
+        papers = int(sdf.iloc[0]["PubMed_papers"].replace(",", ""))
 
         depmap_results = []
-        for _, row in tqdm(sdf.iterrows(), unit='dep', leave=False):
+        for _, row in tqdm(sdf.iterrows(), unit="dep", leave=False):
             depmap_gene = row["DepMap_coDependency"]
             if pd.isna(depmap_gene):
                 continue
@@ -165,11 +202,11 @@ def get_processed_data():
                 hgnc_name=pyobo.get_definition("hgnc", depmap_gene_id),
                 correlation=row["DepMap_correlation"],
                 interactions=dict(
-                    biogrid=row['Biogrid'] == 'yes',
-                    intact=row['IntAct'] == 'yes',
-                    nursa=row['NURSA'] == 'yes',
-                    pc=row['PathwayCommons'] == 'yes',
-                    ppid=row['PPID_support'] == 'yes',
+                    biogrid=row["Biogrid"] == "yes",
+                    intact=row["IntAct"] == "yes",
+                    nursa=row["NURSA"] == "yes",
+                    pc=row["PathwayCommons"] == "yes",
+                    ppid=row["PPID_support"] == "yes",
                     indra=len(stmts) > 0,
                 ),
             )
@@ -237,10 +274,14 @@ def get_rv(force: bool = True):
 
 def _d(symbols):
     return [
-        dict(identifier=identifier, symbol=symbol, name=pyobo.get_definition('hgnc', identifier))
+        dict(
+            identifier=identifier,
+            symbol=symbol,
+            name=pyobo.get_definition("hgnc", identifier),
+        )
         for identifier, symbol in (
-            (hgnc_client.get_current_hgnc_id(symbol), symbol)
-            for symbol in symbols)
+            (hgnc_client.get_current_hgnc_id(symbol), symbol) for symbol in symbols
+        )
     ]
 
 
@@ -250,7 +291,7 @@ def _d(symbols):
 def main(force: bool):
     rv = get_rv(force=force)
 
-    rows = sorted(rv.values(), key=itemgetter('hgnc_symbol'))
+    rows = sorted(rv.values(), key=itemgetter("hgnc_symbol"))
     index_html = index_template.render(rows=rows)
     with open(os.path.join(DOCS, "index.html"), "w") as file:
         print(index_html, file=file)
@@ -261,15 +302,24 @@ def main(force: bool):
     unique_dubportal = _d(sorted(set(rv) - FAMPLEX_DUBS))
     unique_famplex = _d(sorted(FAMPLEX_DUBS - set(rv)))
 
-    about_html = about_template.render(unique_famplex=unique_famplex, unique_dubportal=unique_dubportal)
-    about_dir = DOCS.joinpath('about')
+    about_html = about_template.render(
+        unique_famplex=unique_famplex, unique_dubportal=unique_dubportal
+    )
+    about_dir = DOCS.joinpath("about")
     about_dir.mkdir(exist_ok=True, parents=True)
-    with about_dir.joinpath('index.html').open('w') as file:
+    with about_dir.joinpath("index.html").open("w") as file:
         print(about_html, file=file)
 
-    for row in rows:
+    for row in tqdm(rows):
+        gene_stmts = get_cached_stmts_single(row["hgnc_id"])
+        gene_stmts = gene_stmts[:10]
+        assembler = HtmlAssembler(gene_stmts)
+        stmt_html = assembler.make_model(template=stmt_template)
+        import markupsafe
         gene_html = gene_template.render(
-            record=row, ndex=ndex_links.get(row["hgnc_symbol"])
+            record=row,
+            ndex=ndex_links.get(row["hgnc_symbol"]),
+            stmt_html=markupsafe.Markup(stmt_html),
         )
         directory = DOCS.joinpath(row["hgnc_symbol"])
         directory.mkdir(exist_ok=True, parents=True)

@@ -135,7 +135,7 @@
                     
                     
                 </dl>
-                <h2>DepMap Correlation Analysis</h2>
+                <h2>DepMap Analysis</h2>
                 <p>
                     The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled
                     CRISPR-Cas9 knockout proliferation screen conducted in more than 700 cancer cell lines spanning many
@@ -160,6 +160,7 @@
                     in the Broad Institute's <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity
                     Map (CMap)</a>.
                 </p>
+                <h3>DepMap Correlations</h3>
                 <table class="table table-striped table-hover" id="table-terms">
                     <thead>
                     <tr>
@@ -438,7 +439,7 @@
                     
                     </tbody>
                 </table>
-                <h2>GO Term Enrichment</h2>
+                <h2>Dependency GO Term Enrichment</h2>
                 <p>
                     Gene set enrichment analysis was done on the genes correlated with ZRANB1using the
                     terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the<a
@@ -467,11 +468,12 @@
                     
                     </tbody>
                 </table>
-                <h2>Knockdown Analysis</h2>
+                <h2>Transcriptomics</h2>
                 <p>
                     The following table shows the significantly differentially expressed genes after knocking
                     down ZRANB1.
                 </p>
+                <h3>Knockdown Differtial Expression</h3>
                 <table class="table table-striped table-hover" id="dgea">
                     <thead>
                     <tr>
@@ -1086,6 +1088,7095 @@
                     
                     </tbody>
                 </table>
+                <h2>INDRA Statements</h2>
+                
+    <!-- Toggle a hidden element -->
+    <script>
+        let ALL_COLLAPSED = true;
+
+        function toggler(short_name_key) {
+            /**
+             * Toggle the info list elements by changing their class.
+             */
+                // Find the group associated with this heading.
+            let el = document.getElementById(short_name_key + "_group");
+
+            // Toggle the group class between the invisible one and the visible one.
+            if (el.classList.contains("group"))
+                el.classList.replace("group", "group_shown");
+            else
+                el.classList.replace("group_shown", "group");
+        }
+
+        async function getPubmedInfoByPMID(pmid) {
+            /**
+             * Get the Pubmed title and author from Entrez.
+             */
+                // Trim the PMID because it may have a lot of spaces in it.
+            let id = pmid.trim();
+
+            // Get the data from entrez in JSON format.
+            const entrez_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi';
+            let url = `${entrez_url}?id=${id}&retmode=json&db=pubmed`;
+            const resp = await fetch(url, {method: 'POST'});
+            if (resp.status !== 200)
+                return "Failed to load.";
+            const data = await resp.json();
+
+            // Extract and format the title from the result.
+            const pmd = data.result[id];
+            let auth_str = '';
+            let n = 0;
+            if (pmd.authors)
+                for (let author of pmd.authors) {
+                    if (n > 2) {
+                        auth_str += ', ...';
+                        break;
+                    }
+                    auth_str += author.name;
+                    if (n < pmd.authors.length) {
+                        auth_str += ', ';
+                    }
+                    n += 1;
+                }
+            return `${auth_str}, "${pmd.title}", ${pmd.source}, ${pmd.pubdate}`;
+        }
+
+        function setPMIDlinkTitle(pmid, link_tag) {
+            // Modify link hover text
+            getPubmedInfoByPMID(pmid).then(title => link_tag.title = title);
+        }
+
+        function populatePMIDlinkTitles() {
+            // Loop all pmid link nodes and set title
+            let pmid_link_array = document.getElementsByClassName("pmid_link");
+            for (let link_obj of pmid_link_array) {
+                let pmid = link_obj.textContent;
+                setPMIDlinkTitle(pmid, link_obj)
+            }
+        }
+
+        // Expand/collapse all
+        function expandCollapseAll() {
+            let expColBtn = document.getElementById('expand-collapse-all');
+
+            // Expand all; set ALL_COLLAPSED = false;
+            let show = ALL_COLLAPSED;
+            if (ALL_COLLAPSED) {
+                ALL_COLLAPSED = false;
+                expColBtn.textContent = 'Collapse All';
+                // Collapse all; set ALL_COLLAPSED = true;
+            } else {
+                ALL_COLLAPSED = true;
+                expColBtn.textContent = 'Expand All';
+            }
+
+            // Loop all tags
+            let old_c, new_c;
+            if (show) {
+                old_c = "group";
+                new_c = "group_shown";
+            } else {
+                old_c = "group_shown";
+                new_c = "group";
+            }
+
+            let elements = document.getElementsByClassName(old_c);
+            let elem_arr = Array();
+            for (let el of elements) {
+                elem_arr.push(el);
+            }
+            elem_arr.forEach(el => {
+                el.classList.replace(old_c, new_c);
+            });
+        }
+
+        
+    </script>
+    <style>
+        
+            
+                .source-psp {
+                    background-color: #bebada;
+                    color: black;
+                }
+            
+                .source-cbn {
+                    background-color: #fdb462;
+                    color: black;
+                }
+            
+                .source-pc {
+                    background-color: #b3de69;
+                    color: black;
+                }
+            
+                .source-bel_lc {
+                    background-color: #80b1d3;
+                    color: black;
+                }
+            
+                .source-signor {
+                    background-color: #bc80bd;
+                    color: black;
+                }
+            
+                .source-biogrid {
+                    background-color: #fccde5;
+                    color: black;
+                }
+            
+                .source-lincs_drug {
+                    background-color: #fb8072;
+                    color: black;
+                }
+            
+                .source-tas {
+                    background-color: #d9d9d9;
+                    color: black;
+                }
+            
+                .source-hprd {
+                    background-color: #8dd3c7;
+                    color: black;
+                }
+            
+                .source-trrust {
+                    background-color: #ffed6f;
+                    color: black;
+                }
+            
+                .source-ctd {
+                    background-color: #ccebc5;
+                    color: black;
+                }
+            
+                .source-vhn {
+                    background-color: #e0e03d;
+                    color: black;
+                }
+            
+                .source-pe {
+                    background-color: #ffe8f4;
+                    color: black;
+                }
+            
+                .source-drugbank {
+                    background-color: #acfcfc;
+                    color: black;
+                }
+            
+                .source-omnipath {
+                    background-color: #dd99ff;
+                    color: black;
+                }
+            
+                .source-conib {
+                    background-color: #00d4a6;
+                    color: black;
+                }
+            
+                .source-crog {
+                    background-color: #bebada;
+                    color: black;
+                }
+            
+                .source-dgi {
+                    background-color: #fdb462;
+                    color: black;
+                }
+            
+        
+            
+                .source-rlimsp {
+                    background-color: #8dd3c7;
+                    color: white;
+                }
+            
+                .source-isi {
+                    background-color: #d9d9d9;
+                    color: white;
+                }
+            
+                .source-tees {
+                    background-color: #fb8072;
+                    color: white;
+                }
+            
+                .source-geneways {
+                    background-color: #fccde5;
+                    color: white;
+                }
+            
+                .source-eidos {
+                    background-color: #bc80bd;
+                    color: white;
+                }
+            
+                .source-trips {
+                    background-color: #80b1d3;
+                    color: white;
+                }
+            
+                .source-medscan {
+                    background-color: #b3de69;
+                    color: white;
+                }
+            
+                .source-sparser {
+                    background-color: #fdb462;
+                    color: white;
+                }
+            
+                .source-reach {
+                    background-color: #bebada;
+                    color: white;
+                }
+            
+        
+
+        .badge-source {
+            font-size: 8pt;
+            margin: 0;
+        }
+
+
+        .nvp {
+        }
+
+        .nvm {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .src-api {
+            overflow-x: hidden;
+        }
+
+        .group, .group-shown {
+        }
+
+        .group {
+            display: none;
+        }
+
+        .super_group_heading, .group_heading, .statement, .evidence {
+        }
+
+        .evidence, .evidence-text {
+            margin-bottom: 10px;
+        }
+
+        .evidence-text {
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+
+        .super_group_heading, .group_heading {
+            cursor: pointer;
+        }
+
+        .super_group_heading:hover, .group_heading:hover {
+            background-color: #f2f2f2;
+        }
+
+        .badge-subject {
+            background-color: #4a36aa;
+            color: #FFFFFF;
+        }
+
+        .badge-object {
+            background-color: #2d8e4c;
+            color: #FFFFFF;
+        }
+
+        .badge-other {
+            background-color: #606060;
+            color: #FFFFFF;
+        }
+
+        .curation-row {
+            overflow-y: hidden;
+        }
+
+        .curation_toggle {
+            cursor: pointer;
+        }
+
+        .pmid_link, .pmcid_link, .doi_link {
+            display: block;
+        }
+
+    </style>
+
+
+
+
+
+
+    <div class="statements-header">
+        <div class="col col-auto text-center">
+    
+        
+        
+            
+                <span class="badge badge-source source-psp" title="psp">
+                      psp
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-cbn" title="cbn">
+                      cbn
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-pc" title="pc">
+                      pc
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-bel_lc" title="bel_lc">
+                      bel_lc
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-signor" title="signor">
+                      signor
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      biogrid
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-lincs_drug" title="lincs_drug">
+                      lincs_drug
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-tas" title="tas">
+                      tas
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      hprd
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-trrust" title="trrust">
+                      trrust
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-ctd" title="ctd">
+                      ctd
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-vhn" title="vhn">
+                      vhn
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-pe" title="pe">
+                      pe
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-drugbank" title="drugbank">
+                      drugbank
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-omnipath" title="omnipath">
+                      omnipath
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-conib" title="conib">
+                      conib
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-crog" title="crog">
+                      crog
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-dgi" title="dgi">
+                      dgi
+                </span>
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+                <span class="badge badge-source source-rlimsp" title="rlimsp">
+                      rlimsp
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-isi" title="isi">
+                      isi
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-tees" title="tees">
+                      tees
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-geneways" title="geneways">
+                      geneways
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-eidos" title="eidos">
+                      eidos
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-trips" title="trips">
+                      trips
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-medscan" title="medscan">
+                      medscan
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      sparser
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      reach
+                </span>
+            
+        
+    
+</div>
+    </div>
+
+
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-b4964a0f-9ecb-40fa-8912-e8ccf149a858"
+             onclick="toggler('tl-b4964a0f-9ecb-40fa-8912-e8ccf149a858')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> affects <a href='https://identifiers.org/hgnc:12468' target='_blank'>UBC</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      18
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-b4964a0f-9ecb-40fa-8912-e8ccf149a858_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="d7138cf3-c69e-4552-ad80-fc3df55f7493_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-19797308145542467"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'd7138cf3-c69e-4552-ad80-fc3df55f7493--19797308145542467' )"
+               id="d7138cf3-c69e-4552-ad80-fc3df55f7493--19797308145542467_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:12468' target='_blank'>UBC</a> binds <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">18 / 18</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      18
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="d7138cf3-c69e-4552-ad80-fc3df55f7493--19797308145542467_group">
+          <div class="col">
+          <div class="container bars" id="stmt-0-0-0"
+               data-stmt_hash="-19797308145542467">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4633636955786087099"
+                 id="ev-0-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19373254"
+               target="_blank">
+                                  19373254</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2561181242930603537"
+                 id="ev-0-0-0-1">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28190767"
+               target="_blank">
+                                  28190767</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2252231783745388171"
+                 id="ev-0-0-0-2">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25527291"
+               target="_blank">
+                                  25527291</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7971100407434703359"
+                 id="ev-0-0-0-3">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19373254"
+               target="_blank">
+                                  19373254</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3402022022064227777"
+                 id="ev-0-0-0-4">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25752577"
+               target="_blank">
+                                  25752577</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4752753683683683793"
+                 id="ev-0-0-0-5">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25752577"
+               target="_blank">
+                                  25752577</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7510679036562581636"
+                 id="ev-0-0-0-6">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/20622874"
+               target="_blank">
+                                  20622874</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-9004114051161053423"
+                 id="ev-0-0-0-7">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25752573"
+               target="_blank">
+                                  25752573</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6316716317323430057"
+                 id="ev-0-0-0-8">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25752573"
+               target="_blank">
+                                  25752573</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1631173468070077890"
+                 id="ev-0-0-0-9">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18281465"
+               target="_blank">
+                                  18281465</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-898411714958594954"
+                 id="ev-0-0-0-10">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18281465"
+               target="_blank">
+                                  18281465</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7974695317004170909"
+                 id="ev-0-0-0-11">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25752577"
+               target="_blank">
+                                  25752577</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-621371363635071821"
+                 id="ev-0-0-0-12">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23827681"
+               target="_blank">
+                                  23827681</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3889252657077726293"
+                 id="ev-0-0-0-13">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18281465"
+               target="_blank">
+                                  18281465</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2153992303819615622"
+                 id="ev-0-0-0-14">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25752577"
+               target="_blank">
+                                  25752577</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8715138000792398920"
+                 id="ev-0-0-0-15">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25752573"
+               target="_blank">
+                                  25752573</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3205665869100779393"
+                 id="ev-0-0-0-16">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22157957"
+               target="_blank">
+                                  22157957</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5804174551202287537"
+                 id="ev-0-0-0-17">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22157957"
+               target="_blank">
+                                  22157957</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-5bc0ae59-4c80-4e78-b4dd-c266d128e320"
+             onclick="toggler('tl-5bc0ae59-4c80-4e78-b4dd-c266d128e320')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> affects <a href='https://identifiers.org/hgnc:3527' target='_blank'>EZH2</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      5
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-5bc0ae59-4c80-4e78-b4dd-c266d128e320_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="4bf32130-a7ce-4bf7-8b16-4228f5bb85eb_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-17422290453257458"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '4bf32130-a7ce-4bf7-8b16-4228f5bb85eb--17422290453257458' )"
+               id="4bf32130-a7ce-4bf7-8b16-4228f5bb85eb--17422290453257458_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> binds <a href='https://identifiers.org/hgnc:3527' target='_blank'>EZH2</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">8 / 8</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      5
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="4bf32130-a7ce-4bf7-8b16-4228f5bb85eb--17422290453257458_group">
+          <div class="col">
+          <div class="container bars" id="stmt-1-0-0"
+               data-stmt_hash="-17422290453257458">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2134542653121344975"
+                 id="ev-1-0-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">ZRANB1</span> binds, deubiquitinates, and stabilizes <span class="badge badge-other">EZH2</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29669287"
+               target="_blank">
+                                  29669287</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2134542653121344975"
+                 id="ev-1-0-0-1">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">ZRANB1</span> binds, deubiquitinates, and stabilizes <span class="badge badge-other">EZH2</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30150556"
+               target="_blank">
+                                  30150556</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2011209387570747287"
+                 id="ev-1-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">ZRANB1</span> binds, deubiquitinates, and stabilizes <span class="badge badge-other">EZH2</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30150556"
+               target="_blank">
+                                  30150556</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2011209387570747287"
+                 id="ev-1-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">ZRANB1</span> binds, deubiquitinates, and stabilizes <span class="badge badge-other">EZH2</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29669287"
+               target="_blank">
+                                  29669287</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1565914686326143945"
+                 id="ev-1-0-0-4">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, binding-domain mapping analysis showed that both the N-terminal region (EID + D1) and the CXC domain of <span class="badge badge-other">EZH2</span> could interact with <span class="badge badge-other">ZRANB1</span> ( xref , xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29669287"
+               target="_blank">
+                                  29669287</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6334651316795210663"
+                 id="ev-1-0-0-5">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            It should be noted that all three truncation mutants of <span class="badge badge-other">ZRANB1</span> were also localized in both the nucleus and the cytoplasm ( xref ), suggesting that the M1 and M2 mutants of <span class="badge badge-other">ZRANB1</span> did not interact with <span class="badge badge-other">EZH2</span> because they lack the OTU domain, not because they were not localized in the nucleus.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29669287"
+               target="_blank">
+                                  29669287</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6577512630426942477"
+                 id="ev-1-0-0-6">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Deletion analysis using various truncation mutants (M1, NZFs; M2, NZFs + AnkUBD; M3, AnkUBD + OTU; xref ) demonstrated that the OTU domain not only mediated the physical interaction of <span class="badge badge-other">ZRANB1</span> with <span class="badge badge-other">EZH2</span> ( xref ) but also was required for the stabilization of <span class="badge badge-other">EZH2</span> by <span class="badge badge-other">ZRANB1</span> ( xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29669287"
+               target="_blank">
+                                  29669287</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7813562328493727268"
+                 id="ev-1-0-0-7">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, we observed the interaction of <span class="badge badge-other">ZRANB1</span> with endogenous <span class="badge badge-other">EZH2</span> and SUZ12 (XREF_SUPPLEMENTARY) and, reciprocally, the interaction of either exogenous (XREF_SUPPLEMENTARY) or endogenous (XREF_FIG) <span class="badge badge-other">EZH2</span> with endogenous <span class="badge badge-other">ZRANB1</span>, SUZ12, and EED, suggesting that <span class="badge badge-other">ZRANB1</span> may regulate <span class="badge badge-other">EZH2</span> that is present in the PRC2.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29669287"
+               target="_blank">
+                                  29669287</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-f3df842e-05e2-400c-a18f-d145507f3965"
+             onclick="toggler('tl-f3df842e-05e2-400c-a18f-d145507f3965')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> affects <a href='https://identifiers.org/hgnc:12428' target='_blank'>TWIST1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      7
+                </span>
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-f3df842e-05e2-400c-a18f-d145507f3965_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="f6699f9d-eb21-43b1-97c7-720175c9d964_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="33070978020909263"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'f6699f9d-eb21-43b1-97c7-720175c9d964-33070978020909263' )"
+               id="f6699f9d-eb21-43b1-97c7-720175c9d964-33070978020909263_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:12428' target='_blank'>TWIST1</a> binds <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">7 / 7</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      7
+                </span>
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="f6699f9d-eb21-43b1-97c7-720175c9d964-33070978020909263_group">
+          <div class="col">
+          <div class="container bars" id="stmt-2-0-0"
+               data-stmt_hash="33070978020909263">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2769905267960632928"
+                 id="ev-2-0-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Thus, we concluded that <span class="badge badge-other">Trabid</span> directly interacts with <span class="badge badge-other">Twist1</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5263478322939294745"
+                 id="ev-2-0-0-1">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To elucidate the mechanisms by which <span class="badge badge-other">Trabid</span> suppresses <span class="badge badge-other">Twist1</span>, we firstly examined the interaction between <span class="badge badge-other">Trabid</span> and <span class="badge badge-other">Twist1</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4204081930376680313"
+                 id="ev-2-0-0-2">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            It was observed that GST-full-length (FL) <span class="badge badge-other">Trabid</span> and <span class="badge badge-other">Trabid</span> (1–354) strongly interacted with <span class="badge badge-other">Twist1</span>, whereas GST-<span class="badge badge-other">Trabid</span> (355–708) showed no interaction (Fig.  xref ), indicating that the N-terminal of <span class="badge badge-other">Trabid</span> should contain a primary interaction domain for <span class="badge badge-other">Twist1</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2526830667517584946"
+                 id="ev-2-0-0-3">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Mechanistically, <span class="badge badge-other">Trabid</span> forms a complex with <span class="badge badge-other">Twist1</span> and specifically cleaves RNF8-induced K63-linked poly-ubiquitin chains from <span class="badge badge-other">Twist1</span>, which enhances the association of <span class="badge badge-other">Twist1</span> with β-TrCP1 and allows for subsequent K48-linked ubiquitination of <span class="badge badge-other">Twist1</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6694176966585924268"
+                 id="ev-2-0-0-4">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Chromatin immunoprecipitation (ChIP) further confirmed that <span class="badge badge-other">Twist1</span> directly binds to the <span class="badge badge-other">Trabid</span> promoter in HCC cells (Fig.  xref ) and clinical HCC tissues (Fig.  xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2603556820665148168"
+                 id="ev-2-0-0-5">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            It suggests that <span class="badge badge-other">Trabid</span>-<span class="badge badge-other">Twist1</span> inverse regulation in HCC was associated with reduced survival, and that <span class="badge badge-other">Trabid</span> downregulation in combination with RNF8 or <span class="badge badge-other">Twist1</span> overexpression is a stronger predictor of poor survival than <span class="badge badge-other">Trabid</span> alone (Fig.  xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1054361031107244758"
+                 id="ev-2-0-0-6">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            We demonstrate the following: (1) <span class="badge badge-other">Trabid</span> expression is significantly downregulated in HCC cell lines and two independent cohorts of HCC patients’ tissues; (2) <span class="badge badge-other">Trabid</span> expression is negatively correlated with pathological grading, recurrence, and poor survival; (3) Reintroduction of <span class="badge badge-other">Trabid</span> in HCC cells significantly decreases HCC growth and pulmonary metastasis; (4) The inhibitory effect of <span class="badge badge-other">Trabid</span> on HCC development occurs at least partially through regulation of <span class="badge badge-other">Twist1</span> activity; (5) <span class="badge badge-other">Trabid</span> forms a complex with <span class="badge badge-other">Twist1</span> and specifically cleaves RNF8-induced K63-linked poly-ubiquitin chains from <span class="badge badge-other">Twist1</span>, which enhances the association of <span class="badge badge-other">Twist1</span> with β-TrCP1 and allows for subsequent K48-linked ubiquitination of <span class="badge badge-other">Twist1</span>; (6) AKT-mediated phosphorylation at Ser78/Thr117 is essential for the role of <span class="badge badge-other">Trabid</span> in negatively regulating <span class="badge badge-other">Twist1</span> signaling; and (7) <span class="badge badge-other">Twist1</span> negatively regulates the promoter activity of <span class="badge badge-other">Trabid</span>, indicating a double-negative feedback loop.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-0c2d5c08-c020-42ff-9eb8-6b0dbbdc4ef1"
+             onclick="toggler('tl-0c2d5c08-c020-42ff-9eb8-6b0dbbdc4ef1')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> affects <a href='https://identifiers.org/hgnc:583' target='_blank'>APC</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      2
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-0c2d5c08-c020-42ff-9eb8-6b0dbbdc4ef1_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="554cbc81-b9d1-4b26-bec6-f6201f6712f3_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="13413989327182131"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '554cbc81-b9d1-4b26-bec6-f6201f6712f3-13413989327182131' )"
+               id="554cbc81-b9d1-4b26-bec6-f6201f6712f3-13413989327182131_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> binds <a href='https://identifiers.org/hgnc:583' target='_blank'>APC</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">7 / 7</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      2
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="554cbc81-b9d1-4b26-bec6-f6201f6712f3-13413989327182131_group">
+          <div class="col">
+          <div class="container bars" id="stmt-3-0-0"
+               data-stmt_hash="13413989327182131">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-976034426140542004"
+                 id="ev-3-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18281465"
+               target="_blank">
+                                  18281465</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6584505128658549556"
+                 id="ev-3-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">Trabid</span> binds to and deubiquitylates <span class="badge badge-other">APC</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24594309"
+               target="_blank">
+                                  24594309</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8105094025266673634"
+                 id="ev-3-0-0-2">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18281465"
+               target="_blank">
+                                  18281465</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="788080079081427747"
+                 id="ev-3-0-0-3">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">TRABID</span> binds <span class="badge badge-other">APC</span> but rather then antagonizing the proteasomal turnover of <span class="badge badge-other">APC</span> <span class="badge badge-other">TRABID</span> inhibits <span class="badge badge-other">APC</span> activity through preferential deubiquitination of K63 linked ubiquitin chains.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28923280"
+               target="_blank">
+                                  28923280</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3834114183413046589"
+                 id="ev-3-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            However, the direct interaction between <span class="badge badge-other">APC</span> and <span class="badge badge-other">TRABID</span> was not detected [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22584113"
+               target="_blank">
+                                  22584113</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-586853043439100528"
+                 id="ev-3-0-0-5">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            However, the direct interaction between <span class="badge badge-other">APC</span> and <span class="badge badge-other">TRABID</span> was not detected [ xref ].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22584113"
+               target="_blank">
+                                  22584113</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3234745156392334479"
+                 id="ev-3-0-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">TRABID</span> binds <span class="badge badge-other">APC</span> but rather then antagonizing the proteasomal turnover of <span class="badge badge-other">APC</span> <span class="badge badge-other">TRABID</span> inhibits <span class="badge badge-other">APC</span> activity through preferential deubiquitination of K63 linked ubiquitin chains.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28923280"
+               target="_blank">
+                                  28923280</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-e0722bb1-5e4f-47cd-9af2-3d5b27679d8f"
+             onclick="toggler('tl-e0722bb1-5e4f-47cd-9af2-3d5b27679d8f')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:12428' target='_blank'>TWIST1</a> affects <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      7
+                </span>
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-e0722bb1-5e4f-47cd-9af2-3d5b27679d8f_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="ac6937d2-cbf5-4345-99d7-ba5ef14f8125_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="33070978020909263"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'ac6937d2-cbf5-4345-99d7-ba5ef14f8125-33070978020909263' )"
+               id="ac6937d2-cbf5-4345-99d7-ba5ef14f8125-33070978020909263_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:12428' target='_blank'>TWIST1</a> binds <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">7 / 7</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      7
+                </span>
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="ac6937d2-cbf5-4345-99d7-ba5ef14f8125-33070978020909263_group">
+          <div class="col">
+          <div class="container bars" id="stmt-4-0-0"
+               data-stmt_hash="33070978020909263">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2769905267960632928"
+                 id="ev-4-0-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Thus, we concluded that <span class="badge badge-other">Trabid</span> directly interacts with <span class="badge badge-other">Twist1</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5263478322939294745"
+                 id="ev-4-0-0-1">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To elucidate the mechanisms by which <span class="badge badge-other">Trabid</span> suppresses <span class="badge badge-other">Twist1</span>, we firstly examined the interaction between <span class="badge badge-other">Trabid</span> and <span class="badge badge-other">Twist1</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4204081930376680313"
+                 id="ev-4-0-0-2">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            It was observed that GST-full-length (FL) <span class="badge badge-other">Trabid</span> and <span class="badge badge-other">Trabid</span> (1–354) strongly interacted with <span class="badge badge-other">Twist1</span>, whereas GST-<span class="badge badge-other">Trabid</span> (355–708) showed no interaction (Fig.  xref ), indicating that the N-terminal of <span class="badge badge-other">Trabid</span> should contain a primary interaction domain for <span class="badge badge-other">Twist1</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2526830667517584946"
+                 id="ev-4-0-0-3">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Mechanistically, <span class="badge badge-other">Trabid</span> forms a complex with <span class="badge badge-other">Twist1</span> and specifically cleaves RNF8-induced K63-linked poly-ubiquitin chains from <span class="badge badge-other">Twist1</span>, which enhances the association of <span class="badge badge-other">Twist1</span> with β-TrCP1 and allows for subsequent K48-linked ubiquitination of <span class="badge badge-other">Twist1</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6694176966585924268"
+                 id="ev-4-0-0-4">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Chromatin immunoprecipitation (ChIP) further confirmed that <span class="badge badge-other">Twist1</span> directly binds to the <span class="badge badge-other">Trabid</span> promoter in HCC cells (Fig.  xref ) and clinical HCC tissues (Fig.  xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2603556820665148168"
+                 id="ev-4-0-0-5">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            It suggests that <span class="badge badge-other">Trabid</span>-<span class="badge badge-other">Twist1</span> inverse regulation in HCC was associated with reduced survival, and that <span class="badge badge-other">Trabid</span> downregulation in combination with RNF8 or <span class="badge badge-other">Twist1</span> overexpression is a stronger predictor of poor survival than <span class="badge badge-other">Trabid</span> alone (Fig.  xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1054361031107244758"
+                 id="ev-4-0-0-6">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            We demonstrate the following: (1) <span class="badge badge-other">Trabid</span> expression is significantly downregulated in HCC cell lines and two independent cohorts of HCC patients’ tissues; (2) <span class="badge badge-other">Trabid</span> expression is negatively correlated with pathological grading, recurrence, and poor survival; (3) Reintroduction of <span class="badge badge-other">Trabid</span> in HCC cells significantly decreases HCC growth and pulmonary metastasis; (4) The inhibitory effect of <span class="badge badge-other">Trabid</span> on HCC development occurs at least partially through regulation of <span class="badge badge-other">Twist1</span> activity; (5) <span class="badge badge-other">Trabid</span> forms a complex with <span class="badge badge-other">Twist1</span> and specifically cleaves RNF8-induced K63-linked poly-ubiquitin chains from <span class="badge badge-other">Twist1</span>, which enhances the association of <span class="badge badge-other">Twist1</span> with β-TrCP1 and allows for subsequent K48-linked ubiquitination of <span class="badge badge-other">Twist1</span>; (6) AKT-mediated phosphorylation at Ser78/Thr117 is essential for the role of <span class="badge badge-other">Trabid</span> in negatively regulating <span class="badge badge-other">Twist1</span> signaling; and (7) <span class="badge badge-other">Twist1</span> negatively regulates the promoter activity of <span class="badge badge-other">Trabid</span>, indicating a double-negative feedback loop.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29748601"
+               target="_blank">
+                                  29748601</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-3e1879f4-5631-48dd-9a73-20d582b2da64"
+             onclick="toggler('tl-3e1879f4-5631-48dd-9a73-20d582b2da64')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:583' target='_blank'>APC</a> affects <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      2
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-3e1879f4-5631-48dd-9a73-20d582b2da64_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="f190ef93-aa93-4303-a593-2f85f075c180_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="13413989327182131"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'f190ef93-aa93-4303-a593-2f85f075c180-13413989327182131' )"
+               id="f190ef93-aa93-4303-a593-2f85f075c180-13413989327182131_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> binds <a href='https://identifiers.org/hgnc:583' target='_blank'>APC</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">7 / 7</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      2
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="f190ef93-aa93-4303-a593-2f85f075c180-13413989327182131_group">
+          <div class="col">
+          <div class="container bars" id="stmt-5-0-0"
+               data-stmt_hash="13413989327182131">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-976034426140542004"
+                 id="ev-5-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18281465"
+               target="_blank">
+                                  18281465</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6584505128658549556"
+                 id="ev-5-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">Trabid</span> binds to and deubiquitylates <span class="badge badge-other">APC</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24594309"
+               target="_blank">
+                                  24594309</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8105094025266673634"
+                 id="ev-5-0-0-2">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18281465"
+               target="_blank">
+                                  18281465</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="788080079081427747"
+                 id="ev-5-0-0-3">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">TRABID</span> binds <span class="badge badge-other">APC</span> but rather then antagonizing the proteasomal turnover of <span class="badge badge-other">APC</span> <span class="badge badge-other">TRABID</span> inhibits <span class="badge badge-other">APC</span> activity through preferential deubiquitination of K63 linked ubiquitin chains.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28923280"
+               target="_blank">
+                                  28923280</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3834114183413046589"
+                 id="ev-5-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            However, the direct interaction between <span class="badge badge-other">APC</span> and <span class="badge badge-other">TRABID</span> was not detected [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22584113"
+               target="_blank">
+                                  22584113</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-586853043439100528"
+                 id="ev-5-0-0-5">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            However, the direct interaction between <span class="badge badge-other">APC</span> and <span class="badge badge-other">TRABID</span> was not detected [ xref ].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22584113"
+               target="_blank">
+                                  22584113</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3234745156392334479"
+                 id="ev-5-0-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">TRABID</span> binds <span class="badge badge-other">APC</span> but rather then antagonizing the proteasomal turnover of <span class="badge badge-other">APC</span> <span class="badge badge-other">TRABID</span> inhibits <span class="badge badge-other">APC</span> activity through preferential deubiquitination of K63 linked ubiquitin chains.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28923280"
+               target="_blank">
+                                  28923280</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-8e4e5d02-ee9d-47fe-8a01-cd64717f42ad"
+             onclick="toggler('tl-8e4e5d02-ee9d-47fe-8a01-cd64717f42ad')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> affects <a href='https://identifiers.org/fplx:IL12' target='_blank'>IL12</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      5
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-8e4e5d02-ee9d-47fe-8a01-cd64717f42ad_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="5c89b6e0-96a0-41ff-b01f-f32419926292_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="16692412248571512"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '5c89b6e0-96a0-41ff-b01f-f32419926292-16692412248571512' )"
+               id="5c89b6e0-96a0-41ff-b01f-f32419926292-16692412248571512_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> activates <a href='https://identifiers.org/fplx:IL12' target='_blank'>IL12</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">5 / 5</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      5
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="5c89b6e0-96a0-41ff-b01f-f32419926292-16692412248571512_group">
+          <div class="col">
+          <div class="container bars" id="stmt-6-0-0"
+               data-stmt_hash="16692412248571512">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="375051399492110736"
+                 id="ev-6-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Our data further suggested that <span class="badge badge-subject">Trabid</span> mediated <span class="badge badge-object">IL-12</span> and IL-23 induction plays an important role in mediating inflammatory T cell responses and the pathogenesis of EAE, an animal model of the autoimmune neuroinflammatory disease multiple sclerosis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26808229"
+               target="_blank">
+                                  26808229</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1801822410837136870"
+                 id="ev-6-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            DC-conditional deletion of <span class="badge badge-subject">Trabid</span> impairs <span class="badge badge-object">IL-12</span> and IL-23 production in DCs and the generation of Th1 and Th17 subsets of inflammatory T cells, rendering mice refractory to the induction of EAE 180.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27012466"
+               target="_blank">
+                                  27012466</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1487045313341295432"
+                 id="ev-6-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Conditional deletion of <span class="badge badge-subject">Zranb1</span> in dendritic cells impairs <span class="badge badge-object">IL-12</span> and IL-23 production and the generation of T H 1 and T H 17 subsets of inflammatory T cells, rendering mice refractory to the induction of experimental autoimmune encephalomyelitis (EAE) 191 .
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28959952"
+               target="_blank">
+                                  28959952</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3686783118938454533"
+                 id="ev-6-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Collectively, these results suggest that <span class="badge badge-subject">Trabid</span> mediates induction of <span class="badge badge-object">IL-12</span> and IL-23, thereby promoting T H 1 and T H 17 differentiation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26808229"
+               target="_blank">
+                                  26808229</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8910638842561133361"
+                 id="ev-6-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To elucidate the molecular mechanism by which <span class="badge badge-subject">Trabid</span> mediates induction of <span class="badge badge-object">IL-12</span> family of cytokines, we examined the role of <span class="badge badge-subject">Trabid</span> in regulating TLR mediated activation of MAP kinases (MAPKs), IkappaB kinase (IKK) and downstream transcription factors known to regulate Il12 and Il23 gene induction XREF_BIBR, XREF_BIBR, XREF_BIBR.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/26808229"
+               target="_blank">
+                                  26808229</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-e4d682b1-4bc2-44b8-91de-9915122d64ad"
+             onclick="toggler('tl-e4d682b1-4bc2-44b8-91de-9915122d64ad')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> affects <a href='https://identifiers.org/hgnc:30577' target='_blank'>MIB2</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-e4d682b1-4bc2-44b8-91de-9915122d64ad_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="09c15194-2bbe-4b83-9e33-9635488a8a6f_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="24462043399948147"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '09c15194-2bbe-4b83-9e33-9635488a8a6f-24462043399948147' )"
+               id="09c15194-2bbe-4b83-9e33-9635488a8a6f-24462043399948147_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> binds <a href='https://identifiers.org/hgnc:30577' target='_blank'>MIB2</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">4 / 4</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="09c15194-2bbe-4b83-9e33-9635488a8a6f-24462043399948147_group">
+          <div class="col">
+          <div class="container bars" id="stmt-7-0-0"
+               data-stmt_hash="24462043399948147">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7050477504602830136"
+                 id="ev-7-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Since both Mib and <span class="badge badge-other">Mib2</span> can bind to Fih-1 and <span class="badge badge-other">Trabid</span>, we next asked whether Mib and <span class="badge badge-other">Mib2</span> could promote the most C-terminal RF dependent substrate ubiquitylation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24714733"
+               target="_blank">
+                                  24714733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5583485060361634959"
+                 id="ev-7-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Mib and <span class="badge badge-other">Mib2</span> interact with deubiquitylases Usp1, Usp9 and <span class="badge badge-other">Trabid</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24714733"
+               target="_blank">
+                                  24714733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="638442079673590299"
+                 id="ev-7-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Usp1, Usp9, <span class="badge badge-other">Trabid</span> and Fih-1 also bound to zebrafish <span class="badge badge-other">Mib2</span>, a Mib homolog with similar structural domains and functions.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24714733"
+               target="_blank">
+                                  24714733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7800592092072312612"
+                 id="ev-7-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The interaction of Usp1, Usp9, <span class="badge badge-other">Trabid</span>, Fih-1 and Mib and <span class="badge badge-other">Mib2</span> were confirmed by immunoprecipitation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24714733"
+               target="_blank">
+                                  24714733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-be29fe73-f72f-4b17-a8e4-1cf551ab4f83"
+             onclick="toggler('tl-be29fe73-f72f-4b17-a8e4-1cf551ab4f83')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> affects <a href='https://identifiers.org/hgnc:20157' target='_blank'>HECTD1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      4
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-be29fe73-f72f-4b17-a8e4-1cf551ab4f83_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="c190a631-b48e-413b-b12a-3be3b2254d98_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="20982087998993302"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'c190a631-b48e-413b-b12a-3be3b2254d98-20982087998993302' )"
+               id="c190a631-b48e-413b-b12a-3be3b2254d98-20982087998993302_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> binds <a href='https://identifiers.org/hgnc:20157' target='_blank'>HECTD1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">4 / 4</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      4
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="c190a631-b48e-413b-b12a-3be3b2254d98-20982087998993302_group">
+          <div class="col">
+          <div class="container bars" id="stmt-8-0-0"
+               data-stmt_hash="20982087998993302">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4622009157083479175"
+                 id="ev-8-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23277359"
+               target="_blank">
+                                  23277359</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4178642631558284662"
+                 id="ev-8-0-0-1">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23277359"
+               target="_blank">
+                                  23277359</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="9145690182586635614"
+                 id="ev-8-0-0-2">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23277359"
+               target="_blank">
+                                  23277359</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3548481483061910954"
+                 id="ev-8-0-0-3">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19615732"
+               target="_blank">
+                                  19615732</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-56ef5842-7023-4087-ba1a-fad923e0a38e"
+             onclick="toggler('tl-56ef5842-7023-4087-ba1a-fad923e0a38e')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:30577' target='_blank'>MIB2</a> affects <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-56ef5842-7023-4087-ba1a-fad923e0a38e_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="d06944e2-c827-4f77-9f0b-4db463c65dae_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="24462043399948147"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'd06944e2-c827-4f77-9f0b-4db463c65dae-24462043399948147' )"
+               id="d06944e2-c827-4f77-9f0b-4db463c65dae-24462043399948147_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> binds <a href='https://identifiers.org/hgnc:30577' target='_blank'>MIB2</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">4 / 4</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="d06944e2-c827-4f77-9f0b-4db463c65dae-24462043399948147_group">
+          <div class="col">
+          <div class="container bars" id="stmt-9-0-0"
+               data-stmt_hash="24462043399948147">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7050477504602830136"
+                 id="ev-9-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Since both Mib and <span class="badge badge-other">Mib2</span> can bind to Fih-1 and <span class="badge badge-other">Trabid</span>, we next asked whether Mib and <span class="badge badge-other">Mib2</span> could promote the most C-terminal RF dependent substrate ubiquitylation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24714733"
+               target="_blank">
+                                  24714733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5583485060361634959"
+                 id="ev-9-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Mib and <span class="badge badge-other">Mib2</span> interact with deubiquitylases Usp1, Usp9 and <span class="badge badge-other">Trabid</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24714733"
+               target="_blank">
+                                  24714733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="638442079673590299"
+                 id="ev-9-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Usp1, Usp9, <span class="badge badge-other">Trabid</span> and Fih-1 also bound to zebrafish <span class="badge badge-other">Mib2</span>, a Mib homolog with similar structural domains and functions.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24714733"
+               target="_blank">
+                                  24714733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7800592092072312612"
+                 id="ev-9-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The interaction of Usp1, Usp9, <span class="badge badge-other">Trabid</span>, Fih-1 and Mib and <span class="badge badge-other">Mib2</span> were confirmed by immunoprecipitation.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24714733"
+               target="_blank">
+                                  24714733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-11e90980-2f1c-4757-a15d-f1f4c4e15808"
+             onclick="toggler('tl-11e90980-2f1c-4757-a15d-f1f4c4e15808')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:20157' target='_blank'>HECTD1</a> affects <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      4
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-11e90980-2f1c-4757-a15d-f1f4c4e15808_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="43ac8220-692f-46b9-9f7c-f15c46cf4e0f_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="20982087998993302"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '43ac8220-692f-46b9-9f7c-f15c46cf4e0f-20982087998993302' )"
+               id="43ac8220-692f-46b9-9f7c-f15c46cf4e0f-20982087998993302_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> binds <a href='https://identifiers.org/hgnc:20157' target='_blank'>HECTD1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">4 / 4</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      4
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="43ac8220-692f-46b9-9f7c-f15c46cf4e0f-20982087998993302_group">
+          <div class="col">
+          <div class="container bars" id="stmt-10-0-0"
+               data-stmt_hash="20982087998993302">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4622009157083479175"
+                 id="ev-10-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23277359"
+               target="_blank">
+                                  23277359</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4178642631558284662"
+                 id="ev-10-0-0-1">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23277359"
+               target="_blank">
+                                  23277359</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="9145690182586635614"
+                 id="ev-10-0-0-2">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23277359"
+               target="_blank">
+                                  23277359</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3548481483061910954"
+                 id="ev-10-0-0-3">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19615732"
+               target="_blank">
+                                  19615732</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-70329960-1329-4753-8592-510000c725b5"
+             onclick="toggler('tl-70329960-1329-4753-8592-510000c725b5')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> affects <a href='https://identifiers.org/fplx:Wnt' target='_blank'>Wnt</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-70329960-1329-4753-8592-510000c725b5_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="e69d5902-8a64-4ae0-839d-9ca037a9e9f5_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-34194917278460904"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'e69d5902-8a64-4ae0-839d-9ca037a9e9f5--34194917278460904' )"
+               id="e69d5902-8a64-4ae0-839d-9ca037a9e9f5--34194917278460904_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> activates <a href='https://identifiers.org/fplx:Wnt' target='_blank'>Wnt</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">3 / 3</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="e69d5902-8a64-4ae0-839d-9ca037a9e9f5--34194917278460904_group">
+          <div class="col">
+          <div class="container bars" id="stmt-11-0-0"
+               data-stmt_hash="-34194917278460904">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4272998077257618975"
+                 id="ev-11-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Although <span class="badge badge-subject">Trabid</span> was first reported to activate the <span class="badge badge-object">Wnt</span> pathway by cleavage of the K63 linked chains, it was recently demonstrated to be 40-fold more active toward the K29 linked chains.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/21118991"
+               target="_blank">
+                                  21118991</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1605277443212660910"
+                 id="ev-11-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">TRABID</span>, one of K63 specific DUB enzymes, became an attractive candidate to achieve this task since it has been reported to regulate <span class="badge badge-object">Wnt</span> signal positively [XREF_BIBR], as inhibition of <span class="badge badge-subject">TRABID</span> presumably decreases <span class="badge badge-object">Wnt</span> signaling activity.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22584113"
+               target="_blank">
+                                  22584113</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2768000102613706990"
+                 id="ev-11-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            However, in this study, we failed to confirm the notion that <span class="badge badge-subject">TRABID</span> positively regulates canonical <span class="badge badge-object">Wnt</span> signaling based on several lines of evidence.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22584113"
+               target="_blank">
+                                  22584113</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-8a3985c5-a557-4257-af23-33947a413b80"
+             onclick="toggler('tl-8a3985c5-a557-4257-af23-33947a413b80')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a> affects <a href='https://identifiers.org/hgnc:12036' target='_blank'>TRAF6</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-8a3985c5-a557-4257-af23-33947a413b80_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="5a1c0dac-3a1a-44cc-9f04-6d708ce58eda_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-3545011195911256"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '5a1c0dac-3a1a-44cc-9f04-6d708ce58eda--3545011195911256' )"
+               id="5a1c0dac-3a1a-44cc-9f04-6d708ce58eda--3545011195911256_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:12036' target='_blank'>TRAF6</a> binds <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">3 / 3</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="5a1c0dac-3a1a-44cc-9f04-6d708ce58eda--3545011195911256_group">
+          <div class="col">
+          <div class="container bars" id="stmt-12-0-0"
+               data-stmt_hash="-3545011195911256">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7108381318124291411"
+                 id="ev-12-0-0-0">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/11463333"
+               target="_blank">
+                                  11463333</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4416061350372409243"
+                 id="ev-12-0-0-1">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/11463333"
+               target="_blank">
+                                  11463333</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8190842510400058371"
+                 id="ev-12-0-0-2">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/20622874"
+               target="_blank">
+                                  20622874</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-47a05dcc-1234-45e1-9c62-e0da2c3e395a"
+             onclick="toggler('tl-47a05dcc-1234-45e1-9c62-e0da2c3e395a')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:11745' target='_blank'>TFAP4</a> affects <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-pc" title="pc">
+                      3
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-47a05dcc-1234-45e1-9c62-e0da2c3e395a_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="f134c31c-5890-4b75-9279-df6655d7b700_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-33862205885173526"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'f134c31c-5890-4b75-9279-df6655d7b700--33862205885173526' )"
+               id="f134c31c-5890-4b75-9279-df6655d7b700--33862205885173526_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:11745' target='_blank'>TFAP4</a> decreases the amount of <a href='https://identifiers.org/hgnc:18224' target='_blank'>ZRANB1</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">3 / 3</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-pc" title="pc">
+                      3
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="f134c31c-5890-4b75-9279-df6655d7b700--33862205885173526_group">
+          <div class="col">
+          <div class="container bars" id="stmt-13-0-0"
+               data-stmt_hash="-33862205885173526">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7560573372843128554"
+                 id="ev-13-0-0-0">
+            <div class="col-1">biopax:msigdb</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6804851017888225694"
+                 id="ev-13-0-0-1">
+            <div class="col-1">biopax:msigdb</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2237282030979187240"
+                 id="ev-13-0-0-2">
+            <div class="col-1">biopax:msigdb</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
             
             </div>
         </div>

@@ -135,7 +135,7 @@
                     
                     
                 </dl>
-                <h2>DepMap Correlation Analysis</h2>
+                <h2>DepMap Analysis</h2>
                 <p>
                     The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled
                     CRISPR-Cas9 knockout proliferation screen conducted in more than 700 cancer cell lines spanning many
@@ -160,6 +160,7 @@
                     in the Broad Institute's <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity
                     Map (CMap)</a>.
                 </p>
+                <h3>DepMap Correlations</h3>
                 <table class="table table-striped table-hover" id="table-terms">
                     <thead>
                     <tr>
@@ -453,7 +454,7 @@
                     
                     </tbody>
                 </table>
-                <h2>GO Term Enrichment</h2>
+                <h2>Dependency GO Term Enrichment</h2>
                 <p>
                     Gene set enrichment analysis was done on the genes correlated with OTUD5using the
                     terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the<a
@@ -713,11 +714,12 @@
                     
                     </tbody>
                 </table>
-                <h2>Knockdown Analysis</h2>
+                <h2>Transcriptomics</h2>
                 <p>
                     The following table shows the significantly differentially expressed genes after knocking
                     down OTUD5.
                 </p>
+                <h3>Knockdown Differtial Expression</h3>
                 <table class="table table-striped table-hover" id="dgea">
                     <thead>
                     <tr>
@@ -772,6 +774,7294 @@
                     
                     </tbody>
                 </table>
+                <h2>INDRA Statements</h2>
+                
+    <!-- Toggle a hidden element -->
+    <script>
+        let ALL_COLLAPSED = true;
+
+        function toggler(short_name_key) {
+            /**
+             * Toggle the info list elements by changing their class.
+             */
+                // Find the group associated with this heading.
+            let el = document.getElementById(short_name_key + "_group");
+
+            // Toggle the group class between the invisible one and the visible one.
+            if (el.classList.contains("group"))
+                el.classList.replace("group", "group_shown");
+            else
+                el.classList.replace("group_shown", "group");
+        }
+
+        async function getPubmedInfoByPMID(pmid) {
+            /**
+             * Get the Pubmed title and author from Entrez.
+             */
+                // Trim the PMID because it may have a lot of spaces in it.
+            let id = pmid.trim();
+
+            // Get the data from entrez in JSON format.
+            const entrez_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi';
+            let url = `${entrez_url}?id=${id}&retmode=json&db=pubmed`;
+            const resp = await fetch(url, {method: 'POST'});
+            if (resp.status !== 200)
+                return "Failed to load.";
+            const data = await resp.json();
+
+            // Extract and format the title from the result.
+            const pmd = data.result[id];
+            let auth_str = '';
+            let n = 0;
+            if (pmd.authors)
+                for (let author of pmd.authors) {
+                    if (n > 2) {
+                        auth_str += ', ...';
+                        break;
+                    }
+                    auth_str += author.name;
+                    if (n < pmd.authors.length) {
+                        auth_str += ', ';
+                    }
+                    n += 1;
+                }
+            return `${auth_str}, "${pmd.title}", ${pmd.source}, ${pmd.pubdate}`;
+        }
+
+        function setPMIDlinkTitle(pmid, link_tag) {
+            // Modify link hover text
+            getPubmedInfoByPMID(pmid).then(title => link_tag.title = title);
+        }
+
+        function populatePMIDlinkTitles() {
+            // Loop all pmid link nodes and set title
+            let pmid_link_array = document.getElementsByClassName("pmid_link");
+            for (let link_obj of pmid_link_array) {
+                let pmid = link_obj.textContent;
+                setPMIDlinkTitle(pmid, link_obj)
+            }
+        }
+
+        // Expand/collapse all
+        function expandCollapseAll() {
+            let expColBtn = document.getElementById('expand-collapse-all');
+
+            // Expand all; set ALL_COLLAPSED = false;
+            let show = ALL_COLLAPSED;
+            if (ALL_COLLAPSED) {
+                ALL_COLLAPSED = false;
+                expColBtn.textContent = 'Collapse All';
+                // Collapse all; set ALL_COLLAPSED = true;
+            } else {
+                ALL_COLLAPSED = true;
+                expColBtn.textContent = 'Expand All';
+            }
+
+            // Loop all tags
+            let old_c, new_c;
+            if (show) {
+                old_c = "group";
+                new_c = "group_shown";
+            } else {
+                old_c = "group_shown";
+                new_c = "group";
+            }
+
+            let elements = document.getElementsByClassName(old_c);
+            let elem_arr = Array();
+            for (let el of elements) {
+                elem_arr.push(el);
+            }
+            elem_arr.forEach(el => {
+                el.classList.replace(old_c, new_c);
+            });
+        }
+
+        
+    </script>
+    <style>
+        
+            
+                .source-psp {
+                    background-color: #bebada;
+                    color: black;
+                }
+            
+                .source-cbn {
+                    background-color: #fdb462;
+                    color: black;
+                }
+            
+                .source-pc {
+                    background-color: #b3de69;
+                    color: black;
+                }
+            
+                .source-bel_lc {
+                    background-color: #80b1d3;
+                    color: black;
+                }
+            
+                .source-signor {
+                    background-color: #bc80bd;
+                    color: black;
+                }
+            
+                .source-biogrid {
+                    background-color: #fccde5;
+                    color: black;
+                }
+            
+                .source-lincs_drug {
+                    background-color: #fb8072;
+                    color: black;
+                }
+            
+                .source-tas {
+                    background-color: #d9d9d9;
+                    color: black;
+                }
+            
+                .source-hprd {
+                    background-color: #8dd3c7;
+                    color: black;
+                }
+            
+                .source-trrust {
+                    background-color: #ffed6f;
+                    color: black;
+                }
+            
+                .source-ctd {
+                    background-color: #ccebc5;
+                    color: black;
+                }
+            
+                .source-vhn {
+                    background-color: #e0e03d;
+                    color: black;
+                }
+            
+                .source-pe {
+                    background-color: #ffe8f4;
+                    color: black;
+                }
+            
+                .source-drugbank {
+                    background-color: #acfcfc;
+                    color: black;
+                }
+            
+                .source-omnipath {
+                    background-color: #dd99ff;
+                    color: black;
+                }
+            
+                .source-conib {
+                    background-color: #00d4a6;
+                    color: black;
+                }
+            
+                .source-crog {
+                    background-color: #bebada;
+                    color: black;
+                }
+            
+                .source-dgi {
+                    background-color: #fdb462;
+                    color: black;
+                }
+            
+        
+            
+                .source-rlimsp {
+                    background-color: #8dd3c7;
+                    color: white;
+                }
+            
+                .source-isi {
+                    background-color: #d9d9d9;
+                    color: white;
+                }
+            
+                .source-tees {
+                    background-color: #fb8072;
+                    color: white;
+                }
+            
+                .source-geneways {
+                    background-color: #fccde5;
+                    color: white;
+                }
+            
+                .source-eidos {
+                    background-color: #bc80bd;
+                    color: white;
+                }
+            
+                .source-trips {
+                    background-color: #80b1d3;
+                    color: white;
+                }
+            
+                .source-medscan {
+                    background-color: #b3de69;
+                    color: white;
+                }
+            
+                .source-sparser {
+                    background-color: #fdb462;
+                    color: white;
+                }
+            
+                .source-reach {
+                    background-color: #bebada;
+                    color: white;
+                }
+            
+        
+
+        .badge-source {
+            font-size: 8pt;
+            margin: 0;
+        }
+
+
+        .nvp {
+        }
+
+        .nvm {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .src-api {
+            overflow-x: hidden;
+        }
+
+        .group, .group-shown {
+        }
+
+        .group {
+            display: none;
+        }
+
+        .super_group_heading, .group_heading, .statement, .evidence {
+        }
+
+        .evidence, .evidence-text {
+            margin-bottom: 10px;
+        }
+
+        .evidence-text {
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+
+        .super_group_heading, .group_heading {
+            cursor: pointer;
+        }
+
+        .super_group_heading:hover, .group_heading:hover {
+            background-color: #f2f2f2;
+        }
+
+        .badge-subject {
+            background-color: #4a36aa;
+            color: #FFFFFF;
+        }
+
+        .badge-object {
+            background-color: #2d8e4c;
+            color: #FFFFFF;
+        }
+
+        .badge-other {
+            background-color: #606060;
+            color: #FFFFFF;
+        }
+
+        .curation-row {
+            overflow-y: hidden;
+        }
+
+        .curation_toggle {
+            cursor: pointer;
+        }
+
+        .pmid_link, .pmcid_link, .doi_link {
+            display: block;
+        }
+
+    </style>
+
+
+
+
+
+
+    <div class="statements-header">
+        <div class="col col-auto text-center">
+    
+        
+        
+            
+                <span class="badge badge-source source-psp" title="psp">
+                      psp
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-cbn" title="cbn">
+                      cbn
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-pc" title="pc">
+                      pc
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-bel_lc" title="bel_lc">
+                      bel_lc
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-signor" title="signor">
+                      signor
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      biogrid
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-lincs_drug" title="lincs_drug">
+                      lincs_drug
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-tas" title="tas">
+                      tas
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      hprd
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-trrust" title="trrust">
+                      trrust
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-ctd" title="ctd">
+                      ctd
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-vhn" title="vhn">
+                      vhn
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-pe" title="pe">
+                      pe
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-drugbank" title="drugbank">
+                      drugbank
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-omnipath" title="omnipath">
+                      omnipath
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-conib" title="conib">
+                      conib
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-crog" title="crog">
+                      crog
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-dgi" title="dgi">
+                      dgi
+                </span>
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+                <span class="badge badge-source source-rlimsp" title="rlimsp">
+                      rlimsp
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-isi" title="isi">
+                      isi
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-tees" title="tees">
+                      tees
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-geneways" title="geneways">
+                      geneways
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-eidos" title="eidos">
+                      eidos
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-trips" title="trips">
+                      trips
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-medscan" title="medscan">
+                      medscan
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      sparser
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      reach
+                </span>
+            
+        
+    
+</div>
+    </div>
+
+
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-2e38c627-540c-48cb-a8c2-314ef344bee2"
+             onclick="toggler('tl-2e38c627-540c-48cb-a8c2-314ef344bee2')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> affects <a href='https://identifiers.org/hgnc:11998' target='_blank'>TP53</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      9
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      9
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      19
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-2e38c627-540c-48cb-a8c2-314ef344bee2_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('5a6fcc42-432a-4cb2-9cc0-47af11ed863d');"
+               id="5a6fcc42-432a-4cb2-9cc0-47af11ed863d_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> binds <a href='https://identifiers.org/hgnc:11998' target='_blank'>TP53</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      9
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      9
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      6
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="5a6fcc42-432a-4cb2-9cc0-47af11ed863d_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-6203750618478396"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '5a6fcc42-432a-4cb2-9cc0-47af11ed863d--6203750618478396' )"
+               id="5a6fcc42-432a-4cb2-9cc0-47af11ed863d--6203750618478396_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:11998' target='_blank'>TP53</a> binds <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">24 / 24</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      9
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      9
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      6
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="5a6fcc42-432a-4cb2-9cc0-47af11ed863d--6203750618478396_group">
+          <div class="col">
+          <div class="container bars" id="stmt-0-0-0"
+               data-stmt_hash="-6203750618478396">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7479616909550758882"
+                 id="ev-0-0-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Besides, the direct interaction between <span class="badge badge-other">OTUD5</span> and <span class="badge badge-other">p53</span> was performed by a GST pull-down assay.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2784058492568699507"
+                 id="ev-0-0-0-1">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25499082"
+               target="_blank">
+                                  25499082</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3018674527360684229"
+                 id="ev-0-0-0-2">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25499082"
+               target="_blank">
+                                  25499082</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6445809725902419977"
+                 id="ev-0-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Besides, the direct interaction between <span class="badge badge-other">OTUD5</span> and <span class="badge badge-other">p53</span> was performed by a GST pull-down assay.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5251329657595580246"
+                 id="ev-0-0-0-4">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            A recent study showed that in case of stress, programmed cell death 5 (PDCD5) is required to promote the interaction between <span class="badge badge-other">OTUD5</span> and <span class="badge badge-other">p53</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29479529"
+               target="_blank">
+                                  29479529</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-102885957614882532"
+                 id="ev-0-0-0-5">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/19615732"
+               target="_blank">
+                                  19615732</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4450199537955425970"
+                 id="ev-0-0-0-6">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            These results demonstrate that <span class="badge badge-other">p53</span> interacts with <span class="badge badge-other">OTUD5</span> specifically in mammalian cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4347115086080261501"
+                 id="ev-0-0-0-7">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, we sought to determine whether endogenous <span class="badge badge-other">p53</span> interacts with endogenous <span class="badge badge-other">OTUD5</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="9064004587418186182"
+                 id="ev-0-0-0-8">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1638187052404085286"
+                 id="ev-0-0-0-9">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">OTUD5</span> forms a direct complex with <span class="badge badge-other">p53</span> and controls level of ubiquitination.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8606324854152874668"
+                 id="ev-0-0-0-10">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            These results demonstrate that <span class="badge badge-other">p53</span> interacts with <span class="badge badge-other">OTUD5</span> specifically in mammalian cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-844461156616890437"
+                 id="ev-0-0-0-11">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25499082"
+               target="_blank">
+                                  25499082</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5049227844779491672"
+                 id="ev-0-0-0-12">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Among them, one clone encoding <span class="badge badge-other">OTUD5</span>, as confirmed by sequencing, was found to be a novel <span class="badge badge-other">p53</span> interacting protein ( xref ), consistent with proteomic studies by the Harper Laboratory[ xref ] that suggested an interaction of <span class="badge badge-other">p53</span> with <span class="badge badge-other">OTUD5</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6488292972666005361"
+                 id="ev-0-0-0-13">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Next, the interaction between <span class="badge badge-other">p53</span> and <span class="badge badge-other">OTUD5</span> in mammalian cells was verified by co-immunoprecipitation (Co-IP) assay.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1120459665175689284"
+                 id="ev-0-0-0-14">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">P53</span> interacts with <span class="badge badge-other">OTUD5</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1725774469758722145"
+                 id="ev-0-0-0-15">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            A recent study showed that in case of stress, programmed cell death 5 (PDCD5) is required to promote the interaction between <span class="badge badge-other">OTUD5</span> and <span class="badge badge-other">p53</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29479529"
+               target="_blank">
+                                  29479529</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1301780413341747898"
+                 id="ev-0-0-0-16">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Therefore, <span class="badge badge-other">OTUD5</span> protein interacts with <span class="badge badge-other">p53</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2504222915239884430"
+                 id="ev-0-0-0-17">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, we sought to determine whether endogenous <span class="badge badge-other">p53</span> interacts with endogenous <span class="badge badge-other">OTUD5</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="9034305305615038633"
+                 id="ev-0-0-0-18">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2622565754759107074"
+                 id="ev-0-0-0-19">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">P53</span> interacts with <span class="badge badge-other">OTUD5</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3118290222583609314"
+                 id="ev-0-0-0-20">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Next, the interaction between <span class="badge badge-other">p53</span> and <span class="badge badge-other">OTUD5</span> in mammalian cells was verified by co-immunoprecipitation (Co-IP) assay.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2296616309263213427"
+                 id="ev-0-0-0-21">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-7822016000571087736"
+                 id="ev-0-0-0-22">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-9149210731599408850"
+                 id="ev-0-0-0-23">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('ced9b0db-f0d7-400e-9605-0bc2cb0c02a1');"
+               id="ced9b0db-f0d7-400e-9605-0bc2cb0c02a1_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> deubiquitinates <a href='https://identifiers.org/hgnc:11998' target='_blank'>TP53</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      7
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="ced9b0db-f0d7-400e-9605-0bc2cb0c02a1_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-5450779058280470"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'ced9b0db-f0d7-400e-9605-0bc2cb0c02a1--5450779058280470' )"
+               id="ced9b0db-f0d7-400e-9605-0bc2cb0c02a1--5450779058280470_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> deubiquitinates <a href='https://identifiers.org/hgnc:11998' target='_blank'>TP53</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">7 / 7</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      7
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="ced9b0db-f0d7-400e-9605-0bc2cb0c02a1--5450779058280470_group">
+          <div class="col">
+          <div class="container bars" id="stmt-0-1-0"
+               data-stmt_hash="-5450779058280470">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4374265406238580472"
+                 id="ev-0-1-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To verify that the deubiquitination of <span class="badge badge-object">p53</span> by <span class="badge badge-subject">OTUD5</span> is specific, MDM2 was also tested in the in vitro deubiquitination assay and found thatMDM2 can not be deubiquitinated by <span class="badge badge-subject">OTUD5</span> (XREF_FIG).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3852232595792477353"
+                 id="ev-0-1-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In this study, we provide new evidences that <span class="badge badge-subject">OTUD5</span> can also function to deubiquitinate and stabilize <span class="badge badge-object">p53</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4806440507903848408"
+                 id="ev-0-1-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            OTUD1, <span class="badge badge-subject">OTUD5</span> and USP11 directly deubiquitinating <span class="badge badge-object">p53</span> and functional proteins were required for <span class="badge badge-object">p53</span> stabilization [XREF_BIBR - XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29142505"
+               target="_blank">
+                                  29142505</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4934423525986777105"
+                 id="ev-0-1-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            We show that (1) <span class="badge badge-subject">OTUD5</span> is a novel <span class="badge badge-object">p53</span> interacting protein; (2) <span class="badge badge-subject">OTUD5</span> deubiquitinates <span class="badge badge-object">p53</span>, leading to the stabilization of <span class="badge badge-object">p53</span>; (3) <span class="badge badge-subject">OTUD5</span> can help in the stabilization and activation of <span class="badge badge-object">p53</span> in response to DNA damage; (4) <span class="badge badge-subject">OTUD5</span> is required for <span class="badge badge-object">p53</span> induced apoptosis in response to DNA damage.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-9031449588297494195"
+                 id="ev-0-1-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Overall, <span class="badge badge-subject">OTUD5</span> deubiquitinates <span class="badge badge-object">p53</span>, leading to the stabilization of <span class="badge badge-object">p53</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5727271428632578149"
+                 id="ev-0-1-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To verify that the deubiquitination of <span class="badge badge-object">p53</span> by <span class="badge badge-subject">OTUD5</span> is specific, MDM2 was also tested in the in vitro deubiquitination assay.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-316137931749253841"
+                 id="ev-0-1-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Another DUB, <span class="badge badge-subject">OTUD5</span>, interacts and deubiquitylates <span class="badge badge-object">p53</span> in response to DNA damage stress.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27516771"
+               target="_blank">
+                                  27516771</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('a875cd29-ae1c-4670-b5d4-0e0ba8483310');"
+               id="a875cd29-ae1c-4670-b5d4-0e0ba8483310_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> activates <a href='https://identifiers.org/hgnc:11998' target='_blank'>TP53</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      6
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="a875cd29-ae1c-4670-b5d4-0e0ba8483310_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="27176870134878469"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'a875cd29-ae1c-4670-b5d4-0e0ba8483310-27176870134878469' )"
+               id="a875cd29-ae1c-4670-b5d4-0e0ba8483310-27176870134878469_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> activates <a href='https://identifiers.org/hgnc:11998' target='_blank'>TP53</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">6 / 6</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      6
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="a875cd29-ae1c-4670-b5d4-0e0ba8483310-27176870134878469_group">
+          <div class="col">
+          <div class="container bars" id="stmt-0-2-0"
+               data-stmt_hash="27176870134878469">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3563838483830275642"
+                 id="ev-0-2-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The function of <span class="badge badge-subject">OTUD5</span> is required to allow the rapid activation of <span class="badge badge-object">p53</span> dependent transcription and a <span class="badge badge-object">p53</span> dependent apoptosis in response to DNA damage stress.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5270988035245202018"
+                 id="ev-0-2-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Deubiquitinase <span class="badge badge-subject">OTUD5</span> mediates the sequential activation of PDCD5 and <span class="badge badge-object">p53</span> in response to genotoxic stress.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25499082"
+               target="_blank">
+                                  25499082</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3124019664339371181"
+                 id="ev-0-2-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            OTU deubiquitinase (<span class="badge badge-subject">OTUD5</span>) binds to PDCD5inresponseto etoposide treatment and effectively mediates the sequential activation of both PDCD5 and <span class="badge badge-object">P53</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27398268"
+               target="_blank">
+                                  27398268</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4530562043856470433"
+                 id="ev-0-2-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Overexpression of <span class="badge badge-subject">OTUD5</span> efficiently enhanced the activation of both PDCD5 and <span class="badge badge-object">p53</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25499082"
+               target="_blank">
+                                  25499082</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-458024704541367968"
+                 id="ev-0-2-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The knockdown of <span class="badge badge-subject">OTUD5</span> inactivated <span class="badge badge-object">p53</span> and PDCD5, promoting the proliferation and metastasis of NSCLC cells while inhibiting their apoptosis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/32248621"
+               target="_blank">
+                                  32248621</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4574954066245186922"
+                 id="ev-0-2-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            To this end, 1mug of <span class="badge badge-object">p53</span> and increasing amounts of <span class="badge badge-subject">Flag-OTUD5</span> were cotransfected into H1299 cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-d91579a1-1f4f-4369-bd6e-fae45dd1ead8"
+             onclick="toggler('tl-d91579a1-1f4f-4369-bd6e-fae45dd1ead8')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> affects <a href='https://identifiers.org/hgnc:12033' target='_blank'>TRAF3</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      4
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      15
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-d91579a1-1f4f-4369-bd6e-fae45dd1ead8_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('fba60a0c-3adc-4028-ac39-c73056e1ff92');"
+               id="fba60a0c-3adc-4028-ac39-c73056e1ff92_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> deubiquitinates <a href='https://identifiers.org/hgnc:12033' target='_blank'>TRAF3</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      12
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="fba60a0c-3adc-4028-ac39-c73056e1ff92_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="29253469943815585"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'fba60a0c-3adc-4028-ac39-c73056e1ff92-29253469943815585' )"
+               id="fba60a0c-3adc-4028-ac39-c73056e1ff92-29253469943815585_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> deubiquitinates <a href='https://identifiers.org/hgnc:12033' target='_blank'>TRAF3</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">12 / 12</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      12
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="fba60a0c-3adc-4028-ac39-c73056e1ff92-29253469943815585_group">
+          <div class="col">
+          <div class="container bars" id="stmt-1-0-0"
+               data-stmt_hash="29253469943815585">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1939206392437647339"
+                 id="ev-1-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            For example, the deubiquitinase <span class="badge badge-subject">DUBA</span> reverses <span class="badge badge-object">TRAF3</span> ubiquitination, disconnecting <span class="badge badge-object">TRAF3</span> from its substrates TBK1 and IKKɛ [38].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23333767"
+               target="_blank">
+                                  23333767</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="8783382348335354704"
+                 id="ev-1-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Two close relatives of <span class="badge badge-subject">DUBA</span>, OTUB1 and OTUB2, were shown to reduce <span class="badge badge-object">TRAF3</span> ubiquitination coupled with decreased anti-viral signaling responses in Sendai virus infected HEK 293T cells.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22017431"
+               target="_blank">
+                                  22017431</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6829445897857409259"
+                 id="ev-1-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">DUBA</span> deubiquitinates <span class="badge badge-object">TRAF3</span> to downregulate its interaction with TBK1 and consequent activation of IRF-3 (Kayagaki et al., 2007).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27178468"
+               target="_blank">
+                                  27178468</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7760679169440294055"
+                 id="ev-1-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Cellular protein <span class="badge badge-subject">DUBA</span> specifically deubiquitinates <span class="badge badge-object">TRAF3</span> that is critical for activation of IRF3, resulting in inhibiting phosphorylation of IRF3.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24622840"
+               target="_blank">
+                                  24622840</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5372128922487361600"
+                 id="ev-1-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">DUBA</span> interacts with and de-ubiquitinates <span class="badge badge-object">TRAF3</span>, thereby attenuating TLR dependent and TLR independent antiviral responses XREF_BIBR.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/21625535"
+               target="_blank">
+                                  21625535</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3657057063940513372"
+                 id="ev-1-0-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            TRIAD3A dependent <span class="badge badge-object">TRAF3</span> proteasomal destruction, like <span class="badge badge-object">TRAF3</span> de-ubiquitination by <span class="badge badge-subject">DUBA</span>, halts the activation of TBK1 and IKKepsilon and subsequent IFN production.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22017431"
+               target="_blank">
+                                  22017431</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1685012338436427541"
+                 id="ev-1-0-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interestingly, the newly identified cellular DUB, <span class="badge badge-subject">DUBA</span>, inhibits the ubiquitination of <span class="badge badge-object">TRAF3</span>, an adaptor of RIG-I signaling, and negatively regulates the type I IFN signaling pathway 21.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18957937"
+               target="_blank">
+                                  18957937</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="536186926369830705"
+                 id="ev-1-0-0-7">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Cellular protein <span class="badge badge-subject">DUBA</span> specifically deubiquitinates <span class="badge badge-object">TRAF3</span> that is critical for activation of IRF3, resulting in inhibiting phosphorylation of IRF3 (Kayagaki et al., 2007; Wang et al., 2011).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24622840"
+               target="_blank">
+                                  24622840</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1585601057736294818"
+                 id="ev-1-0-0-8">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            For example, the deubiquitinase <span class="badge badge-subject">DUBA</span> reverses <span class="badge badge-object">TRAF3</span> ubiquitination, disconnecting <span class="badge badge-object">TRAF3</span> from its substrates TBK1 and IKKe [38] .
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23333767"
+               target="_blank">
+                                  23333767</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6475586166693896597"
+                 id="ev-1-0-0-9">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">DUBA</span> deubiquitinates <span class="badge badge-object">TRAF3</span> to down-regulate its interaction with TBK1 and consequent activation of IRF-3.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27178468"
+               target="_blank">
+                                  27178468</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7439679154969452677"
+                 id="ev-1-0-0-10">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">DUBA</span> is an OUT domaincontaining DUB that deubiquitinates <span class="badge badge-object">TRAF3</span> and inhibits TLR3and RLRs-mediated activation of IRF3 [93] .
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25651846"
+               target="_blank">
+                                  25651846</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3577357877167353714"
+                 id="ev-1-0-0-11">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Furthermore, <span class="badge badge-subject">OTUD5</span> deubiquitylates <span class="badge badge-object">TRAF3</span> resulting in diminished type I interferon and interleukin-10 responses [XREF_BIBR].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25972356"
+               target="_blank">
+                                  25972356</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group_heading"
+               onclick="toggler('697ab85d-ca2d-45b8-bd77-bacc89fb7306');"
+               id="697ab85d-ca2d-45b8-bd77-bacc89fb7306_heading">
+                <div class="col-auto text-left nvp">
+                    <h5><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> binds <a href='https://identifiers.org/hgnc:12033' target='_blank'>TRAF3</a>.</h5>
+                </div>
+                <div class="col text-right nvp">
+                  
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      4
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+                </div>
+              </div>
+          <div class="row group" id="697ab85d-ca2d-45b8-bd77-bacc89fb7306_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-25524200997643378"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '697ab85d-ca2d-45b8-bd77-bacc89fb7306--25524200997643378' )"
+               id="697ab85d-ca2d-45b8-bd77-bacc89fb7306--25524200997643378_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:12033' target='_blank'>TRAF3</a> binds <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">10 / 10</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      4
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="697ab85d-ca2d-45b8-bd77-bacc89fb7306--25524200997643378_group">
+          <div class="col">
+          <div class="container bars" id="stmt-1-1-0"
+               data-stmt_hash="-25524200997643378">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5385145723167835531"
+                 id="ev-1-1-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            An unambiguous identification of <span class="badge badge-other">DUBA</span>-interacting proteins suggests that <span class="badge badge-other">DUBA</span> interacts with <span class="badge badge-other">TRAF3</span>, whose K63-linked polyubiquitination is required for TLR-and RLR-mediated signaling.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/32215003"
+               target="_blank">
+                                  32215003</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5372128922487361600"
+                 id="ev-1-1-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">DUBA</span> interacts with and de-ubiquitinates <span class="badge badge-other">TRAF3</span>, thereby attenuating TLR dependent and TLR independent antiviral responses XREF_BIBR.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/21625535"
+               target="_blank">
+                                  21625535</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1831694068135878431"
+                 id="ev-1-1-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">DUBA</span> directly binds tumor necrosis factor receptor-associate factor 3 (<span class="badge badge-other">TRAF3</span>) and cleaves its K63linked polyubiquitin chains, and its expression is suppressed during IL-1R1 stimulation [30] .
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+            
+
+                | <a class="pmcid_link"
+                     href="https://www.ncbi.nlm.nih.gov/pmc/articles/"
+                     target="_blank">PMC</a>
+
+            
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3192445082291888989"
+                 id="ev-1-1-0-3">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Fig. 4 shows the <span class="badge badge-other">TRAF3</span>-<span class="badge badge-other">DUBA</span> interaction model that we obtained by PRISM [36], [37], [38], in which the concave crevice on TRAF-C of <span class="badge badge-other">TRAF3</span> is in contact with <span class="badge badge-other">DUBA</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27208423"
+               target="_blank">
+                                  27208423</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8901513878068722126"
+                 id="ev-1-1-0-4">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/17991829"
+               target="_blank">
+                                  17991829</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="448058195075956607"
+                 id="ev-1-1-0-5">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/17991829"
+               target="_blank">
+                                  17991829</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6748859208224396733"
+                 id="ev-1-1-0-6">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interference with the Lys63-linked auto-ubiquitination of <span class="badge badge-other">TRAF3</span> is performed by <span class="badge badge-other">DUBA</span> (OTUD5), which interacts with <span class="badge badge-other">TRAF3</span> [50].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28625850"
+               target="_blank">
+                                  28625850</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2009045568038075337"
+                 id="ev-1-1-0-7">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interestingly, <span class="badge badge-other">DUBA</span> physically interacts with <span class="badge badge-other">TRAF3</span> and inhibits the self-ubiquitylation of <span class="badge badge-other">TRAF3</span> (Ref. xref ) ( xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18535581"
+               target="_blank">
+                                  18535581</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6768102365292260400"
+                 id="ev-1-1-0-8">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interestingly, <span class="badge badge-other">DUBA</span> physically interacts with <span class="badge badge-other">TRAF3</span> and inhibits the self ubiquitylation of <span class="badge badge-other">TRAF3</span> (XREF_FIG).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18535581"
+               target="_blank">
+                                  18535581</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4828766559879924268"
+                 id="ev-1-1-0-9">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24763515"
+               target="_blank">
+                                  24763515</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-ea5b5d22-5fa3-48da-8b69-b87d7d0091e0"
+             onclick="toggler('tl-ea5b5d22-5fa3-48da-8b69-b87d7d0091e0')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> is modified</h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      4
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+                <span class="badge badge-source source-rlimsp" title="rlimsp">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      9
+                </span>
+            
+        
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-ea5b5d22-5fa3-48da-8b69-b87d7d0091e0_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="b5098f5a-ad9b-400c-bfc5-8ca4c459c2b9_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-31495480606063282"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'b5098f5a-ad9b-400c-bfc5-8ca4c459c2b9--31495480606063282' )"
+               id="b5098f5a-ad9b-400c-bfc5-8ca4c459c2b9--31495480606063282_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> is phosphorylated.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">8 / 8</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+                <span class="badge badge-source source-rlimsp" title="rlimsp">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      7
+                </span>
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="b5098f5a-ad9b-400c-bfc5-8ca4c459c2b9--31495480606063282_group">
+          <div class="col">
+          <div class="container bars" id="stmt-2-0-0"
+               data-stmt_hash="-31495480606063282">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5235735345884851817"
+                 id="ev-2-0-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Consistent with previous NMR studies on the isoform 1 of <span class="badge badge-object">DUBA</span> ( xref ), the chemical shifts of only a few residues near S177, including G174, Y175 and E178, are perturbed in the phosphorylated <span class="badge badge-object">DUBA</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30232733"
+               target="_blank">
+                                  30232733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6947807565182197167"
+                 id="ev-2-0-0-1">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            With genetic rescue experiments we demonstrate that <span class="badge badge-object">DUBA</span> phosphorylation and catalytic activity are crucial in vivo for <span class="badge badge-object">DUBA</span> function in spermatogenesis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27518434"
+               target="_blank">
+                                  27518434</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="9098335607340474116"
+                 id="ev-2-0-0-2">
+            <div class="col-1">rlimsp</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Huang and colleagues and Velázquez-Delgado and Hardy (this issue of Structure) describe how phosphorylation activates the protease activity of the deubiquitinating <span class="badge badge-object">enzyme DUBA</span> and how it inhibits caspase-6, respectively.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22483104"
+               target="_blank">
+                                  22483104</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3902069606255973357"
+                 id="ev-2-0-0-3">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            By comparing NMR and enzyme kinetics data among different forms of <span class="badge badge-object">DUBA</span> with low and high activities, we concluded that a two-state equilibrium that was present only in phosphorylated <span class="badge badge-object">DUBA</span> is important for <span class="badge badge-object">DUBA</span> activity.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/32071088"
+               target="_blank">
+                                  32071088</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3400224172892414609"
+                 id="ev-2-0-0-4">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The phosphorylated <span class="badge badge-object">DUBA</span> displays essentially the same predicted secondary structure, which is in good agreement with the crystal structures of both non-phosphorylated <span class="badge badge-object">DUBA</span> in free form (PDB ID: 3PFY) and phosphorylated <span class="badge badge-object">DUBA</span> covalently linked to ubiquitin aldehyde (PDB ID: 3TMP).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30232733"
+               target="_blank">
+                                  30232733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1034097371352518320"
+                 id="ev-2-0-0-5">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Here we show that phosphorylation of the human deubiquitinase <span class="badge badge-object">DUBA</span> (OTUD5) at a single residue, Ser177, is both necessary and sufficient to activate the enzyme.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22245969"
+               target="_blank">
+                                  22245969</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1908302294398441122"
+                 id="ev-2-0-0-6">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            xref shows the overlaid 1 H- 15 N TROSY spectra of phosphorylated and non-phosphorylated <span class="badge badge-object">DUBA</span>, which display only minor differences.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/30232733"
+               target="_blank">
+                                  30232733</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1858561209976197525"
+                 id="ev-2-0-0-7">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            This is somewhat reminiscent of the activation mechanism of <span class="badge badge-object">DUBA</span>/OTUD5 by phosphorylation, which also depends on a UIM, yet in the case of <span class="badge badge-object">DUBA</span> phosphorylation activates a relatively less chain-specific DUB ( xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/29395066"
+               target="_blank">
+                                  29395066</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+          
+
+          <a name="32751696694530576"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( 'b5098f5a-ad9b-400c-bfc5-8ca4c459c2b9-32751696694530576' )"
+               id="b5098f5a-ad9b-400c-bfc5-8ca4c459c2b9-32751696694530576_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> is phosphorylated on S177.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">7 / 7</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      4
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+                <span class="badge badge-source source-rlimsp" title="rlimsp">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      2
+                </span>
+            
+        
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="b5098f5a-ad9b-400c-bfc5-8ca4c459c2b9-32751696694530576_group">
+          <div class="col">
+          <div class="container bars" id="stmt-2-0-1"
+               data-stmt_hash="32751696694530576">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2715135549338499949"
+                 id="ev-2-0-1-0">
+            <div class="col-1">rlimsp</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Here we show that phosphorylation of the human <span class="badge badge-object">deubiquitinase DUBA (OTUD5)</span> at a single residue, Ser177, is both necessary and sufficient to activate the enzyme.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22245969"
+               target="_blank">
+                                  22245969</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-859831904955334798"
+                 id="ev-2-0-1-1">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/20068231"
+               target="_blank">
+                                  20068231</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1559054195672002389"
+                 id="ev-2-0-1-2">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18452278"
+               target="_blank">
+                                  18452278</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2003600748914055559"
+                 id="ev-2-0-1-3">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18669648"
+               target="_blank">
+                                  18669648</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1257144625629668600"
+                 id="ev-2-0-1-4">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Phosphorylation of <span class="badge badge-object">OTUD5</span> at Ser177 is critical to the enzyme activity of <span class="badge badge-object">OTUD5</span>26.in our results, the most important of kinase-target networks related primarily to the kinases PLK1, ATM, PIK3CA, CDK5 and CHEK1.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/32655987"
+               target="_blank">
+                                  32655987</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5049071324093702372"
+                 id="ev-2-0-1-5">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/15302935"
+               target="_blank">
+                                  15302935</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3604849359279629482"
+                 id="ev-2-0-1-6">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            In the OTU family, phosphorylation of <span class="badge badge-object">DUBA</span> (OTUD5) on S177 results in activation of its enzymatic activity ( xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25904330"
+               target="_blank">
+                                  25904330</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-7d0a1a2c-1a99-4190-afe4-92086394fe23"
+             onclick="toggler('tl-7d0a1a2c-1a99-4190-afe4-92086394fe23')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:12033' target='_blank'>TRAF3</a> affects <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      4
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-7d0a1a2c-1a99-4190-afe4-92086394fe23_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="34df3424-842c-4c93-b2d7-6d252f3d76a1_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-25524200997643378"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '34df3424-842c-4c93-b2d7-6d252f3d76a1--25524200997643378' )"
+               id="34df3424-842c-4c93-b2d7-6d252f3d76a1--25524200997643378_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:12033' target='_blank'>TRAF3</a> binds <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">10 / 10</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-biogrid" title="biogrid">
+                      2
+                </span>
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-hprd" title="hprd">
+                      1
+                </span>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-sparser" title="sparser">
+                      4
+                </span>
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      3
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="34df3424-842c-4c93-b2d7-6d252f3d76a1--25524200997643378_group">
+          <div class="col">
+          <div class="container bars" id="stmt-3-0-0"
+               data-stmt_hash="-25524200997643378">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5385145723167835531"
+                 id="ev-3-0-0-0">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            An unambiguous identification of <span class="badge badge-other">DUBA</span>-interacting proteins suggests that <span class="badge badge-other">DUBA</span> interacts with <span class="badge badge-other">TRAF3</span>, whose K63-linked polyubiquitination is required for TLR-and RLR-mediated signaling.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/32215003"
+               target="_blank">
+                                  32215003</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5372128922487361600"
+                 id="ev-3-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">DUBA</span> interacts with and de-ubiquitinates <span class="badge badge-other">TRAF3</span>, thereby attenuating TLR dependent and TLR independent antiviral responses XREF_BIBR.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/21625535"
+               target="_blank">
+                                  21625535</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1831694068135878431"
+                 id="ev-3-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-other">DUBA</span> directly binds tumor necrosis factor receptor-associate factor 3 (<span class="badge badge-other">TRAF3</span>) and cleaves its K63linked polyubiquitin chains, and its expression is suppressed during IL-1R1 stimulation [30] .
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+            
+
+                | <a class="pmcid_link"
+                     href="https://www.ncbi.nlm.nih.gov/pmc/articles/"
+                     target="_blank">PMC</a>
+
+            
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3192445082291888989"
+                 id="ev-3-0-0-3">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Fig. 4 shows the <span class="badge badge-other">TRAF3</span>-<span class="badge badge-other">DUBA</span> interaction model that we obtained by PRISM [36], [37], [38], in which the concave crevice on TRAF-C of <span class="badge badge-other">TRAF3</span> is in contact with <span class="badge badge-other">DUBA</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27208423"
+               target="_blank">
+                                  27208423</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-8901513878068722126"
+                 id="ev-3-0-0-4">
+            <div class="col-1">hprd</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/17991829"
+               target="_blank">
+                                  17991829</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="448058195075956607"
+                 id="ev-3-0-0-5">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/17991829"
+               target="_blank">
+                                  17991829</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="6748859208224396733"
+                 id="ev-3-0-0-6">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interference with the Lys63-linked auto-ubiquitination of <span class="badge badge-other">TRAF3</span> is performed by <span class="badge badge-other">DUBA</span> (OTUD5), which interacts with <span class="badge badge-other">TRAF3</span> [50].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28625850"
+               target="_blank">
+                                  28625850</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-2009045568038075337"
+                 id="ev-3-0-0-7">
+            <div class="col-1">sparser</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interestingly, <span class="badge badge-other">DUBA</span> physically interacts with <span class="badge badge-other">TRAF3</span> and inhibits the self-ubiquitylation of <span class="badge badge-other">TRAF3</span> (Ref. xref ) ( xref ).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18535581"
+               target="_blank">
+                                  18535581</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-6768102365292260400"
+                 id="ev-3-0-0-8">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Interestingly, <span class="badge badge-other">DUBA</span> physically interacts with <span class="badge badge-other">TRAF3</span> and inhibits the self ubiquitylation of <span class="badge badge-other">TRAF3</span> (XREF_FIG).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/18535581"
+               target="_blank">
+                                  18535581</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4828766559879924268"
+                 id="ev-3-0-0-9">
+            <div class="col-1">biogrid</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <i>No evidence text available</i>
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24763515"
+               target="_blank">
+                                  24763515</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-30b2a7ad-b8ec-4424-a516-64e5e102f9c1"
+             onclick="toggler('tl-30b2a7ad-b8ec-4424-a516-64e5e102f9c1')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> affects <a href='https://identifiers.org/fplx:Interferon' target='_blank'>Interferon</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      8
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-30b2a7ad-b8ec-4424-a516-64e5e102f9c1_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="92e5daf8-9514-4058-87ec-f8dba6891afc_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="15037768299169274"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '92e5daf8-9514-4058-87ec-f8dba6891afc-15037768299169274' )"
+               id="92e5daf8-9514-4058-87ec-f8dba6891afc-15037768299169274_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> inhibits <a href='https://identifiers.org/fplx:Interferon' target='_blank'>Interferon</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">8 / 8</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      8
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="92e5daf8-9514-4058-87ec-f8dba6891afc-15037768299169274_group">
+          <div class="col">
+          <div class="container bars" id="stmt-4-0-0"
+               data-stmt_hash="15037768299169274">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="5038988832314248327"
+                 id="ev-4-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            They showed that reducing the expression of <span class="badge badge-subject">DUBA</span> augments the <span class="badge badge-object">IFN</span> response to poly(I:C) whereas ectopic expression of <span class="badge badge-subject">DUBA</span> blocks the <span class="badge badge-object">IFN</span> response.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22312431"
+               target="_blank">
+                                  22312431</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-521749494577518270"
+                 id="ev-4-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            It has been demonstrated that the deubiquitinating enzymes A20 and CYLD inhibit NF-kappaB signaling by targeting TRAF6 upstream of IKK, while the deubiquitinating protein <span class="badge badge-subject">DUBA</span> inhibits type I <span class="badge badge-object">interferon</span> activity by targeting TRAF3.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/20434986"
+               target="_blank">
+                                  20434986</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4150655675530507618"
+                 id="ev-4-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">DUBA</span> inhibits type I <span class="badge badge-object">IFN</span> production in the absence of IL-1RI signaling.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/21115691"
+               target="_blank">
+                                  21115691</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4173176866569147499"
+                 id="ev-4-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">OTUD5</span> has been shown to suppress the type I <span class="badge badge-object">interferon</span> dependent innate immune response by cleaving the polyubiquitin chain from an essential type I <span class="badge badge-object">interferon</span> adaptor protein.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="1851357604649235636"
+                 id="ev-4-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            For example, <span class="badge badge-subject">DUBA</span>, a member of the Otubain (OTUB) family, has been shown to deubiquitinate TRAF3 and negatively regulate TLR3- and RIG-I and MDA5-mediated <span class="badge badge-object">IFN</span> induction.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28717359"
+               target="_blank">
+                                  28717359</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="2129178200878280895"
+                 id="ev-4-0-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            For example, <span class="badge badge-subject">DUBA</span>, a member of the Otubain (OTUB) family, has been shown to deubiquitinate TRAF3 and negatively regulate TLR3- and RIG-I/MDA5-mediated <span class="badge badge-object">IFN</span> induction (52).
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28717359"
+               target="_blank">
+                                  28717359</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-993697321872882174"
+                 id="ev-4-0-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The activation of TLR4 and TLR3 stimulates the K 63 -linked ubiquitination of TRAF3, which is required for the activation of IRF3 and the production of type I <span class="badge badge-object">IFN</span>s, and <span class="badge badge-subject">DUBA</span> removes K 63 -linked ubiquitin chains from TRAF3, thereby inhibiting type I <span class="badge badge-object">IFN</span> responses.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/23674823"
+               target="_blank">
+                                  23674823</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3416232385432663776"
+                 id="ev-4-0-0-7">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Indeed, DUBA and <span class="badge badge-subject">OTUD5</span>, a DUB which selectively disassembles Lys63 linked ubiquitin chains on TRAF3, has been shown to suppress the production of type I <span class="badge badge-object">interferon</span> by reducing the level of TRAF3-TBK1 interaction XREF_BIBR.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/28327663"
+               target="_blank">
+                                  28327663</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-fcc4697f-a1c7-4e2e-9993-af9fdb8a6946"
+             onclick="toggler('tl-fcc4697f-a1c7-4e2e-9993-af9fdb8a6946')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> affects <a href='https://identifiers.org/GO:0045087' target='_blank'>innate immune response</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      7
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-fcc4697f-a1c7-4e2e-9993-af9fdb8a6946_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="9aed7277-9fcd-4d68-90a3-2763b83b8ccf_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-17113386651963338"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '9aed7277-9fcd-4d68-90a3-2763b83b8ccf--17113386651963338' )"
+               id="9aed7277-9fcd-4d68-90a3-2763b83b8ccf--17113386651963338_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> inhibits <a href='https://identifiers.org/GO:0045087' target='_blank'>innate immune response</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">7 / 7</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      7
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="9aed7277-9fcd-4d68-90a3-2763b83b8ccf--17113386651963338_group">
+          <div class="col">
+          <div class="container bars" id="stmt-5-0-0"
+               data-stmt_hash="-17113386651963338">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-1005842295788053507"
+                 id="ev-5-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            It has been reported that <span class="badge badge-subject">OTUD5</span> could suppress the type I interferon dependent <span class="badge badge-object">innate immune response</span> by cleaving the polyubiquitin chain from an essential type I interferon adaptor protein TRAF3.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4173176866569147499"
+                 id="ev-5-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">OTUD5</span> has been shown to suppress the type I interferon dependent <span class="badge badge-object">innate immune response</span> by cleaving the polyubiquitin chain from an essential type I interferon adaptor protein.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24143256"
+               target="_blank">
+                                  24143256</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7128283021342647978"
+                 id="ev-5-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Three human DUBs, CYLD, A20 and <span class="badge badge-subject">DUBA</span>, have been shown to negatively regulate the <span class="badge badge-object">innate immune response</span> by removing K63-based chains [55, 56] , and USP15 inhibits the NFkB pathway by removing K48-Ub from IkBa, preventing its degradation [57] .
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24854014"
+               target="_blank">
+                                  24854014</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5644969256016125831"
+                 id="ev-5-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Cellular proteins <span class="badge badge-subject">DUBA</span> and CYLD also negatively regulate the <span class="badge badge-object">innate immune response</span>.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/22312431"
+               target="_blank">
+                                  22312431</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="7330886088642054723"
+                 id="ev-5-0-0-4">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            <span class="badge badge-subject">DUBA</span>, a member of the ovarian tumor (OTU) domain containing cysteine protease superfamily, was shown to suppress the type I IFN dependent <span class="badge badge-object">innate immune response</span> by cleaving the K63 polyubiquitin chain on TRAF3.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/21115691"
+               target="_blank">
+                                  21115691</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="4413604568007321655"
+                 id="ev-5-0-0-5">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Three human DUBs, CYLD, A20 and <span class="badge badge-subject">DUBA</span>, have been shown to negatively regulate the <span class="badge badge-object">innate immune response</span> by removing K63 based chains XREF_BIBR, XREF_BIBR, and USP15 inhibits the NFkappaB pathway by removing K48-Ub from IkappaBalpha, preventing its degradation XREF_BIBR.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24854014"
+               target="_blank">
+                                  24854014</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="3642457522077685008"
+                 id="ev-5-0-0-6">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Three human DUBs, CYLD, A20 and <span class="badge badge-subject">DUBA</span>, have been shown to negatively regulate the <span class="badge badge-object">innate immune response</span> by removing K63-based chains [55], [56], and USP15 inhibits the NFκB pathway by removing K48-Ub from IκBα, preventing its degradation [57].
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/24854014"
+               target="_blank">
+                                  24854014</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
+    
+    <span class="agent-pair">
+
+    
+
+        <div class="row super_group_heading"
+             id="tl-27b79c97-5fd1-4ae4-9779-347395670b24"
+             onclick="toggler('tl-27b79c97-5fd1-4ae4-9779-347395670b24')">
+      <div class="col-auto nvp">
+        <h5 class="align-middle"><a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> affects <a href='https://identifiers.org/hgnc:8764' target='_blank'>PDCD5</a></h5>
+      </div>
+      <div class="col text-right nvp">
+        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+      </div>
+    </div>
+        <div class="row">
+        <div class="col">
+        <div class="group" id="tl-27b79c97-5fd1-4ae4-9779-347395670b24_group">
+
+    
+
+        <div class="container bars nvp">
+
+    
+        
+
+        <span class="relation">
+
+      
+
+          <div class="row group-shown" id="371c5efd-2426-446d-8c32-a63aef16bd2d_group">
+
+      
+
+            <div class="col">
+                  <div class="container bars nvp">
+
+      
+          
+
+          <a name="-20864239109040501"></a>
+          <div class="row statement group_heading"
+               onclick="toggler( '371c5efd-2426-446d-8c32-a63aef16bd2d--20864239109040501' )"
+               id="371c5efd-2426-446d-8c32-a63aef16bd2d--20864239109040501_heading">
+                      <div class="col-auto text-left nvp">
+                        <h5>
+                          <a href='https://identifiers.org/hgnc:25402' target='_blank'>OTUD5</a> activates <a href='https://identifiers.org/hgnc:8764' target='_blank'>PDCD5</a>.
+                          <a href="
+                                  #"
+                             >
+                            <small class="badge badge-secondary badge-pill">4 / 4</small>
+                          </a>
+                        </h5>
+                      </div>
+                      <div class="col text-right nvp">
+                        
+    
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+    
+        <span class="badge badge-source">|</span>
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                <span class="badge badge-source source-reach" title="reach">
+                      4
+                </span>
+            
+        
+    
+
+                      </div>
+                    </div>  <!-- end statement heading row -->
+          <div class="row group"
+               id="371c5efd-2426-446d-8c32-a63aef16bd2d--20864239109040501_group">
+          <div class="col">
+          <div class="container bars" id="stmt-6-0-0"
+               data-stmt_hash="-20864239109040501">
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-3124019664339371181"
+                 id="ev-6-0-0-0">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            OTU deubiquitinase (<span class="badge badge-subject">OTUD5</span>) binds to <span class="badge badge-object">PDCD5</span>inresponseto etoposide treatment and effectively mediates the sequential activation of both <span class="badge badge-object">PDCD5</span> and P53.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/27398268"
+               target="_blank">
+                                  27398268</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-458024704541367968"
+                 id="ev-6-0-0-1">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            The knockdown of <span class="badge badge-subject">OTUD5</span> inactivated p53 and <span class="badge badge-object">PDCD5</span>, promoting the proliferation and metastasis of NSCLC cells while inhibiting their apoptosis.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/32248621"
+               target="_blank">
+                                  32248621</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-4530562043856470433"
+                 id="ev-6-0-0-2">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Overexpression of <span class="badge badge-subject">OTUD5</span> efficiently enhanced the activation of both <span class="badge badge-object">PDCD5</span> and p53.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25499082"
+               target="_blank">
+                                  25499082</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+            <div class="evidence">
+            <hr>
+            <div class="row evidence-text" data-source_hash="-5270988035245202018"
+                 id="ev-6-0-0-3">
+            <div class="col-1">reach</div>
+
+            
+
+                <div class="col-10">
+
+            
+        
+
+            Deubiquitinase <span class="badge badge-subject">OTUD5</span> mediates the sequential activation of <span class="badge badge-object">PDCD5</span> and p53 in response to genotoxic stress.
+
+        
+
+        </div>
+
+        
+
+            <div class="col-1 text-right">
+
+        
+        
+
+            <a class="pmid_link"
+               title="Hover again to see info"
+               onmouseover="setPMIDlinkTitle(this.textContent, this); this.onmouseover=null;"
+               href="https://www.ncbi.nlm.nih.gov/pubmed/25499082"
+               target="_blank">
+                                  25499082</a>
+
+        
+        
+
+        </div> <!-- end ID col -->
+        </div> <!-- end row -->
+        </div> <!-- end evidence -->
+
+        
+
+              </div> <!-- end stmt container -->
+              </div> <!-- end stmt col -->
+                    </div> <!-- end stmt row -->
+
+      
+
+                      </div> <!-- end relation (stmt list) container -->
+                      </div> <!-- end relation col -->
+              </div> <!-- end relation row -->
+            </span> <!-- end relation -->
+
+    
+
+          </div> <!-- end agent pair (relation list) container -->
+        </div> <!-- end agent pair group -->
+        </div> <!-- end agent pair col -->
+        </div> <!-- end agent pair row -->
+  </span>
+
             
             </div>
         </div>
