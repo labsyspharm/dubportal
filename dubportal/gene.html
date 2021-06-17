@@ -7,11 +7,17 @@
     <script>
         $(document).ready(function () {
             $("#table-terms").DataTable({
+                "order": [[2, "desc"]], // sort by correlation
                 "scrollX": true
             });
-            $("#gsea-enrichment").DataTable();
-            $("#dgea").DataTable();
+            $("#gsea-enrichment").DataTable({
+                "order": [[5, "asc"]] // sort by q-value
+            });
+            $("#dgea").DataTable({
+                "order": [[4, "asc"]] // sort by adj p-value
+            });
             $("#dgea-gsea").DataTable({
+                "order": [[2, "asc"]], // sort by adj p-value
                 "scrollX": true
             });
         })
@@ -53,26 +59,22 @@
                         <a class="badge badge-info"
                            href="https://bioregistry.io/hgnc:{{ record.hgnc_id }}">hgnc:{{ record.hgnc_id }}</a>
                         <a class="badge badge-info"
-                           href="https://bioregistry.io/ncbigene:{{ record.entrez_id }}">ncbigene:{{ record.entrez_id }}</a>
+                           href="https://bioregistry.io/ncbigene:{{ record.xrefs.entrez_id }}">ncbigene:{{ record.xrefs.entrez_id }}</a>
                         <a class="badge badge-info"
-                           href="https://bioregistry.io/uniprot:{{ record.uniprot_id }}">uniprot:{{ record.uniprot_id }}</a>
+                           href="https://bioregistry.io/uniprot:{{ record.xrefs.uniprot_id }}">uniprot:{{ record.xrefs.uniprot_id }}</a>
                     </dd>
-                    {% if record.mgi_id or record.rgd_id %}
+                    {% if 0 < (record.orthologs | length) %}
                         <dt class="col-4">Orthologs</dt>
                         <dd class="col-8">
-                            {% if record.rgd_id %}
+                            {% if record.orthologs.mgi %}
                                 <a class="badge badge-info"
-                                   href="https://bioregistry.io/mgi:{{ record.mgi_id }}">mgi:{{ record.mgi_id }}</a>
+                                   href="https://bioregistry.io/mgi:{{ record.orthologs.mgi }}">mgi:{{ record.orthologs.mgi }}</a>
                             {% endif %}
-                            {% if record.rgd_id %}
+                            {% if record.orthologs.rgd %}
                                 <a class="badge badge-info"
-                                   href="https://bioregistry.io/rgd:{{ record.rgd_id }}">rgd:{{ record.rgd_id }}</a>
+                                   href="https://bioregistry.io/rgd:{{ record.orthologs.rgd }}">rgd:{{ record.orthologs.rgd }}</a>
                             {% endif %}
                         </dd>
-                    {% endif %}
-                    {% if ndex %}
-                        <dt class="col-4">NDEx Network</dt>
-                        <dd class="col-8"><a href="https://bioregistry.io/ndex:{{ ndex }}">{{ ndex }}</a></dd>
                     {% endif %}
                     <dt class="col-4">INDRA Statements</dt>
                     <dd class="col-8">
@@ -146,7 +148,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for row in record.depmap %}
+                    {% for row in record.depmap.genes %}
                         <tr>
                             <td>
                                 <a data-toggle="tooltip" data-html="true"
@@ -173,10 +175,10 @@
                                         Pathway Commons
                                     </a>
                                 {% endif %}
-                                {% if row.interactions.indra %}
+                                {% if 0 < row.interactions.indra %}
                                     <a class="badge badge-primary"
                                        href="https://db.indra.bio/statements/from_agents?format=html&subject={{ record.hgnc_symbol }}&object={{ row.hgnc_symbol }}">
-                                        INDRA
+                                        INDRA ({{ row.interactions.indra }})
                                     </a>
                                 {% endif %}
                             </td>
@@ -234,7 +236,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for row in record.go %}
+                    {% for row in record.depmap.enrichment %}
                         <tr>
                             <td>
                                 <a href="https://bioregistry.io/{{ row.identifier }}"
@@ -257,7 +259,7 @@
                         </tr>
                     {% endfor %}
                     </tbody>
-                </table>{% if record.dgea %}
+                </table>{% if record.knockdown.genes %}
                 <h2>Transcriptomics</h2>
                 <p>
                     The following table shows the significantly differentially expressed genes after knocking
@@ -275,7 +277,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for row in record.dgea %}
+                    {% for row in record.knockdown.genes %}
                         <tr>
                             <td>
                                 <a data-toggle="tooltip" data-html="true"
@@ -299,48 +301,54 @@
                     </tbody>
                 </table>
                 <h3>Gene Set Enrichment Analysis</h3>
-                <p>
-                    The GSEA method was applied for all genes whose knockout resulted in at least 20 significantly
-                    differentially expressed genes.
-                </p>
-                <table class="table table-striped table-hover" id="dgea-gsea">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th style="text-align: right"><i>p</i>-value</th>
-                        <th style="text-align: right"><i>p</i>-value (adj.)</th>
-                        <th style="text-align: right"><i>log<sub>2</sub></i> Error</th>
-                        <th style="text-align: right">ES</th>
-                        <th style="text-align: right">NES</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for row in record.ko_gsea %}
+                {% if record.knockdown.enrichment is none %}
+                    <p>
+                        There were too few differentially expressed genes to run a meaningful GSEA.
+                    </p>
+                {% else %}
+                    <p>
+                        The GSEA method was applied for all genes whose knockout resulted in at least 20 significantly
+                        differentially expressed genes.
+                    </p>
+                    <table class="table table-striped table-hover" id="dgea-gsea">
+                        <thead>
                         <tr>
-                            <td>
-                                <a data-toggle="tooltip" data-html="true"
-                                   title="{{ row.prefix }}:{{ row.identifier }}<br>Click for external information from {{ row.prefix }}."
-                                   href="https://bioregistry.io/{{ row.prefix }}:{{ row.identifier }}">
-                                    {{ row.prefix }}:{{ row.identifier }}
-                                </a>
-                            </td>
-                            <td>
-                                <a data-toggle="tooltip" data-html="true"
-                                   title="{{ row.prefix }}:{{ row.identifier }}<br>Click for external information from {{ row.prefix }}."
-                                   href="https://bioregistry.io/{{ row.prefix }}:{{ row.identifier }}">
-                                    {{ row.name }}
-                                </a>
-                            </td>
-                            <td style="text-align: right">{{ "%.2e" | format(row.pval) }}</td>
-                            <td style="text-align: right">{{ "%.2e" | format(row.padj) }}</td>
-                            <td style="text-align: right">{{ "%.2e" | format(row.log2err) }}</td>
-                            <td style="text-align: right">{{ "%.2e" | format(row.ES) }}</td>
-                            <td style="text-align: right">{{ "%.2e" | format(row.NES) }}</td>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th style="text-align: right"><i>p</i>-value</th>
+                            <th style="text-align: right"><i>p</i>-value (adj.)</th>
+                            <th style="text-align: right"><i>log<sub>2</sub></i> Error</th>
+                            <th style="text-align: right">ES</th>
+                            <th style="text-align: right">NES</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for row in record.knockdown.enrichment %}
+                            <tr>
+                                <td>
+                                    <a data-toggle="tooltip" data-html="true"
+                                       title="{{ row.prefix }}:{{ row.identifier }}<br>Click for external information from {{ row.prefix }}."
+                                       href="https://bioregistry.io/{{ row.prefix }}:{{ row.identifier }}">
+                                        {{ row.prefix }}:{{ row.identifier }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a data-toggle="tooltip" data-html="true"
+                                       title="{{ row.prefix }}:{{ row.identifier }}<br>Click for external information from {{ row.prefix }}."
+                                       href="https://bioregistry.io/{{ row.prefix }}:{{ row.identifier }}">
+                                        {{ row.name }}
+                                    </a>
+                                </td>
+                                <td style="text-align: right">{{ "%.2e" | format(row.pval) }}</td>
+                                <td style="text-align: right">{{ "%.2e" | format(row.padj) }}</td>
+                                <td style="text-align: right">{{ "%.2e" | format(row.log2err) }}</td>
+                                <td style="text-align: right">{{ "%.2e" | format(row.ES) }}</td>
+                                <td style="text-align: right">{{ "%.2e" | format(row.NES) }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
             {% endif %}
                 <h2>Text Mining</h2>
                 <p>

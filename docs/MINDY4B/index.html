@@ -102,15 +102,11 @@
                         <dt class="col-4">Orthologs</dt>
                         <dd class="col-8">
                             
-                                <a class="badge badge-info"
-                                   href="https://bioregistry.io/mgi:None">mgi:None</a>
-                            
                             
                                 <a class="badge badge-info"
                                    href="https://bioregistry.io/rgd:11362385">rgd:11362385</a>
                             
                         </dd>
-                    
                     
                     <dt class="col-4">INDRA Statements</dt>
                     <dd class="col-8">
@@ -556,7 +552,7 @@
 
         <div class="row">
         <div class="col">
-        <div class="group-shown" id="tl-c7352d07-ad3d-4be8-bd41-cbe3c4b3b36c_group">
+        <div class="group-shown" id="tl-cb28858c-ded7-40ce-a40d-85370c6bcdab_group">
 
     
 
@@ -962,11 +958,17 @@
     <script>
         $(document).ready(function () {
             $("#table-terms").DataTable({
+                "order": [[2, "desc"]], // sort by correlation
                 "scrollX": true
             });
-            $("#gsea-enrichment").DataTable();
-            $("#dgea").DataTable();
+            $("#gsea-enrichment").DataTable({
+                "order": [[5, "asc"]] // sort by q-value
+            });
+            $("#dgea").DataTable({
+                "order": [[4, "asc"]] // sort by adj p-value
+            });
             $("#dgea-gsea").DataTable({
+                "order": [[2, "asc"]], // sort by adj p-value
                 "scrollX": true
             });
         })

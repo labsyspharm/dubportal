@@ -7,11 +7,24 @@ import pyobo
 
 from indra.databases import hgnc_client
 
-DATA_DIR = pathlib.Path(__file__).parent.resolve().joinpath("data")
-PATH = DATA_DIR.joinpath("sigGSEA_DGE1_topKOs.tsv")
-PROCESSED_JSON_PATH = DATA_DIR.joinpath("ko_gsea.json")
-PROBLEMS_PATH = DATA_DIR.joinpath("ko_gsea_issues.tsv")
+HERE = pathlib.Path(__file__).parent.resolve()
+RAW = HERE.joinpath("raw")
+PROCESSED = HERE.joinpath("processed")
+INPUT_PATH = RAW.joinpath("sigGSEA_DGE1_topKOs.tsv")
+OUTPUT_PATH = PROCESSED.joinpath("ko_gsea.json")
+PROBLEMS_PATH = PROCESSED.joinpath("ko_gsea_issues.tsv")
 MSIG_NAMES = pyobo.get_name_id_mapping("msig")
+COLUMNS = [
+    "msig_id",
+    "prefix",
+    "identifier",
+    "name",
+    "padj",
+    "pval",
+    "log2err",
+    "ES",
+    "NES",
+]
 
 
 def get_msig_id(name: str) -> Optional[str]:
@@ -19,13 +32,13 @@ def get_msig_id(name: str) -> Optional[str]:
         return MSIG_NAMES[name]
     if name.startswith("GO_"):
         for prefix in ("GOBP_", "GOMF_", "GOCC_", ""):
-            nn = prefix + name[len("GO_"):]
+            nn = prefix + name[len("GO_") :]
             if nn in MSIG_NAMES:
                 return MSIG_NAMES[nn]
 
 
 def main():
-    df = pd.read_csv(PATH, sep="\t")
+    df = pd.read_csv(INPUT_PATH, sep="\t")
     df["hgnc_id"] = df["perturbation"].map(hgnc_client.get_current_hgnc_id)
     df["hgnc_symbol"] = df["hgnc_id"].map(hgnc_client.get_hgnc_name)
     df["msig_id"] = df["pathway"].map(get_msig_id)
@@ -49,18 +62,18 @@ def main():
     rv = {
         hgnc_symbol: [
             {key: value for key, value in record.items() if pd.notnull(value)}
-            for record in sdf.sort_values("padj").to_dict("records")
+            for record in sdf[COLUMNS].sort_values("padj").to_dict("records")
         ]
         for hgnc_symbol, sdf in df.groupby("hgnc_symbol")
     }
-    with PROCESSED_JSON_PATH.open("w") as file:
+    with OUTPUT_PATH.open("w") as file:
         json.dump(rv, file, indent=2, sort_keys=True)
 
 
 KEYS = [
     "reactome",
     "go",
-    "kegg.pathway",
+    # "kegg.pathway",
 ]
 
 
@@ -71,8 +84,8 @@ def _get(row: dict[str, any]) -> tuple[str, str, str]:
         if identifier:
             identifier = (
                 identifier.removeprefix(prefix)
-                    .removeprefix(prefix.upper())
-                    .removeprefix(":")
+                .removeprefix(prefix.upper())
+                .removeprefix(":")
             )
             return prefix, identifier, pyobo.get_name(prefix, identifier)
     return "msig", msig_id, row["pathway"]

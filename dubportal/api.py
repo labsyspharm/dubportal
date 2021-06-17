@@ -4,7 +4,7 @@ import os
 import pathlib
 from functools import lru_cache
 from operator import itemgetter
-from typing import List, Optional
+from typing import Optional
 
 import click
 import markupsafe
@@ -12,11 +12,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
 import pystow
-import requests
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
 from more_click import force_option, verbose_option
 from tqdm import tqdm
+from tqdm.contrib.logging import logging_redirect_tqdm
 
 import famplex
 from indra.assemblers.html import HtmlAssembler
@@ -29,21 +29,22 @@ from indra.statements import (
     RegulateAmount,
     RemoveModification,
     Statement,
-    stmts_from_json,
     stmts_from_json_file,
     stmts_to_json_file,
 )
 from indra.tools import assemble_corpus as ac
 
 logger = logging.getLogger(__name__)
+
 HERE = pathlib.Path(__file__).parent.resolve()
 DOCS = HERE.parent.joinpath("docs")
-DATA_DUR = HERE.joinpath("data")
-DATA = DATA_DUR.joinpath("DUB_website_main_v2.tsv")
-DATA_PROCESSED = DATA_DUR.joinpath("data.json")
+RAW = HERE.joinpath("raw")
+PROCESSED = HERE.joinpath("processed")
+INPUT_PATH = RAW.joinpath("DUB_website_main_v2.tsv")
+OUTPUT_PATH = PROCESSED.joinpath("data.json")
 NDEX_LINKS = DOCS.joinpath("network_index.json")
 
-STATEMENTS_DIR = DATA_DUR.joinpath("statements")
+STATEMENTS_DIR = RAW.joinpath("statements")
 STATEMENTS_DIR.mkdir(exist_ok=True, parents=True)
 
 environment = Environment(
@@ -57,8 +58,8 @@ stmt_template = environment.get_template("statements_view.html")
 
 DUB = "Deubiquitinase"
 GENE_FIXES = {
-    "KRTAP21": "KRTAP21-1",  # This record has been split, apparently
-    "KRTAP12": "KRTAP12-1",  # This record has been split, apparently
+    "KRTAP21": "KRTAP21-1",  # These records have been split, apparently
+    "KRTAP12": "KRTAP12-1",
     "KRTAP20": "KRTAP20-1",
 }
 
@@ -71,7 +72,7 @@ FAMPLEX_DUBS = {
 }
 
 
-def get_dub_type(gene_symbol: str) -> Optional[str]:
+def get_dub_family(gene_symbol: str) -> Optional[str]:
     """Get the top-level DUB type of the gene."""
     if gene_symbol not in FAMPLEX_DUBS:
         return None
@@ -85,7 +86,8 @@ def get_dub_type(gene_symbol: str) -> Optional[str]:
         return None
 
 
-def get_go_type(identifier: str) -> str:
+def get_go_type(identifier: str) -> Optional[str]:
+    """Get the GO type by the GO identifier."""
     if pyobo.has_ancestor("go", identifier, "go", "0008150"):
         return "Biological Process"
     elif pyobo.has_ancestor("go", identifier, "go", "0005575"):
@@ -93,60 +95,86 @@ def get_go_type(identifier: str) -> str:
     elif pyobo.has_ancestor("go", identifier, "go", "0003674"):
         return "Molecular Function"
     else:
-        return "Other"
+        return None
 
 
-def get_cached_stmts_single(hgnc_id, force: bool = False) -> list[Statement]:
+def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
+    """Get INDRA statements for the given gene."""
     path = pystow.join("dubportal", "single", name=f"{hgnc_id}.json")
     if path.is_file() and not force:
-        stmts = stmts_from_json_file(path)
-    else:
-        ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=10000)
-        stmts = ip.statements
-        stmts_to_json_file(stmts, path)
-
-    stmts = dubportal_assembly(stmts)
+        return stmts_from_json_file(path)
+    path.parent.mkdir(exist_ok=True, parents=True)
+    ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=30)
+    stmts = ip.statements
+    stmts_to_json_file(stmts, path)
     return stmts
 
 
-def dubportal_assembly(stmts: list[Statement]) -> list[Statement]:
+def get_interaction_stmts(
+    source: str, target: str, force: bool = False
+) -> list[Statement]:
+    """Get INDRA statements for the given interaction between source/target."""
+    path = pystow.join("dubportal", "interaction", source, name=f"{target}.json")
+    if path.is_file() and not force:
+        return stmts_from_json_file(path)
+
+    path.parent.mkdir(exist_ok=True, parents=True)
+    ip = get_statements(subject=source, object=target, ev_limit=30)
+    stmts_to_json_file(ip.statements, path)
+    return ip.statements
+
+
+def dubportal_preassembly(stmts: list[Statement]) -> list[Statement]:
     stmts = filter_out_medscan(stmts)
     stmts = filter_curations(stmts)
     stmts = only_dubbing(stmts)
-    stmts = first_n_evidences(stmts)
+    stmts = first_k_evidences(stmts, k=10)
+    stmts = ac.filter_grounded_only(stmts)
     return stmts
+
+
+def filter_stmt_type(stmts: list[Statement], types) -> list[Statement]:
+    return [stmt for stmt in stmts if isinstance(stmt, types)]
 
 
 def only_dubbing(stmts: list[Statement]) -> list[Statement]:
-    return [
-        stmt
-        for stmt in stmts
-        if isinstance(
-            stmt, (Deubiquitination, Desumoylation, RegulateActivity, RegulateAmount)
-        )
-    ]
+    """Filter to statements of the given type"""
+    return filter_stmt_type(
+        stmts, (Deubiquitination, Desumoylation, RegulateActivity, RegulateAmount)
+    )
 
 
-def first_n_evidences(stmts: list[Statement], n: int = 10) -> list[Statement]:
+def first_k_evidences(stmts: list[Statement], *, k: int = 10) -> list[Statement]:
     for stmt in stmts:
-        stmt.evidence = stmt.evidence[:n]
+        stmt.evidence = stmt.evidence[:k]
     return stmts
 
 
-def filter_out_medscan(stmts: list[Statement]) -> list[Statement]:
-    logger.debug("Starting medscan filter with %d statements" % len(stmts))
-    new_stmts = []
+def remove_source_api(stmts: list[Statement], source_api: str) -> list[Statement]:
+    """Remove evidences with the given source API then filter statements with no evidences."""
+    rv = []
+    init_ev_count = 0
+    final_ev_count = 0
     for stmt in stmts:
-        new_evidence = []
-        for ev in stmt.evidence:
-            if ev.source_api == "medscan":
-                continue
-            new_evidence.append(ev)
-        stmt.evidence = new_evidence
-        if new_evidence:
-            new_stmts.append(stmt)
-    logger.debug("Finished medscan filter with %d statements" % len(new_stmts))
-    return new_stmts
+        init_ev_count += len(stmt.evidence)
+        stmt.evidence = [ev for ev in stmt.evidence if ev.source_api != source_api]
+        final_ev_count += len(stmt.evidence)
+        if stmt.evidence:
+            rv.append(stmt)
+    if len(rv) < len(stmts) or final_ev_count < init_ev_count:
+        logger.info(
+            "Filtered %s from %d->%d evidences and %d->%d statements",
+            source_api,
+            init_ev_count,
+            final_ev_count,
+            len(stmts),
+            len(rv),
+        )
+    return rv
+
+
+def filter_out_medscan(stmts: list[Statement]) -> list[Statement]:
+    return remove_source_api(stmts, "medscan")
 
 
 def filter_curations(stmts: list[Statement]) -> list[Statement]:
@@ -164,48 +192,20 @@ def safe_get_curations():
     except ImportError:
         return None
     try:
-        return get_curations()
+        return get_curations() or None
     except:
         return None
 
 
-def get_cached_stmts(source: str, target: str, force: bool = False) -> List[Statement]:
-    path = STATEMENTS_DIR.joinpath(source, f"{target}.json")
-    if path.is_file() and not force:
-        with path.open() as file:
-            res = json.load(file)
-    else:
-        url = f"https://db.indra.bio/statements/from_agents?format=json&subject={source}&object={target}"
-        res = requests.get(url).json()
-        path.parent.mkdir(exist_ok=True, parents=True)
-        with path.open("w") as file:
-            json.dump(res, file, indent=2, sort_keys=True)
-    return stmts_from_json(res["statements"].values())
-
-
-def process_symbol_list(symbols):
-    rv = []
-    for symbol in symbols.strip().split("/"):
-        gene_id = hgnc_client.get_current_hgnc_id(symbol.strip())
-        if gene_id is None:
-            print("missing id for", gene_id)
-            continue
-            # raise
-        rv.append(gene_id)
-    return rv
-
-
 def get_processed_data():
-    all_gsea_df = pd.read_csv(DATA_DUR.joinpath("gsea.tsv"), sep="\t")
-    all_gsea_groups = all_gsea_df.groupby(by=["hgnc_id", "hgnc_symbol"])
-    symbol_to_gsea = {
-        hgnc_symbol: gsea_df for (hgnc_id, hgnc_symbol), gsea_df in all_gsea_groups
-    }
+    with PROCESSED.joinpath("dep_gsea.json").open() as file:
+        symbol_to_depmap_enrichment = json.load(file)
+    with PROCESSED.joinpath("ko_dgea.json").open() as file:
+        symbol_to_ko_dgea = json.load(file)
+    with PROCESSED.joinpath("ko_gsea.json").open() as file:
+        symbol_to_ko_gsea = json.load(file)
 
-    with DATA_DUR.joinpath("dgea.json").open() as file:
-        symbol_to_dgea = json.load(file)
-
-    df = pd.read_csv(DATA, sep="\t")
+    df = pd.read_csv(INPUT_PATH, sep="\t")
     df["fraction_cell_lines_dependent_on_DUB"].fillna("Unmeasured", inplace=True)
 
     df["dub_hgnc_id"] = df["DUB"].map(hgnc_client.get_current_hgnc_id)
@@ -213,42 +213,44 @@ def get_processed_data():
     del df["DUB"]
 
     rv = {}
-    for (dub_hgnc_id, dub_hgnc_symbol), sdf in tqdm(
-        df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]), unit="DUB"
-    ):
-        gsea_df: pd.DataFrame = symbol_to_gsea.get(dub_hgnc_symbol)
-        if gsea_df is None:
-            go = []
-        else:
-            go = [
-                dict(
-                    identifier=row["go_id"],
-                    name=row["go_name"],
-                    type=get_go_type(row["go_id"].removeprefix("GO:")),
-                    p=row["pvalue"],
-                    p_adj=row["p.adjust"],
-                    q=row["qvalue"],
-                )
-                for _, row in gsea_df.sort_values("qvalue", ascending=True).iterrows()
-            ]
 
+    df["DepMap_coDependency"] = df["DepMap_coDependency"].map(
+        lambda s: GENE_FIXES.get(s, s)
+    )
+    df["dep_gene_id"] = df["DepMap_coDependency"].map(hgnc_client.get_current_hgnc_id)
+    df["dep_gene_symbol"] = df["dep_gene_id"].map(
+        hgnc_client.get_hgnc_name, na_action="ignore"
+    )
+
+    for (dub_hgnc_id, dub_hgnc_symbol), sdf in tqdm(
+        df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]),
+        unit="DUB",
+        desc="Processing database",
+    ):
+        # Non-grouping operations
         fraction_dependent = sdf.iloc[0]["fraction_cell_lines_dependent_on_DUB"]
         papers = int(sdf.iloc[0]["PubMed_papers"].replace(",", ""))
 
-        depmap_results = []
-        for _, row in tqdm(sdf.iterrows(), unit="dep", leave=False):
-            depmap_gene = row["DepMap_coDependency"]
-            if pd.isna(depmap_gene):
-                continue
-            depmap_gene = GENE_FIXES.get(depmap_gene, depmap_gene)
-            depmap_gene_id = hgnc_client.get_current_hgnc_id(depmap_gene)
-            if depmap_gene_id is None:
-                raise ValueError(
-                    f"could not map depmap dependency for {dub_hgnc_symbol} to HGNC ID: {depmap_gene}"
-                )
-            depmap_gene_symbol = hgnc_client.get_hgnc_name(depmap_gene_id)
+        # FamPlex identifier for the DUB class
+        dub_family = get_dub_family(dub_hgnc_symbol)
 
-            stmts = get_cached_stmts(dub_hgnc_symbol, depmap_gene_symbol)
+        # External IDs
+        entrez_id = hgnc_client.get_entrez_id(dub_hgnc_id)
+
+        # Get gene dependencies for this DUB
+        depmap_gene_records = []
+        for _, row in tqdm(
+            sdf.iterrows(), unit="dep", leave=False, desc="Mapping dependencies"
+        ):
+            depmap_gene_id = row["dep_gene_id"]
+            if (
+                pd.isna(depmap_gene_id)
+                or pd.isnull(depmap_gene_id)
+                or not depmap_gene_id
+            ):
+                continue
+            depmap_gene_symbol = row["dep_gene_symbol"]
+            stmts = get_interaction_stmts(dub_hgnc_symbol, depmap_gene_symbol)
 
             depmap_result = dict(
                 hgnc_id=depmap_gene_id,
@@ -261,7 +263,7 @@ def get_processed_data():
                     nursa=row["NURSA"] == "yes",
                     pc=row["PathwayCommons"] == "yes",
                     ppid=row["PPID_support"] == "yes",
-                    indra=len(stmts) > 0,
+                    indra=len(stmts),
                 ),
             )
 
@@ -280,42 +282,67 @@ def get_processed_data():
                     score=cmap_score,
                     type=row["CMAP_Perturbation_Type"],
                 )
-            depmap_results.append(depmap_result)
+            depmap_gene_records.append(depmap_result)
 
-        # FamPlex identifier for the DUB class
-        dub_class = get_dub_type(dub_hgnc_symbol)
+        # Sort descending by absolute value
+        depmap_gene_records = sorted(
+            depmap_gene_records,
+            key=lambda record: abs(record["correlation"]),
+            reverse=True,
+        )
 
-        # External IDs
-        entrez_id = hgnc_client.get_entrez_id(dub_hgnc_id)
+        # Get over-representation analysis records for this DUB based on gene dependencies
+        depmap_enrichment_records = [
+            dict(
+                identifier=record["go_id"],
+                name=record["go_name"],
+                type=get_go_type(record["go_id"]),
+                p=record["pvalue"],
+                p_adj=record["p.adjust"],
+                q=record["qvalue"],
+            )
+            for record in symbol_to_depmap_enrichment.get(dub_hgnc_symbol, [])
+        ]
 
         rv[dub_hgnc_symbol] = dict(
             hgnc_id=dub_hgnc_id,
             hgnc_symbol=dub_hgnc_symbol,
             hgnc_name=pyobo.get_definition("hgnc", dub_hgnc_id),
-            uniprot_id=hgnc_client.get_uniprot_id(dub_hgnc_id),
-            entrez_id=entrez_id,
             # description=pyobo.get_definition('ncbigene', entrez_id),
-            mgi_id=hgnc_client.get_mouse_id(dub_hgnc_id),
-            rgd_id=hgnc_client.get_rat_id(dub_hgnc_id),
-            #: If this DUB is not annotated in HGNC/FamPlex
-            dub_class=dub_class,
-            # rnaseq=rnaseq,
+            dub_family=dub_family,
+            xrefs=dict(
+                uniprot_id=hgnc_client.get_uniprot_id(dub_hgnc_id),
+                entrez_id=entrez_id,
+            ),
+            orthologs=cdict(
+                mgi=hgnc_client.get_mouse_id(dub_hgnc_id),
+                rgd=hgnc_client.get_rat_id(dub_hgnc_id),
+            ),
             papers=papers,
             fraction_cell_lines_dependent=fraction_dependent,
-            go=go,
-            depmap=depmap_results,
-            dgea=symbol_to_dgea.get(dub_hgnc_symbol),
+            depmap=dict(
+                genes=depmap_gene_records,
+                enrichment=depmap_enrichment_records,
+            ),
+            knockdown=dict(
+                genes=symbol_to_ko_dgea.get(dub_hgnc_symbol),
+                enrichment=symbol_to_ko_gsea.get(dub_hgnc_symbol),
+            ),
         )
     return rv
 
 
-def get_rv(force: bool = True):
-    if DATA_PROCESSED.is_file() and not force:
-        with DATA_PROCESSED.open() as file:
+def cdict(**kwargs):
+    return {k: v for k, v in kwargs.items() if v is not None}
+
+
+def get_rv(force: bool):
+    if OUTPUT_PATH.is_file() and not force:
+        with OUTPUT_PATH.open() as file:
             return json.load(file)
 
     rv = get_processed_data()
-    with DATA_PROCESSED.open("w") as file:
+    with OUTPUT_PATH.open("w") as file:
         json.dump(rv, file, indent=2, sort_keys=True)
 
     # Make a venn diagram describing the overlaps
@@ -343,23 +370,22 @@ def _d(symbols):
 @force_option
 @verbose_option
 def main(force: bool):
-    rv = get_rv(force=force)
+    with logging_redirect_tqdm():
+        _main_helper(force)
 
-    # Load KO gene set enrichment analysis
-    with DATA_DUR.joinpath("ko_gsea.json").open() as file:
-        ko_gsea_dict = json.load(file)
-    for hgnc_symbol, enrichments in ko_gsea_dict.items():
-        rv[hgnc_symbol]["ko_gsea"] = enrichments
+
+def _main_helper(force: bool):
+    rv = get_rv(force=force)
 
     # Load INDRA statements
     dub_symbol_statments = {}
     for key, value in rv.items():
-        gene_stmts = get_cached_stmts_single(value["hgnc_id"])
-        gene_stmts = ac.filter_grounded_only(gene_stmts)
+        gene_stmts = get_gene_statements(value["hgnc_id"])
+        gene_stmts = dubportal_preassembly(gene_stmts)
         dub_symbol_statments[value["hgnc_symbol"]] = gene_stmts
         rv[key]["n_statements"] = len(gene_stmts)
         rv[key]["n_dub_statements"] = sum(
-            isinstance(s, Deubiquitination) for s in gene_stmts
+            isinstance(stmt, Deubiquitination) for stmt in gene_stmts
         )
         rv[key]["n_other_statements"] = len(gene_stmts) - rv[key]["n_dub_statements"]
 
@@ -367,9 +393,6 @@ def main(force: bool):
     index_html = index_template.render(rows=rows)
     with open(os.path.join(DOCS, "index.html"), "w") as file:
         print(index_html, file=file)
-
-    with NDEX_LINKS.open() as file:
-        ndex_links = json.load(file)
 
     unique_dubportal = _d(sorted(set(rv) - FAMPLEX_DUBS))
     unique_famplex = _d(sorted(FAMPLEX_DUBS - set(rv)))
@@ -382,7 +405,7 @@ def main(force: bool):
     with about_dir.joinpath("index.html").open("w") as file:
         print(about_html, file=file)
 
-    for row in tqdm(rows):
+    for row in tqdm(rows, desc="Putting it all together"):
         hgnc_symbol = row["hgnc_symbol"]
 
         stmts = dub_symbol_statments.get(hgnc_symbol, [])
@@ -401,7 +424,6 @@ def main(force: bool):
 
         gene_html = gene_template.render(
             record=row,
-            ndex=ndex_links.get(hgnc_symbol),
             dub_stmt_html=markupsafe.Markup(dub_stmt_html),
             other_stmt_html=markupsafe.Markup(other_stmt_html),
         )

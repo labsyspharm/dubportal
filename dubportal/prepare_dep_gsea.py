@@ -2,6 +2,7 @@
 
 """Run this script to prepare the GSEA data in the data/ directory."""
 
+import json
 import pathlib
 
 import pandas as pd
@@ -9,7 +10,11 @@ import pyobo
 
 from indra.databases import go_client, hgnc_client
 
-DATA = pathlib.Path(__file__).parent.resolve().joinpath("data")
+HERE = pathlib.Path(__file__).parent.resolve()
+RAW = HERE.joinpath("raw")
+PROCESSED = HERE.joinpath("processed")
+INPUT_PATH = RAW.joinpath("sigGO_DepMap_SigCodependencies.tsv")
+OUTPUT_PATH = PROCESSED.joinpath("dep_gsea.json")
 
 GO_FIXES = {
     "GO_G1_DNA_DAMAGE_CHECKPOINT": "mitotic G1 DNA damage checkpoint signaling",
@@ -27,14 +32,18 @@ GO_FIXES = {
 
 def main() -> None:
     """Load the original results and output a cleaned and normalized file."""
-    df = pd.read_csv(DATA.joinpath("sigGO_DepMap_SigCodependencies.tsv"), sep="\t")
-    reverse_mapping = get_reverse_mapping()
+    df = pd.read_csv(INPUT_PATH, sep="\t")
     df["ID"] = df["ID"].map(lambda s: clean_go_prefix(GO_FIXES.get(s, s)))
-    df["go_id"] = df["ID"].map(reverse_mapping.get)
-    df["go_name"] = df["go_id"].map(go_client.get_go_label, na_action="ignore")
-    df["hgnc_symbol"] = df["DUB"].map(
-        lambda s: hgnc_client.get_hgnc_name(hgnc_client.get_current_hgnc_id(s))
+    df["go_id"] = (
+        df["ID"]
+        .map(get_reverse_mapping())
+        .map(lambda s: s.removeprefix("GO:"), na_action="ignore")
     )
+    df["go_name"] = df["go_id"].map(
+        lambda s: go_client.get_go_label(f"GO:{s}"), na_action="ignore"
+    )
+    df["hgnc_id"] = df["DUB"].map(hgnc_client.get_current_hgnc_id)
+    df["hgnc_symbol"] = df["hgnc_id"].map(hgnc_client.get_hgnc_name)
     del df["DUB"]
     del df["Description"]
     df = df[
@@ -42,12 +51,17 @@ def main() -> None:
     ]
 
     # FIXME these IDs are not taking in the fixes from above
-    df = df[df["go_id"].notnull()]
+    df = df[df["go_id"].notna()]
     # unmapped = sorted(set(df.loc[df['go_id'].isnull(), 'ID'].unique()))
     # for um in unmapped:
     #    print(um)
 
-    df.to_csv(DATA.joinpath("gsea.json"), sep="\t", index=False)
+    rv = {
+        gene_symbol: sdf.sort_values("qvalue").to_dict("records")
+        for gene_symbol, sdf in df.groupby("hgnc_symbol")
+    }
+    with OUTPUT_PATH.open("w") as file:
+        json.dump(rv, file, indent=2, sort_keys=True)
 
 
 def get_reverse_mapping() -> dict[str, str]:

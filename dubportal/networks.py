@@ -10,7 +10,7 @@ from indra.databases import ndex_client
 from indra.assemblers.cx import CxAssembler
 from indra.assemblers.cx.hub_layout import add_semantic_hub_layout
 
-from .api import DATA
+from .api import INPUT_PATH
 
 
 curs = get_curations()
@@ -58,7 +58,7 @@ def upload_network(dub, stmts):
 
 
 if __name__ == "__main__":
-    df = pandas.read_csv(DATA, sep="\t")
+    df = pandas.read_csv(INPUT_PATH, sep="\t")
     dubs = sorted(df["DUB"].unique())
     network_index = {}
     all_stmts = {}

@@ -81,11 +81,11 @@
                     </a>
                 </td>
                 <td>
-                    {% if row.dub_class %}
+                    {% if row.dub_family %}
                         <a data-toggle="tooltip" data-html="true"
-                           title="FPLX:{{ row.dub_class }}<br>Click for external information from FamPlex."
-                           href="https://bioregistry.io/fplx:{{ row.dub_class }}">
-                            {{ row.dub_class }}
+                           title="FPLX:{{ row.dub_family }}<br>Click for external information from FamPlex."
+                           href="https://bioregistry.io/fplx:{{ row.dub_family }}">
+                            {{ row.dub_family }}
                         </a>
                     {% endif %}
                 </td>
@@ -99,16 +99,18 @@
                     {% endif %}
                 </td>
                 <td style="text-align: right">
-                    {{ row.go | length }}
-                </td>
-                <td style="text-align: right">
-                    {% if row.dgea is not none %}
-                        {{ row.dgea | length }}
+                    {% if row.enrichment is not none %}
+                        {{ row.depmap.enrichment | length }}
                     {% endif %}
                 </td>
                 <td style="text-align: right">
-                    {% if row.dgea is not none %}
-                        {{ row.ko_gsea | length }}
+                    {% if row.knockdown.genes is not none %}
+                        {{ row.knockdown.genes | length }}
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {% if row.knockdown.enrichment is not none %}
+                        {{ row.knockdown.enrichment | length }}
                     {% endif %}
                 </td>
             </tr>

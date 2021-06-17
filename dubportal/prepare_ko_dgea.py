@@ -13,9 +13,12 @@ from more_click import verbose_option
 
 from indra.databases import hgnc_client
 
-DATA = pathlib.Path(__file__).parent.resolve().joinpath("data")
-RAW_PATH = DATA.joinpath("results.zip")
-PROCESSED_PATH = DATA.joinpath("dgea.json")
+HERE = pathlib.Path(__file__).parent.resolve()
+RAW = HERE.joinpath("raw")
+PROCESSED = HERE.joinpath("processed")
+
+INPUT_PATH = RAW.joinpath("results.zip")
+OUTPUT_PATH = PROCESSED.joinpath("ko_dgea.json")
 COLUMNS = ["hgnc_id", "hgnc_symbol", "hgnc_name", "log2FoldChange", "pvalue", "padj"]
 
 
@@ -30,7 +33,7 @@ def get_dgea():
     rv = {}
     hgnc_id_def = pyobo.get_id_definition_mapping("hgnc")
 
-    with zipfile.ZipFile(RAW_PATH) as zip_file:
+    with zipfile.ZipFile(INPUT_PATH) as zip_file:
         for zip_info in zip_file.filelist:
             if not zip_info.filename.startswith(
                 "results"
@@ -51,9 +54,8 @@ def get_dgea():
                 df = df[df["hgnc_id"].notnull()]
                 df["hgnc_symbol"] = df["hgnc_id"].map(hgnc_client.get_hgnc_name)
                 df["hgnc_name"] = df["hgnc_id"].map(hgnc_id_def)
-                df = df[COLUMNS]
-                rv[gene_symbol] = df.to_dict("records")
-    with PROCESSED_PATH.open("w") as file:
+                rv[gene_symbol] = df[COLUMNS].to_dict("records")
+    with OUTPUT_PATH.open("w") as file:
         json.dump(rv, file, indent=2, sort_keys=True)
     return rv
 
