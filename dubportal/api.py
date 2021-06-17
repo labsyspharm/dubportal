@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import pathlib
+from collections import defaultdict
 from functools import lru_cache
 from operator import itemgetter
 from typing import Optional
@@ -12,9 +13,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
 import pystow
+import seaborn as sns
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
 from more_click import force_option, verbose_option
+from pyobo.struct import has_part
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
@@ -197,7 +200,27 @@ def safe_get_curations():
         return None
 
 
-def get_processed_data():
+def shared_reactome(hgnc_id_1: str, hgnc_id_2: str) -> set[str]:
+    r = get_reactome_proteins()
+    uniprot_a = hgnc_client.get_uniprot_id(hgnc_id_1)
+    uniprot_b = hgnc_client.get_uniprot_id(hgnc_id_2)
+    return set(r.get(uniprot_a, set())).intersection(r.get(uniprot_b, set()))
+
+
+@lru_cache(maxsize=1)
+def get_reactome_proteins() -> dict[str, set[str]]:
+    rv = defaultdict(set)
+    for reactome_id, entities in pyobo.get_id_multirelations_mapping(
+        "reactome", has_part, invert=True
+    ).items():
+        for entity in entities:
+            if entity.prefix != "uniprot":
+                continue
+            rv[entity.identifier].add(reactome_id)
+    return dict(rv)
+
+
+def get_processed_data() -> dict[str, any]:
     with PROCESSED.joinpath("dep_gsea.json").open() as file:
         symbol_to_depmap_enrichment = json.load(file)
     with PROCESSED.joinpath("ko_dgea.json").open() as file:
@@ -264,6 +287,11 @@ def get_processed_data():
                     pc=row["PathwayCommons"] == "yes",
                     ppid=row["PPID_support"] == "yes",
                     indra=len(stmts),
+                    reactome=len(shared_reactome(dub_hgnc_id, depmap_gene_id)),
+                    dge=any(
+                        r["hgnc_id"] == depmap_gene_id
+                        for r in symbol_to_ko_dgea.get(dub_hgnc_id, [])
+                    ),
                 ),
             )
 
@@ -377,6 +405,34 @@ def main(force: bool):
 def _main_helper(force: bool):
     rv = get_rv(force=force)
 
+    fraction_direct_explained = {
+        symbol: (
+            sum(
+                (
+                    0 < sr["interactions"]["indra"]
+                    or 0 < sr["interactions"]["reactome"]
+                    or sr["interactions"]["biogrid"]
+                    or sr["interactions"]["intact"]
+                    or sr["interactions"]["nursa"]
+                    or sr["interactions"]["pc"]
+                    or sr["interactions"]["dge"]
+                )
+                for sr in record["depmap"]["genes"]
+            )
+            / len(record["depmap"]["genes"])
+        )
+        for symbol, record in rv.items()
+        if record["depmap"] and record["depmap"]["genes"]
+    }
+    fig, ax = plt.subplots()
+    sns.histplot(list(fraction_direct_explained.values()), ax=ax)
+    ax.set_title("Expained DUB Dependencies")
+    ax.set_ylabel("Number DUBs")
+    ax.set_xlabel("Percentage of Top K Dependencies Explained")
+    fig.savefig(DOCS.joinpath("explanations.svg"))
+    fig.savefig(DOCS.joinpath("explanations.png"), dpi=300)
+    plt.close(fig)
+
     # Load INDRA statements
     dub_symbol_statments = {}
     for key, value in rv.items():
@@ -434,4 +490,5 @@ def _main_helper(force: bool):
 
 
 if __name__ == "__main__":
+    logging.getLogger("indra.tools.assemble_corpus").setLevel(logging.WARNING)
     main()

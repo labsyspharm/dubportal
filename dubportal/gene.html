@@ -158,6 +158,7 @@
                                 {{ badgebox('BioGRID', row.interactions.biogrid) }}
                                 {{ badgebox('IntAct', row.interactions.intact) }}
                                 {{ badgebox('NURSA', row.interactions.nursa) }}
+                                {{ badgebox('DGE', row.interactions.dge) }}
                                 {% if row.interactions.pc %}
                                     <a class="badge badge-primary"
                                        href="https://apps.pathwaycommons.org/search?type=Pathway&q={{ record.hgnc_symbol }},{{ row.hgnc_symbol }}">
@@ -169,6 +170,11 @@
                                        href="https://db.indra.bio/statements/from_agents?format=html&subject={{ record.hgnc_symbol }}&object={{ row.hgnc_symbol }}">
                                         INDRA ({{ row.interactions.indra }}) <i class="fas fa-link"></i>
                                     </a>
+                                {% endif %}
+                                {% if 0 < row.interactions.reactome %}
+                                    <span class="badge badge-primary">
+                                        Reactome ({{ row.interactions.reactome }})
+                                    </span>
                                 {% endif %}
                             </td>
                             {% if row.ccle %}
