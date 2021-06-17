@@ -28,21 +28,23 @@
                 unknown, impeding efforts to prioritize specific proteins for research and drug-development.
             </p>
             <p>
-                On this DUB portal, we provide the integration and analysis of publicly available resources as well as 
-                newly collected transcriptomic data following DUB knockout or inhibition to facilitate the 
+                On this DUB portal, we provide the integration and analysis of publicly available resources as well as
+                newly collected transcriptomic data following DUB knockout or inhibition to facilitate the
                 exploration of DUB function in oncology.
             </p>
             <p>
-                Each DUB is listed with the number of papers in PubMed, the number of INDRA statements about deubiquitinating 
-                substrates, the number of INDRA statements total (including upstream and downstream processes beyond deubiquitination), 
-                and the and the fraction of cell lines in the <a href="https://depmap.org/portal/">DepMap</a> that are strongly 
-                dependent on each DUB (i.e., cancer cell proliferation is strongly impacted by DUB knockout). Blank valaues in the 
-                "Dependent Cell Lines" column means the DUB was not knocked out in the DepMap dataset. Additionally, we 
-                list the GO term most strongly enriched in the top seven co-dependent genes for each DUB and the corresponding 
-                p-values. Finally, the "DGEA" column contains the number of differentially expressed genes 96 hours following 
-                knockout of the particular DUB in MDAMB231 cells as measured by high-throughput RNAseq. Blank values in "DGEA" 
-                refer to DUBs that were not knockout out in the RNAseq experiment. Click on an individual DUB name for more details 
-                and additional data and analysis.
+                Each DUB is listed with the number of papers in PubMed, the number of INDRA statements about
+                deubiquitinating substrates, the number of INDRA statements total (including upstream and downstream
+                processes beyond deubiquitination), and the and the fraction of cell lines in the <a
+                    href="https://depmap.org/portal/">DepMap</a> that are strongly dependent on each DUB (i.e., cancer
+                cell proliferation is strongly impacted by DUB knockout). Blank values in the "Dependent Cell Lines"
+                column means the DUB was not knocked out in the DepMap dataset. Additionally, we list the Gene Ontology
+                (GO) term most strongly enriched in the top seven co-dependent genes for each DUB and the corresponding
+                <i>p</i>-values. Finally, the "DGEA" column contains the number of differentially expressed genes 96
+                hours following knockout of the particular DUB in <a
+                    href="https://bioregistry.io/EFO:0001209">MDAMB231</a> cells as measured by high-throughput RNAseq.
+                Blank values in "DGEA" refer to DUBs that were not knockout out in the RNAseq experiment. Click on an
+                individual DUB name for more details and additional data and analysis.
             </p>
         </div>
     </div>
@@ -56,10 +58,9 @@
             <th style="text-align: right"># DUB Stmts.</th>
             <th style="text-align: right"># Other Stmts.</th>
             <th style="text-align: right">Dependent Cell Lines</th>
-            <th>Top GSEA Result for Co-dependent Genes</th>
-            <th style="text-align: right">GSEA <i>p</i>-value (adj.)</th>
-            <th style="text-align: right">GSEA <i>q</i>-value</th>
+            <th># Sig. ORA Gene Sets (DepMap)</th>
             <th>DGEA</th>
+            <th># Sig. GSEA Gene Sets (DGEA)</th>
         </tr>
         </thead>
         <tbody>
@@ -97,24 +98,17 @@
                         {{ "%.1f"|format(row.fraction_cell_lines_dependent * 100) }}%
                     {% endif %}
                 </td>
-                {% if row.go %}
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="{{ row.go[0].identifier }}<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/{{ row.go[0].identifier }}">
-                            {{ row.go[0].name }}
-                        </a>
-                    </td>
-                    <td style="text-align: right">{{ "%.2e" | format(row.go[0].p_adj) }}</td>
-                    <td style="text-align: right">{{ "%.2e" | format(row.go[0].q) }}</td>
-                {% else %}
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                {% endif %}
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    {{ row.go | length }}
+                </td>
+                <td style="text-align: right">
                     {% if row.dgea is not none %}
                         {{ row.dgea | length }}
+                    {% endif %}
+                </td>
+                <td style="text-align: right">
+                    {% if row.dgea is not none %}
+                        {{ row.ko_gsea | length }}
                     {% endif %}
                 </td>
             </tr>

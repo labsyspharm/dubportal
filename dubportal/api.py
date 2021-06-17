@@ -338,6 +338,13 @@ def _d(symbols):
 def main(force: bool):
     rv = get_rv(force=force)
 
+    # Load KO gene set enrichment analysis
+    with DATA_DUR.joinpath('ko_gsea.json').open() as file:
+        ko_gsea_dict = json.load(file)
+    for hgnc_symbol, enrichments in ko_gsea_dict.items():
+        rv[hgnc_symbol]['ko_gsea'] = enrichments
+
+    # Load INDRA statements
     dub_symbol_statments = {}
     for key, value in rv.items():
         gene_stmts = get_cached_stmts_single(value["hgnc_id"])
@@ -369,7 +376,9 @@ def main(force: bool):
         print(about_html, file=file)
 
     for row in tqdm(rows):
-        stmts = dub_symbol_statments.get(row["hgnc_symbol"], [])
+        hgnc_symbol = row["hgnc_symbol"]
+
+        stmts = dub_symbol_statments.get(hgnc_symbol, [])
         dub_assembler = HtmlAssembler(
             [stmt for stmt in stmts if isinstance(stmt, RemoveModification)],
             db_rest_url="https://db.indra.bio",
@@ -385,7 +394,7 @@ def main(force: bool):
 
         gene_html = gene_template.render(
             record=row,
-            ndex=ndex_links.get(row["hgnc_symbol"]),
+            ndex=ndex_links.get(hgnc_symbol),
             dub_stmt_html=markupsafe.Markup(dub_stmt_html),
             other_stmt_html=markupsafe.Markup(other_stmt_html),
         )

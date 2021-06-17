@@ -98,11 +98,18 @@
                 exploration of DUB function in oncology.
             </p>
             <p>
-                Each DUB is listed with the number of papers in PubMed and the fraction of cell lines in the DepMap
-                that are strongly dependent on each DUB (i.e., cancer cell proliferation is strongly impacted by DUB
-                knockout). Additionally, we list the GO term most strongly enriched in the top seven co-dependent
-                genes for each DUB and the corresponding p-values (click on an individual DUB name for more details
-                and additional data).
+                Each DUB is listed with the number of papers in PubMed, the number of INDRA statements about
+                deubiquitinating substrates, the number of INDRA statements total (including upstream and downstream
+                processes beyond deubiquitination), and the and the fraction of cell lines in the <a
+                    href="https://depmap.org/portal/">DepMap</a> that are strongly dependent on each DUB (i.e., cancer
+                cell proliferation is strongly impacted by DUB knockout). Blank values in the "Dependent Cell Lines"
+                column means the DUB was not knocked out in the DepMap dataset. Additionally, we list the Gene Ontology
+                (GO) term most strongly enriched in the top seven co-dependent genes for each DUB and the corresponding
+                <i>p</i>-values. Finally, the "DGEA" column contains the number of differentially expressed genes 96
+                hours following knockout of the particular DUB in <a
+                    href="https://bioregistry.io/EFO:0001209">MDAMB231</a> cells as measured by high-throughput RNAseq.
+                Blank values in "DGEA" refer to DUBs that were not knockout out in the RNAseq experiment. Click on an
+                individual DUB name for more details and additional data and analysis.
             </p>
         </div>
     </div>
@@ -116,10 +123,9 @@
             <th style="text-align: right"># DUB Stmts.</th>
             <th style="text-align: right"># Other Stmts.</th>
             <th style="text-align: right">Dependent Cell Lines</th>
-            <th>Top GSEA Result for Co-dependent Genes</th>
-            <th style="text-align: right">GSEA <i>p</i>-value (adj.)</th>
-            <th style="text-align: right">GSEA <i>q</i>-value</th>
+            <th># Sig. ORA Gene Sets (DepMap)</th>
             <th>DGEA</th>
+            <th># Sig. GSEA Gene Sets (DGEA)</th>
         </tr>
         </thead>
         <tbody>
@@ -156,12 +162,13 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -198,12 +205,13 @@
                         0.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -240,20 +248,17 @@
                         76.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0035097<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0035097">
-                            histone methyltransferase complex
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.68e-04</td>
-                    <td style="text-align: right">3.23e-04</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    4
+                </td>
+                <td style="text-align: right">
                     
                         10
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -290,20 +295,17 @@
                         0.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0070552<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0070552">
-                            BRISC complex
-                        </a>
-                    </td>
-                    <td style="text-align: right">2.20e-04</td>
-                    <td style="text-align: right">8.54e-05</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    2
+                </td>
+                <td style="text-align: right">
                     
                         1
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -340,20 +342,17 @@
                         100.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0000338<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0000338">
-                            protein deneddylation
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.63e-18</td>
-                    <td style="text-align: right">8.12e-19</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    7
+                </td>
+                <td style="text-align: right">
                     
                         52
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        4
                     
                 </td>
             </tr>
@@ -390,12 +389,13 @@
                         100.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -432,20 +432,17 @@
                         5.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0002224<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0002224">
-                            toll-like receptor signaling pathway
-                        </a>
-                    </td>
-                    <td style="text-align: right">2.23e-07</td>
-                    <td style="text-align: right">4.52e-08</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    41
+                </td>
+                <td style="text-align: right">
                     
                         28
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        259
                     
                 </td>
             </tr>
@@ -482,18 +479,13 @@
                         98.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0006413<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0006413">
-                            translational initiation
-                        </a>
-                    </td>
-                    <td style="text-align: right">2.77e-08</td>
-                    <td style="text-align: right">1.94e-09</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    21
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -530,18 +522,13 @@
                         96.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0001732<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0001732">
-                            formation of cytoplasmic translation initiation complex
-                        </a>
-                    </td>
-                    <td style="text-align: right">3.09e-06</td>
-                    <td style="text-align: right">8.14e-07</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    16
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -578,12 +565,15 @@
                         9.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -621,12 +611,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -665,12 +658,13 @@
                         23.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -707,12 +701,13 @@
                         49.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -748,12 +743,13 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -789,12 +785,13 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -830,12 +827,13 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -872,12 +870,15 @@
                         5.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -915,12 +916,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -959,18 +963,15 @@
                         3.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0070979<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0070979">
-                            protein K11-linked ubiquitination
-                        </a>
-                    </td>
-                    <td style="text-align: right">8.60e-06</td>
-                    <td style="text-align: right">3.29e-06</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    11
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -1008,12 +1009,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -1051,12 +1055,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -1095,12 +1102,13 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -1136,12 +1144,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -1180,20 +1191,17 @@
                         48.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0070535<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0070535">
-                            histone H2A K63-linked ubiquitination
-                        </a>
-                    </td>
-                    <td style="text-align: right">5.40e-04</td>
-                    <td style="text-align: right">2.37e-04</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    11
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -1230,12 +1238,13 @@
                         0.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -1272,14 +1281,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         9
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -1315,14 +1327,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -1358,12 +1373,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -1402,12 +1420,13 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -1444,12 +1463,13 @@
                         0.1%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -1486,12 +1506,15 @@
                         7.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -1530,20 +1553,17 @@
                         100.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0005681<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0005681">
-                            spliceosomal complex
-                        </a>
-                    </td>
-                    <td style="text-align: right">3.71e-07</td>
-                    <td style="text-align: right">1.84e-07</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    14
+                </td>
+                <td style="text-align: right">
                     
                         106
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -1574,20 +1594,17 @@
                         100.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:1902750<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:1902750">
-                            negative regulation of cell cycle G2/M phase transition
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.22e-06</td>
-                    <td style="text-align: right">2.03e-06</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    57
+                </td>
+                <td style="text-align: right">
                     
                         839
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        913
                     
                 </td>
             </tr>
@@ -1624,18 +1641,13 @@
                         100.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0005681<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0005681">
-                            spliceosomal complex
-                        </a>
-                    </td>
-                    <td style="text-align: right">8.67e-05</td>
-                    <td style="text-align: right">3.24e-05</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    6
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -1672,20 +1684,17 @@
                         32.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0007032<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0007032">
-                            endosome organization
-                        </a>
-                    </td>
-                    <td style="text-align: right">4.97e-04</td>
-                    <td style="text-align: right">2.48e-04</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    4
+                </td>
+                <td style="text-align: right">
                     
                         1
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -1721,12 +1730,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -1765,20 +1777,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:1901222<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:1901222">
-                            regulation of NIK/NF-kappaB signaling
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.09e-05</td>
-                    <td style="text-align: right">4.56e-06</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    17
+                </td>
+                <td style="text-align: right">
                     
                         36
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        159
                     
                 </td>
             </tr>
@@ -1814,14 +1823,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         11
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -1858,20 +1870,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0030330<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0030330">
-                            DNA damage response, signal transduction by p53 class mediator
-                        </a>
-                    </td>
-                    <td style="text-align: right">6.14e-06</td>
-                    <td style="text-align: right">1.63e-06</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    33
+                </td>
+                <td style="text-align: right">
                     
                         77
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        393
                     
                 </td>
             </tr>
@@ -1908,20 +1917,17 @@
                         50.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0033202<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0033202">
-                            DNA helicase complex
-                        </a>
-                    </td>
-                    <td style="text-align: right">4.16e-17</td>
-                    <td style="text-align: right">2.33e-17</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    8
+                </td>
+                <td style="text-align: right">
                     
                         3
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -1958,18 +1964,15 @@
                         14.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0006310<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0006310">
-                            DNA recombination
-                        </a>
-                    </td>
-                    <td style="text-align: right">2.48e-04</td>
-                    <td style="text-align: right">7.30e-05</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    7
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -2008,14 +2011,17 @@
                         69.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         1
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2051,12 +2057,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -2094,14 +2103,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         1
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2138,14 +2150,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2182,20 +2197,17 @@
                         9.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0031965<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0031965">
-                            nuclear membrane
-                        </a>
-                    </td>
-                    <td style="text-align: right">2.69e-02</td>
-                    <td style="text-align: right">7.89e-03</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    1
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2232,20 +2244,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0035329<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0035329">
-                            hippo signaling
-                        </a>
-                    </td>
-                    <td style="text-align: right">2.22e-02</td>
-                    <td style="text-align: right">1.06e-02</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    1
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2282,14 +2291,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         10
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2325,12 +2337,13 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -2366,12 +2379,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -2410,20 +2426,17 @@
                         16.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0034340<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0034340">
-                            response to type I interferon
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.49e-12</td>
-                    <td style="text-align: right">3.26e-12</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    7
+                </td>
+                <td style="text-align: right">
                     
                         9
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2460,14 +2473,17 @@
                         34.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         10
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2504,14 +2520,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         14
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2547,14 +2566,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         14
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2591,14 +2613,17 @@
                         3.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         1
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2635,20 +2660,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0070461<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0070461">
-                            SAGA-type complex
-                        </a>
-                    </td>
-                    <td style="text-align: right">3.70e-15</td>
-                    <td style="text-align: right">1.07e-15</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    22
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2685,14 +2707,17 @@
                         4.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         10
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2728,12 +2753,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -2771,14 +2799,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2814,14 +2845,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         1
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2858,20 +2892,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0071479<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0071479">
-                            cellular response to ionizing radiation
-                        </a>
-                    </td>
-                    <td style="text-align: right">9.94e-12</td>
-                    <td style="text-align: right">2.58e-12</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    62
+                </td>
+                <td style="text-align: right">
                     
                         9
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2907,14 +2938,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         9
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2951,14 +2985,17 @@
                         0.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         15
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -2995,14 +3032,17 @@
                         0.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         3
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3038,14 +3078,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         5
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3082,18 +3125,15 @@
                         2.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0000938<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0000938">
-                            GARP complex
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.01e-04</td>
-                    <td style="text-align: right">4.79e-05</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    10
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3132,12 +3172,15 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3176,14 +3219,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         11
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3220,18 +3266,15 @@
                         6.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0071277<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0071277">
-                            cellular response to calcium ion
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.08e-02</td>
-                    <td style="text-align: right">4.06e-03</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    2
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3270,20 +3313,17 @@
                         100.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0003724<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0003724">
-                            RNA helicase activity
-                        </a>
-                    </td>
-                    <td style="text-align: right">2.82e-02</td>
-                    <td style="text-align: right">1.04e-02</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    2
+                </td>
+                <td style="text-align: right">
                     
                         3
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3320,20 +3360,17 @@
                         80.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0000076<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0000076">
-                            DNA replication checkpoint
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.56e-03</td>
-                    <td style="text-align: right">5.44e-04</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    3
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3370,20 +3407,17 @@
                         2.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0071479<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0071479">
-                            cellular response to ionizing radiation
-                        </a>
-                    </td>
-                    <td style="text-align: right">7.07e-09</td>
-                    <td style="text-align: right">1.93e-09</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    47
+                </td>
+                <td style="text-align: right">
                     
                         3
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3420,14 +3454,17 @@
                         67.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         10
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3464,14 +3501,17 @@
                         6.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         1
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3507,12 +3547,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3550,12 +3593,13 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
@@ -3592,18 +3636,15 @@
                         1.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0030330<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0030330">
-                            DNA damage response, signal transduction by p53 class mediator
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.35e-03</td>
-                    <td style="text-align: right">3.45e-04</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    10
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3641,12 +3682,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3685,12 +3729,15 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3728,12 +3775,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3771,14 +3821,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         6
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3815,12 +3868,15 @@
                         0.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3859,14 +3915,17 @@
                         1.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         1
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3902,12 +3961,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -3946,20 +4008,17 @@
                         100.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:1901987<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:1901987">
-                            regulation of cell cycle phase transition
-                        </a>
-                    </td>
-                    <td style="text-align: right">3.93e-03</td>
-                    <td style="text-align: right">1.97e-03</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    4
+                </td>
+                <td style="text-align: right">
                     
                         1
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -3996,14 +4055,17 @@
                         2.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -4040,18 +4102,15 @@
                         0.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0099587<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0099587">
-                            inorganic ion import across plasma membrane
-                        </a>
-                    </td>
-                    <td style="text-align: right">4.68e-02</td>
-                    <td style="text-align: right">9.55e-03</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    1
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -4090,18 +4149,15 @@
                         2.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0031683<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0031683">
-                            G-protein beta/gamma-subunit complex binding
-                        </a>
-                    </td>
-                    <td style="text-align: right">2.01e-03</td>
-                    <td style="text-align: right">9.31e-04</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    2
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -4139,12 +4195,15 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -4183,14 +4242,17 @@
                         14.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         11
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -4227,20 +4289,17 @@
                         81.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0010212<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0010212">
-                            response to ionizing radiation
-                        </a>
-                    </td>
-                    <td style="text-align: right">8.11e-08</td>
-                    <td style="text-align: right">9.67e-09</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    47
+                </td>
+                <td style="text-align: right">
                     
                         16
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -4277,20 +4336,17 @@
                         98.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0016197<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0016197">
-                            endosomal transport
-                        </a>
-                    </td>
-                    <td style="text-align: right">3.62e-09</td>
-                    <td style="text-align: right">1.45e-09</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    18
+                </td>
+                <td style="text-align: right">
                     
                         69
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        359
                     
                 </td>
             </tr>
@@ -4327,20 +4383,17 @@
                         92.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0032435<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0032435">
-                            negative regulation of proteasomal ubiquitin-dependent protein catabolic process
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.15e-02</td>
-                    <td style="text-align: right">3.68e-03</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    3
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -4376,14 +4429,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         2
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        0
                     
                 </td>
             </tr>
@@ -4420,20 +4476,17 @@
                         99.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0070847<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0070847">
-                            core mediator complex
-                        </a>
-                    </td>
-                    <td style="text-align: right">3.56e-04</td>
-                    <td style="text-align: right">1.61e-04</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    4
+                </td>
+                <td style="text-align: right">
                     
                         813
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        113
                     
                 </td>
             </tr>
@@ -4470,18 +4523,15 @@
                         35.0%
                     
                 </td>
-                
-                    <td>
-                        <a data-toggle="tooltip" data-html="true"
-                           title="GO:0006284<br>Click for external information from the Gene Ontology."
-                           href="https://bioregistry.io/GO:0006284">
-                            base-excision repair
-                        </a>
-                    </td>
-                    <td style="text-align: right">1.48e-02</td>
-                    <td style="text-align: right">4.13e-03</td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    3
+                </td>
+                <td style="text-align: right">
+                    
+                        0
+                    
+                </td>
+                <td style="text-align: right">
                     
                         0
                     
@@ -4519,14 +4569,17 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         21
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        155
                     
                 </td>
             </tr>
@@ -4563,14 +4616,17 @@
                         2.0%
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
                     
                         30
+                    
+                </td>
+                <td style="text-align: right">
+                    
+                        327
                     
                 </td>
             </tr>
@@ -4600,12 +4656,13 @@
                     
                     
                 </td>
-                
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                
-                <td style="text-align: center">
+                <td style="text-align: right">
+                    0
+                </td>
+                <td style="text-align: right">
+                    
+                </td>
+                <td style="text-align: right">
                     
                 </td>
             </tr>
