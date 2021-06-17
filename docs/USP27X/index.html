@@ -83,7 +83,7 @@
             </div>
             <!-- main content area -->
             <div class="col-sm-9">
-                <h1 style="margin-bottom: 1.5rem">Dependencies of USP27X</h1>
+                <h1 style="margin-bottom: 1.5rem">USP27X Data Analysis</h1>
                 <dl class="row">
                     <dt class="col-4">HGNC Gene Name</dt>
                     <dd class="col-8">ubiquitin specific peptidase 27 X-linked</dd>
@@ -139,26 +139,25 @@
                 <p>
                     The <a href="https://depmap.org/portal/">Dependency Map (DepMap)</a> is a genome-wide pooled
                     CRISPR-Cas9 knockout proliferation screen conducted in more than 700 cancer cell lines spanning many
-                    different tumor lineages. Each cell line in the DepMap contains a unique barcode, and each gene
-                    knockout is assigned a “dependency score” on a per cell-line basis. The dependency score quantifies
-                    the rate of CRISPR-Cas9 guide drop out for each guide in each cell line. It has been found that
-                    proteins with similar DepMap scores across cell lines, a phenomenon known as co-dependent genes,
-                    have closely related biological functions. This can include activity in the same or parallel
-                    pathways or membership in the same protein complex or the same pathway.
+                    different tumor lineages. Each cell line in the DepMap contains a unique barcode, and each gene knockout 
+                    is assigned a “dependency score” on a per cell-line basis which quantifies the rate of CRISPR-Cas9 guide 
+                    drop.  It has been found that proteins with similar DepMap scores across cell lines, a phenomenon known 
+                    as co-dependent genes, have closely related biological functions. This can include activity in the same 
+                    or parallel pathways or membership in the same protein complex or the same pathway.
                 </p>
                 <p>
-                    We identified the strongest seven co-dependent genes for DUBs and ran GO enrichment analysis in
-                    order to explore the pathways and complexes DUBs are correlated with in the DepMap. We sought to
-                    provide support for the co-dependent genes being in the same pathway or complex by leveraging
-                    additional datasets. We used BioGRID, IntAct, and Pathway Commons PPIDs, and the NURSA PPID to
-                    determine whether co-dependent genes interact with one another. As another approach to identify
-                    potential interactors, we looked at proteomics data from the Broad Institute's <a
-                        href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> for
-                    proteins whose expression across ~375 cell lines strongly correlated with the abundance of each DUB;
+                    We identified the strongest seven co-dependent genes (“Symbol”) for DUBs and ran GO enrichment analysis. 
+                    We used Biogrid, IntAct, and Pathway Commons PPIDs, and the NURSA protein-protein interaction databases 
+                    (PPIDs) to determine whether co-dependent genes interact with one another. The “Evidence” column contains 
+                    the PPIDs in which the interaction appears as well as whether there is support for the association by an 
+                    INDRA statement. As another approach to identify potential interactors, we looked at proteomics data from 
+                    the Broad Institute's <a href="https://portals.broadinstitute.org/ccle">Cancer Cell Line Encyclopedia (CCLE)</a> 
+                    for proteins whose expression across ~375 cell lines strongly correlated with the abundance of each DUB;
                     it has previously been observed that proteins in the same complex are frequently significantly
-                    co-expressed. And, we determined whether co-dependent genes yield similar transcriptomic signatures
+                    co-expressed. The correlations and associated p-values in the CCLE proteomics dataset are provided. 
+                    And, we determined whether co-dependent genes yield similar transcriptomic signatures
                     in the Broad Institute's <a href="https://www.broadinstitute.org/connectivity-map-cmap">Connectivity
-                    Map (CMap)</a>.
+                    Map (CMap)</a>. A CMap score > 90 is considered significantly similar.
                 </p>
                 <h3>DepMap Correlations</h3>
                 <table class="table table-striped table-hover" id="table-terms">
@@ -212,9 +211,9 @@
                 <h2>Transcriptomics</h2>
                 <p>
                     The following table shows the significantly differentially expressed genes after knocking
-                    down USP27X.
+                    out USP27X using CRISPR-Cas9.
                 </p>
-                <h3>Knockdown Differential Expression</h3>
+                <h3>Knockout Differential Expression</h3>
                 <table class="table table-striped table-hover" id="dgea">
                     <thead>
                     <tr>
@@ -249,7 +248,7 @@
                     
                     </tbody>
                 </table>
-            
+                
                 <h2>INDRA Statements</h2>
                 <h3>Deubiquitinase Activity</h3>
                 
@@ -760,7 +759,7 @@
 
         <div class="row">
         <div class="col">
-        <div class="group-shown" id="tl-6f4949d7-bc21-49cf-aaf9-3c27e6ff7476_group">
+        <div class="group-shown" id="tl-28cc75c1-ba0e-4f81-86b5-2473c0c13cc3_group">
 
     
 
@@ -2665,8 +2664,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-d2ed2080-286e-4bd0-a7e8-1540e8effd32"
-             onclick="toggler('tl-d2ed2080-286e-4bd0-a7e8-1540e8effd32')">
+             id="tl-ac81aa90-afb9-47f8-b2e6-15bdf7425975"
+             onclick="toggler('tl-ac81aa90-afb9-47f8-b2e6-15bdf7425975')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a></h5>
       </div>
@@ -2742,7 +2741,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-d2ed2080-286e-4bd0-a7e8-1540e8effd32_group">
+        <div class="group" id="tl-ac81aa90-afb9-47f8-b2e6-15bdf7425975_group">
 
     
 
@@ -2756,8 +2755,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('bc361897-0f03-47e7-b71d-2e4fe6fe811e');"
-               id="bc361897-0f03-47e7-b71d-2e4fe6fe811e_heading">
+               onclick="toggler('7a3df025-98ed-479b-a928-9e1a6fca292e');"
+               id="7a3df025-98ed-479b-a928-9e1a6fca292e_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a>.</h5>
                 </div>
@@ -2831,7 +2830,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="bc361897-0f03-47e7-b71d-2e4fe6fe811e_group">
+          <div class="row group" id="7a3df025-98ed-479b-a928-9e1a6fca292e_group">
 
       
 
@@ -2843,8 +2842,8 @@
 
           <a name="19949878504434410"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'bc361897-0f03-47e7-b71d-2e4fe6fe811e-19949878504434410' )"
-               id="bc361897-0f03-47e7-b71d-2e4fe6fe811e-19949878504434410_heading">
+               onclick="toggler( '7a3df025-98ed-479b-a928-9e1a6fca292e-19949878504434410' )"
+               id="7a3df025-98ed-479b-a928-9e1a6fca292e-19949878504434410_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a>.
@@ -2926,7 +2925,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="bc361897-0f03-47e7-b71d-2e4fe6fe811e-19949878504434410_group">
+               id="7a3df025-98ed-479b-a928-9e1a6fca292e-19949878504434410_group">
           <div class="col">
           <div class="container bars" id="stmt-0-0-0"
                data-stmt_hash="19949878504434410">
@@ -3351,8 +3350,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('953132e0-73c3-4365-9c71-5cb25d100f5c');"
-               id="953132e0-73c3-4365-9c71-5cb25d100f5c_heading">
+               onclick="toggler('1d5d50a0-a8b8-4b05-afe2-644f45cf2ffe');"
+               id="1d5d50a0-a8b8-4b05-afe2-644f45cf2ffe_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a>.</h5>
                 </div>
@@ -3426,7 +3425,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="953132e0-73c3-4365-9c71-5cb25d100f5c_group">
+          <div class="row group" id="1d5d50a0-a8b8-4b05-afe2-644f45cf2ffe_group">
 
       
 
@@ -3438,8 +3437,8 @@
 
           <a name="9877965907083122"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '953132e0-73c3-4365-9c71-5cb25d100f5c-9877965907083122' )"
-               id="953132e0-73c3-4365-9c71-5cb25d100f5c-9877965907083122_heading">
+               onclick="toggler( '1d5d50a0-a8b8-4b05-afe2-644f45cf2ffe-9877965907083122' )"
+               id="1d5d50a0-a8b8-4b05-afe2-644f45cf2ffe-9877965907083122_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           Mutated <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/GO:0008283' target='_blank'>cell population proliferation</a>.
@@ -3521,7 +3520,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="953132e0-73c3-4365-9c71-5cb25d100f5c-9877965907083122_group">
+               id="1d5d50a0-a8b8-4b05-afe2-644f45cf2ffe-9877965907083122_group">
           <div class="col">
           <div class="container bars" id="stmt-0-1-0"
                data-stmt_hash="9877965907083122">
@@ -3667,8 +3666,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-56fc45de-e6d7-43ff-8b64-6cb4cd0c7400"
-             onclick="toggler('tl-56fc45de-e6d7-43ff-8b64-6cb4cd0c7400')">
+             id="tl-071f4bf6-3c90-428d-b256-075740c87a76"
+             onclick="toggler('tl-071f4bf6-3c90-428d-b256-075740c87a76')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/fplx:Cyclin_E' target='_blank'>Cyclin_E</a></h5>
       </div>
@@ -3744,7 +3743,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-56fc45de-e6d7-43ff-8b64-6cb4cd0c7400_group">
+        <div class="group" id="tl-071f4bf6-3c90-428d-b256-075740c87a76_group">
 
     
 
@@ -3758,8 +3757,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('621f0a36-35f2-4bca-bc64-e3fb2c3d0407');"
-               id="621f0a36-35f2-4bca-bc64-e3fb2c3d0407_heading">
+               onclick="toggler('7cd0a491-7b05-4686-9401-838b4d21c890');"
+               id="7cd0a491-7b05-4686-9401-838b4d21c890_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/fplx:Cyclin_E' target='_blank'>Cyclin_E</a>.</h5>
                 </div>
@@ -3833,7 +3832,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="621f0a36-35f2-4bca-bc64-e3fb2c3d0407_group">
+          <div class="row group" id="7cd0a491-7b05-4686-9401-838b4d21c890_group">
 
       
 
@@ -3845,8 +3844,8 @@
 
           <a name="19053739984439209"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '621f0a36-35f2-4bca-bc64-e3fb2c3d0407-19053739984439209' )"
-               id="621f0a36-35f2-4bca-bc64-e3fb2c3d0407-19053739984439209_heading">
+               onclick="toggler( '7cd0a491-7b05-4686-9401-838b4d21c890-19053739984439209' )"
+               id="7cd0a491-7b05-4686-9401-838b4d21c890-19053739984439209_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/fplx:Cyclin_E' target='_blank'>Cyclin_E</a>.
@@ -3928,7 +3927,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="621f0a36-35f2-4bca-bc64-e3fb2c3d0407-19053739984439209_group">
+               id="7cd0a491-7b05-4686-9401-838b4d21c890-19053739984439209_group">
           <div class="col">
           <div class="container bars" id="stmt-1-0-0"
                data-stmt_hash="19053739984439209">
@@ -4296,8 +4295,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('f2c64a36-2f54-4d11-8697-6adcfc0422ae');"
-               id="f2c64a36-2f54-4d11-8697-6adcfc0422ae_heading">
+               onclick="toggler('33e579c9-c66e-415c-b197-5903a7994999');"
+               id="33e579c9-c66e-415c-b197-5903a7994999_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> increases the amount of <a href='https://identifiers.org/fplx:Cyclin_E' target='_blank'>Cyclin_E</a>.</h5>
                 </div>
@@ -4371,7 +4370,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="f2c64a36-2f54-4d11-8697-6adcfc0422ae_group">
+          <div class="row group" id="33e579c9-c66e-415c-b197-5903a7994999_group">
 
       
 
@@ -4383,8 +4382,8 @@
 
           <a name="-28093657438458910"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'f2c64a36-2f54-4d11-8697-6adcfc0422ae--28093657438458910' )"
-               id="f2c64a36-2f54-4d11-8697-6adcfc0422ae--28093657438458910_heading">
+               onclick="toggler( '33e579c9-c66e-415c-b197-5903a7994999--28093657438458910' )"
+               id="33e579c9-c66e-415c-b197-5903a7994999--28093657438458910_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> increases the amount of <a href='https://identifiers.org/fplx:Cyclin_E' target='_blank'>Cyclin_E</a>.
@@ -4466,7 +4465,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="f2c64a36-2f54-4d11-8697-6adcfc0422ae--28093657438458910_group">
+               id="33e579c9-c66e-415c-b197-5903a7994999--28093657438458910_group">
           <div class="col">
           <div class="container bars" id="stmt-1-1-0"
                data-stmt_hash="-28093657438458910">
@@ -4555,8 +4554,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-1f05e075-6a34-419c-9e29-9b9a02c53241"
-             onclick="toggler('tl-1f05e075-6a34-419c-9e29-9b9a02c53241')">
+             id="tl-2c67ec1f-efc9-4ca7-872e-109300586d38"
+             onclick="toggler('tl-2c67ec1f-efc9-4ca7-872e-109300586d38')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/GO:0007049' target='_blank'>cell cycle</a></h5>
       </div>
@@ -4632,7 +4631,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-1f05e075-6a34-419c-9e29-9b9a02c53241_group">
+        <div class="group" id="tl-2c67ec1f-efc9-4ca7-872e-109300586d38_group">
 
     
 
@@ -4645,7 +4644,7 @@
 
       
 
-          <div class="row group-shown" id="bf66a7cd-c0a7-4eed-b63b-c5c4d230b9b4_group">
+          <div class="row group-shown" id="63c39ab8-618b-4a1b-9ebc-9620fe66bbad_group">
 
       
 
@@ -4657,8 +4656,8 @@
 
           <a name="-9994678668302340"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'bf66a7cd-c0a7-4eed-b63b-c5c4d230b9b4--9994678668302340' )"
-               id="bf66a7cd-c0a7-4eed-b63b-c5c4d230b9b4--9994678668302340_heading">
+               onclick="toggler( '63c39ab8-618b-4a1b-9ebc-9620fe66bbad--9994678668302340' )"
+               id="63c39ab8-618b-4a1b-9ebc-9620fe66bbad--9994678668302340_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/GO:0007049' target='_blank'>cell cycle</a>.
@@ -4740,7 +4739,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="bf66a7cd-c0a7-4eed-b63b-c5c4d230b9b4--9994678668302340_group">
+               id="63c39ab8-618b-4a1b-9ebc-9620fe66bbad--9994678668302340_group">
           <div class="col">
           <div class="container bars" id="stmt-2-0-0"
                data-stmt_hash="-9994678668302340">
@@ -5057,8 +5056,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-90be69b5-11ec-4696-ae42-4f97337da491"
-             onclick="toggler('tl-90be69b5-11ec-4696-ae42-4f97337da491')">
+             id="tl-4d426f88-6ee3-48c9-9427-dc29821a12f9"
+             onclick="toggler('tl-4d426f88-6ee3-48c9-9427-dc29821a12f9')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a></h5>
       </div>
@@ -5134,7 +5133,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-90be69b5-11ec-4696-ae42-4f97337da491_group">
+        <div class="group" id="tl-4d426f88-6ee3-48c9-9427-dc29821a12f9_group">
 
     
 
@@ -5148,8 +5147,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('1e7f3001-7f26-46e2-b25c-5b03dd3db2e6');"
-               id="1e7f3001-7f26-46e2-b25c-5b03dd3db2e6_heading">
+               onclick="toggler('cc52b0b6-0de1-41ee-a56e-2f0c53cb80d2');"
+               id="cc52b0b6-0de1-41ee-a56e-2f0c53cb80d2_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a>.</h5>
                 </div>
@@ -5223,7 +5222,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="1e7f3001-7f26-46e2-b25c-5b03dd3db2e6_group">
+          <div class="row group" id="cc52b0b6-0de1-41ee-a56e-2f0c53cb80d2_group">
 
       
 
@@ -5235,8 +5234,8 @@
 
           <a name="-18053095362228020"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '1e7f3001-7f26-46e2-b25c-5b03dd3db2e6--18053095362228020' )"
-               id="1e7f3001-7f26-46e2-b25c-5b03dd3db2e6--18053095362228020_heading">
+               onclick="toggler( 'cc52b0b6-0de1-41ee-a56e-2f0c53cb80d2--18053095362228020' )"
+               id="cc52b0b6-0de1-41ee-a56e-2f0c53cb80d2--18053095362228020_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a>.
@@ -5318,7 +5317,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="1e7f3001-7f26-46e2-b25c-5b03dd3db2e6--18053095362228020_group">
+               id="cc52b0b6-0de1-41ee-a56e-2f0c53cb80d2--18053095362228020_group">
           <div class="col">
           <div class="container bars" id="stmt-3-0-0"
                data-stmt_hash="-18053095362228020">
@@ -5505,8 +5504,8 @@
 
           <a name="4449415876808069"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '1e7f3001-7f26-46e2-b25c-5b03dd3db2e6-4449415876808069' )"
-               id="1e7f3001-7f26-46e2-b25c-5b03dd3db2e6-4449415876808069_heading">
+               onclick="toggler( 'cc52b0b6-0de1-41ee-a56e-2f0c53cb80d2-4449415876808069' )"
+               id="cc52b0b6-0de1-41ee-a56e-2f0c53cb80d2-4449415876808069_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           Modified <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a>.
@@ -5588,7 +5587,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="1e7f3001-7f26-46e2-b25c-5b03dd3db2e6-4449415876808069_group">
+               id="cc52b0b6-0de1-41ee-a56e-2f0c53cb80d2-4449415876808069_group">
           <div class="col">
           <div class="container bars" id="stmt-3-0-1"
                data-stmt_hash="4449415876808069">
@@ -5671,8 +5670,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('4b5ed15e-a1c1-4b25-8a7e-dc47016d2615');"
-               id="4b5ed15e-a1c1-4b25-8a7e-dc47016d2615_heading">
+               onclick="toggler('a3b8d6b1-fc93-4288-83e8-a5fa100b859d');"
+               id="a3b8d6b1-fc93-4288-83e8-a5fa100b859d_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a>.</h5>
                 </div>
@@ -5746,7 +5745,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="4b5ed15e-a1c1-4b25-8a7e-dc47016d2615_group">
+          <div class="row group" id="a3b8d6b1-fc93-4288-83e8-a5fa100b859d_group">
 
       
 
@@ -5758,8 +5757,8 @@
 
           <a name="4364717221558805"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '4b5ed15e-a1c1-4b25-8a7e-dc47016d2615-4364717221558805' )"
-               id="4b5ed15e-a1c1-4b25-8a7e-dc47016d2615-4364717221558805_heading">
+               onclick="toggler( 'a3b8d6b1-fc93-4288-83e8-a5fa100b859d-4364717221558805' )"
+               id="a3b8d6b1-fc93-4288-83e8-a5fa100b859d-4364717221558805_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/GO:0006915' target='_blank'>apoptotic process</a>.
@@ -5841,7 +5840,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="4b5ed15e-a1c1-4b25-8a7e-dc47016d2615-4364717221558805_group">
+               id="a3b8d6b1-fc93-4288-83e8-a5fa100b859d-4364717221558805_group">
           <div class="col">
           <div class="container bars" id="stmt-3-1-0"
                data-stmt_hash="4364717221558805">
@@ -5930,8 +5929,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-aeb3128a-2c2c-4ccc-93f5-15dae21e5e5a"
-             onclick="toggler('tl-aeb3128a-2c2c-4ccc-93f5-15dae21e5e5a')">
+             id="tl-1e60a570-9553-424b-a8b6-ea8e75f65327"
+             onclick="toggler('tl-1e60a570-9553-424b-a8b6-ea8e75f65327')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/mesh:D009362' target='_blank'>Neoplasm Metastasis</a></h5>
       </div>
@@ -6007,7 +6006,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-aeb3128a-2c2c-4ccc-93f5-15dae21e5e5a_group">
+        <div class="group" id="tl-1e60a570-9553-424b-a8b6-ea8e75f65327_group">
 
     
 
@@ -6021,8 +6020,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('4bcd4723-1e92-45c2-ab21-28aaa5a0ac8e');"
-               id="4bcd4723-1e92-45c2-ab21-28aaa5a0ac8e_heading">
+               onclick="toggler('c3914072-88e5-4425-8b87-6779c3e3cf47');"
+               id="c3914072-88e5-4425-8b87-6779c3e3cf47_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/mesh:D009362' target='_blank'>Neoplasm Metastasis</a>.</h5>
                 </div>
@@ -6096,7 +6095,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="4bcd4723-1e92-45c2-ab21-28aaa5a0ac8e_group">
+          <div class="row group" id="c3914072-88e5-4425-8b87-6779c3e3cf47_group">
 
       
 
@@ -6108,8 +6107,8 @@
 
           <a name="11132973571751352"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '4bcd4723-1e92-45c2-ab21-28aaa5a0ac8e-11132973571751352' )"
-               id="4bcd4723-1e92-45c2-ab21-28aaa5a0ac8e-11132973571751352_heading">
+               onclick="toggler( 'c3914072-88e5-4425-8b87-6779c3e3cf47-11132973571751352' )"
+               id="c3914072-88e5-4425-8b87-6779c3e3cf47-11132973571751352_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/mesh:D009362' target='_blank'>Neoplasm Metastasis</a>.
@@ -6191,7 +6190,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="4bcd4723-1e92-45c2-ab21-28aaa5a0ac8e-11132973571751352_group">
+               id="c3914072-88e5-4425-8b87-6779c3e3cf47-11132973571751352_group">
           <div class="col">
           <div class="container bars" id="stmt-4-0-0"
                data-stmt_hash="11132973571751352">
@@ -6388,8 +6387,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('12b70118-fed5-44b5-8696-856510a0628a');"
-               id="12b70118-fed5-44b5-8696-856510a0628a_heading">
+               onclick="toggler('34616568-8fc8-4c42-8f8d-458d10ed9a43');"
+               id="34616568-8fc8-4c42-8f8d-458d10ed9a43_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/mesh:D009362' target='_blank'>Neoplasm Metastasis</a>.</h5>
                 </div>
@@ -6463,7 +6462,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="12b70118-fed5-44b5-8696-856510a0628a_group">
+          <div class="row group" id="34616568-8fc8-4c42-8f8d-458d10ed9a43_group">
 
       
 
@@ -6475,8 +6474,8 @@
 
           <a name="35094777800539787"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '12b70118-fed5-44b5-8696-856510a0628a-35094777800539787' )"
-               id="12b70118-fed5-44b5-8696-856510a0628a-35094777800539787_heading">
+               onclick="toggler( '34616568-8fc8-4c42-8f8d-458d10ed9a43-35094777800539787' )"
+               id="34616568-8fc8-4c42-8f8d-458d10ed9a43-35094777800539787_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/mesh:D009362' target='_blank'>Neoplasm Metastasis</a>.
@@ -6558,7 +6557,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="12b70118-fed5-44b5-8696-856510a0628a-35094777800539787_group">
+               id="34616568-8fc8-4c42-8f8d-458d10ed9a43-35094777800539787_group">
           <div class="col">
           <div class="container bars" id="stmt-4-1-0"
                data-stmt_hash="35094777800539787">
@@ -6647,8 +6646,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-b2f1b5ef-d9a6-4a8d-843c-47c65ef08148"
-             onclick="toggler('tl-b2f1b5ef-d9a6-4a8d-843c-47c65ef08148')">
+             id="tl-344d093a-9016-4c02-9afa-ad7a9d309b1c"
+             onclick="toggler('tl-344d093a-9016-4c02-9afa-ad7a9d309b1c')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:12621' target='_blank'>USP22</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -6724,7 +6723,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-b2f1b5ef-d9a6-4a8d-843c-47c65ef08148_group">
+        <div class="group" id="tl-344d093a-9016-4c02-9afa-ad7a9d309b1c_group">
 
     
 
@@ -6738,8 +6737,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('3cc27643-4cd5-4cbb-8eff-d5cefc1a85fe');"
-               id="3cc27643-4cd5-4cbb-8eff-d5cefc1a85fe_heading">
+               onclick="toggler('caf7bacb-2f3d-4c4b-bd4c-dc50d4f933ca');"
+               id="caf7bacb-2f3d-4c4b-bd4c-dc50d4f933ca_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:12621' target='_blank'>USP22</a> inhibits <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.</h5>
                 </div>
@@ -6813,7 +6812,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="3cc27643-4cd5-4cbb-8eff-d5cefc1a85fe_group">
+          <div class="row group" id="caf7bacb-2f3d-4c4b-bd4c-dc50d4f933ca_group">
 
       
 
@@ -6825,8 +6824,8 @@
 
           <a name="-23007702290889607"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '3cc27643-4cd5-4cbb-8eff-d5cefc1a85fe--23007702290889607' )"
-               id="3cc27643-4cd5-4cbb-8eff-d5cefc1a85fe--23007702290889607_heading">
+               onclick="toggler( 'caf7bacb-2f3d-4c4b-bd4c-dc50d4f933ca--23007702290889607' )"
+               id="caf7bacb-2f3d-4c4b-bd4c-dc50d4f933ca--23007702290889607_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:12621' target='_blank'>USP22</a> inhibits <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -6908,7 +6907,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="3cc27643-4cd5-4cbb-8eff-d5cefc1a85fe--23007702290889607_group">
+               id="caf7bacb-2f3d-4c4b-bd4c-dc50d4f933ca--23007702290889607_group">
           <div class="col">
           <div class="container bars" id="stmt-5-0-0"
                data-stmt_hash="-23007702290889607">
@@ -7048,8 +7047,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('85e71855-84a9-4f52-9eaf-1c30107be2c7');"
-               id="85e71855-84a9-4f52-9eaf-1c30107be2c7_heading">
+               onclick="toggler('6690d456-1217-42b6-a6bc-2e9668f2cfca');"
+               id="6690d456-1217-42b6-a6bc-2e9668f2cfca_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/hgnc:12621' target='_blank'>USP22</a> activates <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.</h5>
                 </div>
@@ -7123,7 +7122,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="85e71855-84a9-4f52-9eaf-1c30107be2c7_group">
+          <div class="row group" id="6690d456-1217-42b6-a6bc-2e9668f2cfca_group">
 
       
 
@@ -7135,8 +7134,8 @@
 
           <a name="-33028245014789544"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '85e71855-84a9-4f52-9eaf-1c30107be2c7--33028245014789544' )"
-               id="85e71855-84a9-4f52-9eaf-1c30107be2c7--33028245014789544_heading">
+               onclick="toggler( '6690d456-1217-42b6-a6bc-2e9668f2cfca--33028245014789544' )"
+               id="6690d456-1217-42b6-a6bc-2e9668f2cfca--33028245014789544_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:12621' target='_blank'>USP22</a> activates <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -7218,7 +7217,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="85e71855-84a9-4f52-9eaf-1c30107be2c7--33028245014789544_group">
+               id="6690d456-1217-42b6-a6bc-2e9668f2cfca--33028245014789544_group">
           <div class="col">
           <div class="container bars" id="stmt-5-1-0"
                data-stmt_hash="-33028245014789544">
@@ -7364,8 +7363,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-e92a06cd-3845-45e3-97e7-f99868c937d3"
-             onclick="toggler('tl-e92a06cd-3845-45e3-97e7-f99868c937d3')">
+             id="tl-15862df8-cdd8-448f-b78c-326655ba9992"
+             onclick="toggler('tl-15862df8-cdd8-448f-b78c-326655ba9992')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/hgnc:994' target='_blank'>BCL2L11</a></h5>
       </div>
@@ -7441,7 +7440,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-e92a06cd-3845-45e3-97e7-f99868c937d3_group">
+        <div class="group" id="tl-15862df8-cdd8-448f-b78c-326655ba9992_group">
 
     
 
@@ -7454,7 +7453,7 @@
 
       
 
-          <div class="row group-shown" id="18d77fd1-f938-46b7-9556-795f36cec4e3_group">
+          <div class="row group-shown" id="7d1ec986-018a-4fb7-8270-b7c886e98eeb_group">
 
       
 
@@ -7466,8 +7465,8 @@
 
           <a name="22862283769968213"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '18d77fd1-f938-46b7-9556-795f36cec4e3-22862283769968213' )"
-               id="18d77fd1-f938-46b7-9556-795f36cec4e3-22862283769968213_heading">
+               onclick="toggler( '7d1ec986-018a-4fb7-8270-b7c886e98eeb-22862283769968213' )"
+               id="7d1ec986-018a-4fb7-8270-b7c886e98eeb-22862283769968213_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/hgnc:994' target='_blank'>BCL2L11</a>.
@@ -7549,7 +7548,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="18d77fd1-f938-46b7-9556-795f36cec4e3-22862283769968213_group">
+               id="7d1ec986-018a-4fb7-8270-b7c886e98eeb-22862283769968213_group">
           <div class="col">
           <div class="container bars" id="stmt-6-0-0"
                data-stmt_hash="22862283769968213">
@@ -7752,8 +7751,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-47c0d695-3917-482b-8dd9-e83d52cb2fae"
-             onclick="toggler('tl-47c0d695-3917-482b-8dd9-e83d52cb2fae')">
+             id="tl-41afc1d7-beb7-429f-b74d-e10565cf4c33"
+             onclick="toggler('tl-41afc1d7-beb7-429f-b74d-e10565cf4c33')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:39867' target='_blank'>Valproic acid</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -7829,7 +7828,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-47c0d695-3917-482b-8dd9-e83d52cb2fae_group">
+        <div class="group" id="tl-41afc1d7-beb7-429f-b74d-e10565cf4c33_group">
 
     
 
@@ -7842,7 +7841,7 @@
 
       
 
-          <div class="row group-shown" id="dcc0b457-703a-4d5c-a699-05fcf664b903_group">
+          <div class="row group-shown" id="e731429e-3ee7-4f2c-808c-c818722b3ba5_group">
 
       
 
@@ -7854,8 +7853,8 @@
 
           <a name="22905716257440937"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'dcc0b457-703a-4d5c-a699-05fcf664b903-22905716257440937' )"
-               id="dcc0b457-703a-4d5c-a699-05fcf664b903-22905716257440937_heading">
+               onclick="toggler( 'e731429e-3ee7-4f2c-808c-c818722b3ba5-22905716257440937' )"
+               id="e731429e-3ee7-4f2c-808c-c818722b3ba5-22905716257440937_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:39867' target='_blank'>Valproic acid</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -7937,7 +7936,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="dcc0b457-703a-4d5c-a699-05fcf664b903-22905716257440937_group">
+               id="e731429e-3ee7-4f2c-808c-c818722b3ba5-22905716257440937_group">
           <div class="col">
           <div class="container bars" id="stmt-7-0-0"
                data-stmt_hash="22905716257440937">
@@ -8083,8 +8082,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-5db95c88-79cf-41f9-8f7e-167f5717778b"
-             onclick="toggler('tl-5db95c88-79cf-41f9-8f7e-167f5717778b')">
+             id="tl-71ccdd81-b1be-4847-a5d1-ed08b7307af2"
+             onclick="toggler('tl-71ccdd81-b1be-4847-a5d1-ed08b7307af2')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/mirbase.mature:MIMAT0033692' target='_blank'>Hsa-miR-8485</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -8160,7 +8159,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-5db95c88-79cf-41f9-8f7e-167f5717778b_group">
+        <div class="group" id="tl-71ccdd81-b1be-4847-a5d1-ed08b7307af2_group">
 
     
 
@@ -8173,7 +8172,7 @@
 
       
 
-          <div class="row group-shown" id="b98c3cbe-b2ee-4f1f-b653-383bae923b2a_group">
+          <div class="row group-shown" id="3e7167ed-140f-4e5d-bcfe-2a1dc9622af3_group">
 
       
 
@@ -8185,8 +8184,8 @@
 
           <a name="-5265368171899555"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'b98c3cbe-b2ee-4f1f-b653-383bae923b2a--5265368171899555' )"
-               id="b98c3cbe-b2ee-4f1f-b653-383bae923b2a--5265368171899555_heading">
+               onclick="toggler( '3e7167ed-140f-4e5d-bcfe-2a1dc9622af3--5265368171899555' )"
+               id="3e7167ed-140f-4e5d-bcfe-2a1dc9622af3--5265368171899555_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/mirbase.mature:MIMAT0033692' target='_blank'>Hsa-miR-8485</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -8268,7 +8267,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="b98c3cbe-b2ee-4f1f-b653-383bae923b2a--5265368171899555_group">
+               id="3e7167ed-140f-4e5d-bcfe-2a1dc9622af3--5265368171899555_group">
           <div class="col">
           <div class="container bars" id="stmt-8-0-0"
                data-stmt_hash="-5265368171899555">
@@ -8414,8 +8413,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-586de660-f636-4264-95f3-e7b58d8f0d0b"
-             onclick="toggler('tl-586de660-f636-4264-95f3-e7b58d8f0d0b')">
+             id="tl-f690e51d-93a7-4e8f-b659-56956643d9c8"
+             onclick="toggler('tl-f690e51d-93a7-4e8f-b659-56956643d9c8')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/mirbase.mature:MIMAT0026615' target='_blank'>Hsa-miR-552-5p</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -8491,7 +8490,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-586de660-f636-4264-95f3-e7b58d8f0d0b_group">
+        <div class="group" id="tl-f690e51d-93a7-4e8f-b659-56956643d9c8_group">
 
     
 
@@ -8504,7 +8503,7 @@
 
       
 
-          <div class="row group-shown" id="90216b64-4726-425f-8ad4-36125b549550_group">
+          <div class="row group-shown" id="6b967305-1ed9-4e16-8dc1-f6e387fd4586_group">
 
       
 
@@ -8516,8 +8515,8 @@
 
           <a name="24191644618803878"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '90216b64-4726-425f-8ad4-36125b549550-24191644618803878' )"
-               id="90216b64-4726-425f-8ad4-36125b549550-24191644618803878_heading">
+               onclick="toggler( '6b967305-1ed9-4e16-8dc1-f6e387fd4586-24191644618803878' )"
+               id="6b967305-1ed9-4e16-8dc1-f6e387fd4586-24191644618803878_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/mirbase.mature:MIMAT0026615' target='_blank'>Hsa-miR-552-5p</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -8599,7 +8598,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="90216b64-4726-425f-8ad4-36125b549550-24191644618803878_group">
+               id="6b967305-1ed9-4e16-8dc1-f6e387fd4586-24191644618803878_group">
           <div class="col">
           <div class="container bars" id="stmt-9-0-0"
                data-stmt_hash="24191644618803878">
@@ -8745,8 +8744,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-dd1714a4-42eb-474b-835f-4b86523e5758"
-             onclick="toggler('tl-dd1714a4-42eb-474b-835f-4b86523e5758')">
+             id="tl-d4decea9-c506-4fe4-9ebe-b471997247d2"
+             onclick="toggler('tl-d4decea9-c506-4fe4-9ebe-b471997247d2')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/mirbase.mature:MIMAT0000716' target='_blank'>Hsa-miR-302c-5p</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -8822,7 +8821,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-dd1714a4-42eb-474b-835f-4b86523e5758_group">
+        <div class="group" id="tl-d4decea9-c506-4fe4-9ebe-b471997247d2_group">
 
     
 
@@ -8835,7 +8834,7 @@
 
       
 
-          <div class="row group-shown" id="879226b7-2bd4-438e-b093-7717385102aa_group">
+          <div class="row group-shown" id="a3cfbfed-7800-4c13-b33d-df159c4bf9d0_group">
 
       
 
@@ -8847,8 +8846,8 @@
 
           <a name="-10729974121368072"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '879226b7-2bd4-438e-b093-7717385102aa--10729974121368072' )"
-               id="879226b7-2bd4-438e-b093-7717385102aa--10729974121368072_heading">
+               onclick="toggler( 'a3cfbfed-7800-4c13-b33d-df159c4bf9d0--10729974121368072' )"
+               id="a3cfbfed-7800-4c13-b33d-df159c4bf9d0--10729974121368072_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/mirbase.mature:MIMAT0000716' target='_blank'>Hsa-miR-302c-5p</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -8930,7 +8929,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="879226b7-2bd4-438e-b093-7717385102aa--10729974121368072_group">
+               id="a3cfbfed-7800-4c13-b33d-df159c4bf9d0--10729974121368072_group">
           <div class="col">
           <div class="container bars" id="stmt-10-0-0"
                data-stmt_hash="-10729974121368072">
@@ -9076,8 +9075,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-3ad7af86-0ab2-4751-b300-20378af2c9be"
-             onclick="toggler('tl-3ad7af86-0ab2-4751-b300-20378af2c9be')">
+             id="tl-363e2f85-3b59-4284-a4dd-c16c06100634"
+             onclick="toggler('tl-363e2f85-3b59-4284-a4dd-c16c06100634')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:29865' target='_blank'>Benzo[a]pyrene</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -9153,7 +9152,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-3ad7af86-0ab2-4751-b300-20378af2c9be_group">
+        <div class="group" id="tl-363e2f85-3b59-4284-a4dd-c16c06100634_group">
 
     
 
@@ -9166,7 +9165,7 @@
 
       
 
-          <div class="row group-shown" id="e16998d5-efc0-40e2-8ef0-25f82b8a60bc_group">
+          <div class="row group-shown" id="40ab4087-1576-4397-a819-a18cde488bb0_group">
 
       
 
@@ -9178,8 +9177,8 @@
 
           <a name="-4880456399035092"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'e16998d5-efc0-40e2-8ef0-25f82b8a60bc--4880456399035092' )"
-               id="e16998d5-efc0-40e2-8ef0-25f82b8a60bc--4880456399035092_heading">
+               onclick="toggler( '40ab4087-1576-4397-a819-a18cde488bb0--4880456399035092' )"
+               id="40ab4087-1576-4397-a819-a18cde488bb0--4880456399035092_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:29865' target='_blank'>Benzo[a]pyrene</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -9261,7 +9260,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="e16998d5-efc0-40e2-8ef0-25f82b8a60bc--4880456399035092_group">
+               id="40ab4087-1576-4397-a819-a18cde488bb0--4880456399035092_group">
           <div class="col">
           <div class="container bars" id="stmt-11-0-0"
                data-stmt_hash="-4880456399035092">
@@ -9407,8 +9406,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-fa1ccff1-ad0e-4f4d-b888-73eb3999fbd4"
-             onclick="toggler('tl-fa1ccff1-ad0e-4f4d-b888-73eb3999fbd4')">
+             id="tl-405beb8f-5741-4edc-8c82-496656b83a16"
+             onclick="toggler('tl-405beb8f-5741-4edc-8c82-496656b83a16')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/fplx:TGFB' target='_blank'>TGFB</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -9484,7 +9483,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-fa1ccff1-ad0e-4f4d-b888-73eb3999fbd4_group">
+        <div class="group" id="tl-405beb8f-5741-4edc-8c82-496656b83a16_group">
 
     
 
@@ -9497,7 +9496,7 @@
 
       
 
-          <div class="row group-shown" id="488d1d70-72e6-4a3e-9363-cdb5c16fce41_group">
+          <div class="row group-shown" id="b04eb378-068f-4a43-a2a7-32ba683e4691_group">
 
       
 
@@ -9509,8 +9508,8 @@
 
           <a name="32123887678889930"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '488d1d70-72e6-4a3e-9363-cdb5c16fce41-32123887678889930' )"
-               id="488d1d70-72e6-4a3e-9363-cdb5c16fce41-32123887678889930_heading">
+               onclick="toggler( 'b04eb378-068f-4a43-a2a7-32ba683e4691-32123887678889930' )"
+               id="b04eb378-068f-4a43-a2a7-32ba683e4691-32123887678889930_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/fplx:TGFB' target='_blank'>TGFB</a> activates <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -9592,7 +9591,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="488d1d70-72e6-4a3e-9363-cdb5c16fce41-32123887678889930_group">
+               id="b04eb378-068f-4a43-a2a7-32ba683e4691-32123887678889930_group">
           <div class="col">
           <div class="container bars" id="stmt-12-0-0"
                data-stmt_hash="32123887678889930">
@@ -9738,8 +9737,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-c2ab2eee-c191-4994-865f-60840ef86ddf"
-             onclick="toggler('tl-c2ab2eee-c191-4994-865f-60840ef86ddf')">
+             id="tl-fe5a5fdb-4c14-4c85-b102-178d2d868826"
+             onclick="toggler('tl-fe5a5fdb-4c14-4c85-b102-178d2d868826')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:33216' target='_blank'>Bisphenol A</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -9815,7 +9814,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-c2ab2eee-c191-4994-865f-60840ef86ddf_group">
+        <div class="group" id="tl-fe5a5fdb-4c14-4c85-b102-178d2d868826_group">
 
     
 
@@ -9829,8 +9828,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('af0ec6a0-85b7-4781-be4d-bc3913cd6cca');"
-               id="af0ec6a0-85b7-4781-be4d-bc3913cd6cca_heading">
+               onclick="toggler('18153b62-0fc9-4d66-b8ca-2f89eae92908');"
+               id="18153b62-0fc9-4d66-b8ca-2f89eae92908_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/CHEBI:33216' target='_blank'>Bisphenol A</a> increases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.</h5>
                 </div>
@@ -9904,7 +9903,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="af0ec6a0-85b7-4781-be4d-bc3913cd6cca_group">
+          <div class="row group" id="18153b62-0fc9-4d66-b8ca-2f89eae92908_group">
 
       
 
@@ -9916,8 +9915,8 @@
 
           <a name="-31773585401828988"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'af0ec6a0-85b7-4781-be4d-bc3913cd6cca--31773585401828988' )"
-               id="af0ec6a0-85b7-4781-be4d-bc3913cd6cca--31773585401828988_heading">
+               onclick="toggler( '18153b62-0fc9-4d66-b8ca-2f89eae92908--31773585401828988' )"
+               id="18153b62-0fc9-4d66-b8ca-2f89eae92908--31773585401828988_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:33216' target='_blank'>Bisphenol A</a> increases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -9999,7 +9998,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="af0ec6a0-85b7-4781-be4d-bc3913cd6cca--31773585401828988_group">
+               id="18153b62-0fc9-4d66-b8ca-2f89eae92908--31773585401828988_group">
           <div class="col">
           <div class="container bars" id="stmt-13-0-0"
                data-stmt_hash="-31773585401828988">
@@ -10082,8 +10081,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('0e470806-7f8a-4307-a7dc-edbd4835706d');"
-               id="0e470806-7f8a-4307-a7dc-edbd4835706d_heading">
+               onclick="toggler('ef0989a8-8b9f-45d6-8216-4abc25fd5ec1');"
+               id="ef0989a8-8b9f-45d6-8216-4abc25fd5ec1_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/CHEBI:33216' target='_blank'>Bisphenol A</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.</h5>
                 </div>
@@ -10157,7 +10156,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="0e470806-7f8a-4307-a7dc-edbd4835706d_group">
+          <div class="row group" id="ef0989a8-8b9f-45d6-8216-4abc25fd5ec1_group">
 
       
 
@@ -10169,8 +10168,8 @@
 
           <a name="-25022480273963539"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '0e470806-7f8a-4307-a7dc-edbd4835706d--25022480273963539' )"
-               id="0e470806-7f8a-4307-a7dc-edbd4835706d--25022480273963539_heading">
+               onclick="toggler( 'ef0989a8-8b9f-45d6-8216-4abc25fd5ec1--25022480273963539' )"
+               id="ef0989a8-8b9f-45d6-8216-4abc25fd5ec1--25022480273963539_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:33216' target='_blank'>Bisphenol A</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -10252,7 +10251,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="0e470806-7f8a-4307-a7dc-edbd4835706d--25022480273963539_group">
+               id="ef0989a8-8b9f-45d6-8216-4abc25fd5ec1--25022480273963539_group">
           <div class="col">
           <div class="container bars" id="stmt-13-1-0"
                data-stmt_hash="-25022480273963539">
@@ -10341,8 +10340,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-26e7f5f5-4afa-4839-9f33-5f7a72014548"
-             onclick="toggler('tl-26e7f5f5-4afa-4839-9f33-5f7a72014548')">
+             id="tl-ab30754c-2751-4820-94ed-5c1a8bb78998"
+             onclick="toggler('tl-ab30754c-2751-4820-94ed-5c1a8bb78998')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:80961' target='_blank'>5-formyluracil</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -10418,7 +10417,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-26e7f5f5-4afa-4839-9f33-5f7a72014548_group">
+        <div class="group" id="tl-ab30754c-2751-4820-94ed-5c1a8bb78998_group">
 
     
 
@@ -10432,8 +10431,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('4d710931-a6e5-48bb-956c-97748f6337e3');"
-               id="4d710931-a6e5-48bb-956c-97748f6337e3_heading">
+               onclick="toggler('a7a41bc0-9ca7-4b4a-85a2-6dcbdd51c16a');"
+               id="a7a41bc0-9ca7-4b4a-85a2-6dcbdd51c16a_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/CHEBI:80961' target='_blank'>5-formyluracil</a> inhibits <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.</h5>
                 </div>
@@ -10507,7 +10506,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="4d710931-a6e5-48bb-956c-97748f6337e3_group">
+          <div class="row group" id="a7a41bc0-9ca7-4b4a-85a2-6dcbdd51c16a_group">
 
       
 
@@ -10519,8 +10518,8 @@
 
           <a name="25928306067880408"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '4d710931-a6e5-48bb-956c-97748f6337e3-25928306067880408' )"
-               id="4d710931-a6e5-48bb-956c-97748f6337e3-25928306067880408_heading">
+               onclick="toggler( 'a7a41bc0-9ca7-4b4a-85a2-6dcbdd51c16a-25928306067880408' )"
+               id="a7a41bc0-9ca7-4b4a-85a2-6dcbdd51c16a-25928306067880408_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:80961' target='_blank'>5-formyluracil</a> inhibits <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -10602,7 +10601,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="4d710931-a6e5-48bb-956c-97748f6337e3-25928306067880408_group">
+               id="a7a41bc0-9ca7-4b4a-85a2-6dcbdd51c16a-25928306067880408_group">
           <div class="col">
           <div class="container bars" id="stmt-14-0-0"
                data-stmt_hash="25928306067880408">
@@ -10685,8 +10684,8 @@
       
 
           <div class="row group_heading"
-               onclick="toggler('a6d70e12-2974-4d7e-970e-f822896659c7');"
-               id="a6d70e12-2974-4d7e-970e-f822896659c7_heading">
+               onclick="toggler('d165e49d-8808-41cb-9baf-02c10f3260eb');"
+               id="d165e49d-8808-41cb-9baf-02c10f3260eb_heading">
                 <div class="col-auto text-left nvp">
                     <h5><a href='https://identifiers.org/CHEBI:80961' target='_blank'>5-formyluracil</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.</h5>
                 </div>
@@ -10760,7 +10759,7 @@
 
                 </div>
               </div>
-          <div class="row group" id="a6d70e12-2974-4d7e-970e-f822896659c7_group">
+          <div class="row group" id="d165e49d-8808-41cb-9baf-02c10f3260eb_group">
 
       
 
@@ -10772,8 +10771,8 @@
 
           <a name="-20137058553048394"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'a6d70e12-2974-4d7e-970e-f822896659c7--20137058553048394' )"
-               id="a6d70e12-2974-4d7e-970e-f822896659c7--20137058553048394_heading">
+               onclick="toggler( 'd165e49d-8808-41cb-9baf-02c10f3260eb--20137058553048394' )"
+               id="d165e49d-8808-41cb-9baf-02c10f3260eb--20137058553048394_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:80961' target='_blank'>5-formyluracil</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -10855,7 +10854,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="a6d70e12-2974-4d7e-970e-f822896659c7--20137058553048394_group">
+               id="d165e49d-8808-41cb-9baf-02c10f3260eb--20137058553048394_group">
           <div class="col">
           <div class="container bars" id="stmt-14-1-0"
                data-stmt_hash="-20137058553048394">
@@ -10944,8 +10943,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-f9e9e6d6-8f53-428e-8629-57e4ea60d931"
-             onclick="toggler('tl-f9e9e6d6-8f53-428e-8629-57e4ea60d931')">
+             id="tl-ab46f850-03a4-4773-ab53-28747dd0d0a5"
+             onclick="toggler('tl-ab46f850-03a4-4773-ab53-28747dd0d0a5')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:17967' target='_blank'>Urethane</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -11021,7 +11020,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-f9e9e6d6-8f53-428e-8629-57e4ea60d931_group">
+        <div class="group" id="tl-ab46f850-03a4-4773-ab53-28747dd0d0a5_group">
 
     
 
@@ -11034,7 +11033,7 @@
 
       
 
-          <div class="row group-shown" id="5a8e3196-25d9-453e-8164-1e5fca9dfa15_group">
+          <div class="row group-shown" id="0ac10859-7d6a-4252-b1e1-139f377baaab_group">
 
       
 
@@ -11046,8 +11045,8 @@
 
           <a name="-29027242833450000"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '5a8e3196-25d9-453e-8164-1e5fca9dfa15--29027242833450000' )"
-               id="5a8e3196-25d9-453e-8164-1e5fca9dfa15--29027242833450000_heading">
+               onclick="toggler( '0ac10859-7d6a-4252-b1e1-139f377baaab--29027242833450000' )"
+               id="0ac10859-7d6a-4252-b1e1-139f377baaab--29027242833450000_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:17967' target='_blank'>Urethane</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -11129,7 +11128,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="5a8e3196-25d9-453e-8164-1e5fca9dfa15--29027242833450000_group">
+               id="0ac10859-7d6a-4252-b1e1-139f377baaab--29027242833450000_group">
           <div class="col">
           <div class="container bars" id="stmt-15-0-0"
                data-stmt_hash="-29027242833450000">
@@ -11218,8 +11217,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-2efbb024-d3a1-49bb-ad27-5530b3efa847"
-             onclick="toggler('tl-2efbb024-d3a1-49bb-ad27-5530b3efa847')">
+             id="tl-0f24ac90-d1d6-4d00-bd44-36f04095507a"
+             onclick="toggler('tl-0f24ac90-d1d6-4d00-bd44-36f04095507a')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:18421' target='_blank'>Superoxide</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -11295,7 +11294,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-2efbb024-d3a1-49bb-ad27-5530b3efa847_group">
+        <div class="group" id="tl-0f24ac90-d1d6-4d00-bd44-36f04095507a_group">
 
     
 
@@ -11308,7 +11307,7 @@
 
       
 
-          <div class="row group-shown" id="44d7039d-fc61-45be-a522-c9fd9386a9c2_group">
+          <div class="row group-shown" id="4ec3e213-f0b1-47c6-aa14-f52e4d1c24fd_group">
 
       
 
@@ -11320,8 +11319,8 @@
 
           <a name="25890700946247698"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '44d7039d-fc61-45be-a522-c9fd9386a9c2-25890700946247698' )"
-               id="44d7039d-fc61-45be-a522-c9fd9386a9c2-25890700946247698_heading">
+               onclick="toggler( '4ec3e213-f0b1-47c6-aa14-f52e4d1c24fd-25890700946247698' )"
+               id="4ec3e213-f0b1-47c6-aa14-f52e4d1c24fd-25890700946247698_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:18421' target='_blank'>Superoxide</a> inhibits <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -11403,7 +11402,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="44d7039d-fc61-45be-a522-c9fd9386a9c2-25890700946247698_group">
+               id="4ec3e213-f0b1-47c6-aa14-f52e4d1c24fd-25890700946247698_group">
           <div class="col">
           <div class="container bars" id="stmt-16-0-0"
                data-stmt_hash="25890700946247698">
@@ -11492,8 +11491,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-8f60b520-04b4-4823-af3b-00405a152f78"
-             onclick="toggler('tl-8f60b520-04b4-4823-af3b-00405a152f78')">
+             id="tl-0ad50e6c-33e7-4ef8-ae86-3af2d56a1039"
+             onclick="toggler('tl-0ad50e6c-33e7-4ef8-ae86-3af2d56a1039')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:38940' target='_blank'>Sunitinib</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -11569,7 +11568,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-8f60b520-04b4-4823-af3b-00405a152f78_group">
+        <div class="group" id="tl-0ad50e6c-33e7-4ef8-ae86-3af2d56a1039_group">
 
     
 
@@ -11582,7 +11581,7 @@
 
       
 
-          <div class="row group-shown" id="884dc34b-a024-4864-bd3a-50b14a9fc733_group">
+          <div class="row group-shown" id="11265638-e999-440e-9fce-191feb5d223b_group">
 
       
 
@@ -11594,8 +11593,8 @@
 
           <a name="909881576854635"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '884dc34b-a024-4864-bd3a-50b14a9fc733-909881576854635' )"
-               id="884dc34b-a024-4864-bd3a-50b14a9fc733-909881576854635_heading">
+               onclick="toggler( '11265638-e999-440e-9fce-191feb5d223b-909881576854635' )"
+               id="11265638-e999-440e-9fce-191feb5d223b-909881576854635_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:38940' target='_blank'>Sunitinib</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -11677,7 +11676,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="884dc34b-a024-4864-bd3a-50b14a9fc733-909881576854635_group">
+               id="11265638-e999-440e-9fce-191feb5d223b-909881576854635_group">
           <div class="col">
           <div class="container bars" id="stmt-17-0-0"
                data-stmt_hash="909881576854635">
@@ -11766,8 +11765,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-ab0e5c72-0c35-473b-9774-24f8d59a4364"
-             onclick="toggler('tl-ab0e5c72-0c35-473b-9774-24f8d59a4364')">
+             id="tl-298bd33a-1a92-417c-bc75-ba5dc94dfde6"
+             onclick="toggler('tl-298bd33a-1a92-417c-bc75-ba5dc94dfde6')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:9141' target='_blank'>Silver(0)</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -11843,7 +11842,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-ab0e5c72-0c35-473b-9774-24f8d59a4364_group">
+        <div class="group" id="tl-298bd33a-1a92-417c-bc75-ba5dc94dfde6_group">
 
     
 
@@ -11856,7 +11855,7 @@
 
       
 
-          <div class="row group-shown" id="75aca047-6b55-4cac-ac72-d18d1c81002d_group">
+          <div class="row group-shown" id="b5d6f441-f383-49da-8811-0aca38ed9590_group">
 
       
 
@@ -11868,8 +11867,8 @@
 
           <a name="18625955057996420"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '75aca047-6b55-4cac-ac72-d18d1c81002d-18625955057996420' )"
-               id="75aca047-6b55-4cac-ac72-d18d1c81002d-18625955057996420_heading">
+               onclick="toggler( 'b5d6f441-f383-49da-8811-0aca38ed9590-18625955057996420' )"
+               id="b5d6f441-f383-49da-8811-0aca38ed9590-18625955057996420_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:9141' target='_blank'>Silver(0)</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -11951,7 +11950,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="75aca047-6b55-4cac-ac72-d18d1c81002d-18625955057996420_group">
+               id="b5d6f441-f383-49da-8811-0aca38ed9590-18625955057996420_group">
           <div class="col">
           <div class="container bars" id="stmt-18-0-0"
                data-stmt_hash="18625955057996420">
@@ -12040,8 +12039,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-8ec9b3e9-13c0-4641-aedf-de9f394bba75"
-             onclick="toggler('tl-8ec9b3e9-13c0-4641-aedf-de9f394bba75')">
+             id="tl-3a18f342-f3d8-4f7b-a3c1-0bc0045024d9"
+             onclick="toggler('tl-3a18f342-f3d8-4f7b-a3c1-0bc0045024d9')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:53444' target='_blank'>Potassium dichromate</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -12117,7 +12116,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-8ec9b3e9-13c0-4641-aedf-de9f394bba75_group">
+        <div class="group" id="tl-3a18f342-f3d8-4f7b-a3c1-0bc0045024d9_group">
 
     
 
@@ -12130,7 +12129,7 @@
 
       
 
-          <div class="row group-shown" id="8b68ed44-105e-429b-aa37-8cb17543bc95_group">
+          <div class="row group-shown" id="abbd19ed-d57e-4bea-95e5-d1b0c18fb28c_group">
 
       
 
@@ -12142,8 +12141,8 @@
 
           <a name="-7238280089696104"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '8b68ed44-105e-429b-aa37-8cb17543bc95--7238280089696104' )"
-               id="8b68ed44-105e-429b-aa37-8cb17543bc95--7238280089696104_heading">
+               onclick="toggler( 'abbd19ed-d57e-4bea-95e5-d1b0c18fb28c--7238280089696104' )"
+               id="abbd19ed-d57e-4bea-95e5-d1b0c18fb28c--7238280089696104_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:53444' target='_blank'>Potassium dichromate</a> increases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -12225,7 +12224,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="8b68ed44-105e-429b-aa37-8cb17543bc95--7238280089696104_group">
+               id="abbd19ed-d57e-4bea-95e5-d1b0c18fb28c--7238280089696104_group">
           <div class="col">
           <div class="container bars" id="stmt-19-0-0"
                data-stmt_hash="-7238280089696104">
@@ -12314,8 +12313,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-3c6f9ef6-c157-49ba-840a-dfbeef59eca8"
-             onclick="toggler('tl-3c6f9ef6-c157-49ba-840a-dfbeef59eca8')">
+             id="tl-c6ea60a3-0775-4d31-b9cc-0c250d7208a6"
+             onclick="toggler('tl-c6ea60a3-0775-4d31-b9cc-0c250d7208a6')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/mesh:C544151' target='_blank'>Jinfukang</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -12391,7 +12390,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-3c6f9ef6-c157-49ba-840a-dfbeef59eca8_group">
+        <div class="group" id="tl-c6ea60a3-0775-4d31-b9cc-0c250d7208a6_group">
 
     
 
@@ -12404,7 +12403,7 @@
 
       
 
-          <div class="row group-shown" id="d1ab2005-17b5-4d8a-8ef3-488ce82c5b52_group">
+          <div class="row group-shown" id="539a80c2-2f6c-4419-bb88-9f7d6e0d27a7_group">
 
       
 
@@ -12416,8 +12415,8 @@
 
           <a name="30924842616737868"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'd1ab2005-17b5-4d8a-8ef3-488ce82c5b52-30924842616737868' )"
-               id="d1ab2005-17b5-4d8a-8ef3-488ce82c5b52-30924842616737868_heading">
+               onclick="toggler( '539a80c2-2f6c-4419-bb88-9f7d6e0d27a7-30924842616737868' )"
+               id="539a80c2-2f6c-4419-bb88-9f7d6e0d27a7-30924842616737868_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/mesh:C544151' target='_blank'>Jinfukang</a> increases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -12499,7 +12498,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="d1ab2005-17b5-4d8a-8ef3-488ce82c5b52-30924842616737868_group">
+               id="539a80c2-2f6c-4419-bb88-9f7d6e0d27a7-30924842616737868_group">
           <div class="col">
           <div class="container bars" id="stmt-20-0-0"
                data-stmt_hash="30924842616737868">
@@ -12588,8 +12587,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-c596e9c4-ca3e-4991-96ff-d893812a5ec0"
-             onclick="toggler('tl-c596e9c4-ca3e-4991-96ff-d893812a5ec0')">
+             id="tl-4f87fed3-981e-4cc7-b83e-9f4ae74c5634"
+             onclick="toggler('tl-4f87fed3-981e-4cc7-b83e-9f4ae74c5634')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/mirbase.mature:MIMAT0003271' target='_blank'>Hsa-miR-603</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -12665,7 +12664,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-c596e9c4-ca3e-4991-96ff-d893812a5ec0_group">
+        <div class="group" id="tl-4f87fed3-981e-4cc7-b83e-9f4ae74c5634_group">
 
     
 
@@ -12678,7 +12677,7 @@
 
       
 
-          <div class="row group-shown" id="de33fb20-b238-4191-90dc-5b423851fe66_group">
+          <div class="row group-shown" id="d8658455-6981-498e-b462-229014c84b39_group">
 
       
 
@@ -12690,8 +12689,8 @@
 
           <a name="18609650325670126"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'de33fb20-b238-4191-90dc-5b423851fe66-18609650325670126' )"
-               id="de33fb20-b238-4191-90dc-5b423851fe66-18609650325670126_heading">
+               onclick="toggler( 'd8658455-6981-498e-b462-229014c84b39-18609650325670126' )"
+               id="d8658455-6981-498e-b462-229014c84b39-18609650325670126_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/mirbase.mature:MIMAT0003271' target='_blank'>Hsa-miR-603</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -12773,7 +12772,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="de33fb20-b238-4191-90dc-5b423851fe66-18609650325670126_group">
+               id="d8658455-6981-498e-b462-229014c84b39-18609650325670126_group">
           <div class="col">
           <div class="container bars" id="stmt-21-0-0"
                data-stmt_hash="18609650325670126">
@@ -12862,8 +12861,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-48167a62-f9ea-4b15-ba33-9cc9e68f399b"
-             onclick="toggler('tl-48167a62-f9ea-4b15-ba33-9cc9e68f399b')">
+             id="tl-46b41d79-dea5-44dc-814f-6d116974be42"
+             onclick="toggler('tl-46b41d79-dea5-44dc-814f-6d116974be42')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:34696' target='_blank'>Dieldrin</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -12939,7 +12938,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-48167a62-f9ea-4b15-ba33-9cc9e68f399b_group">
+        <div class="group" id="tl-46b41d79-dea5-44dc-814f-6d116974be42_group">
 
     
 
@@ -12952,7 +12951,7 @@
 
       
 
-          <div class="row group-shown" id="dddde884-7744-4559-8cb6-d9659ecb7fb1_group">
+          <div class="row group-shown" id="4e0c562f-428b-41e7-8fe8-db94cce3858a_group">
 
       
 
@@ -12964,8 +12963,8 @@
 
           <a name="9878720039948217"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'dddde884-7744-4559-8cb6-d9659ecb7fb1-9878720039948217' )"
-               id="dddde884-7744-4559-8cb6-d9659ecb7fb1-9878720039948217_heading">
+               onclick="toggler( '4e0c562f-428b-41e7-8fe8-db94cce3858a-9878720039948217' )"
+               id="4e0c562f-428b-41e7-8fe8-db94cce3858a-9878720039948217_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:34696' target='_blank'>Dieldrin</a> increases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -13047,7 +13046,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="dddde884-7744-4559-8cb6-d9659ecb7fb1-9878720039948217_group">
+               id="4e0c562f-428b-41e7-8fe8-db94cce3858a-9878720039948217_group">
           <div class="col">
           <div class="container bars" id="stmt-22-0-0"
                data-stmt_hash="9878720039948217">
@@ -13136,8 +13135,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-6f67fea8-9b52-4b0f-80dc-0b09c5fa6afc"
-             onclick="toggler('tl-6f67fea8-9b52-4b0f-80dc-0b09c5fa6afc')">
+             id="tl-24be2e46-c3ea-4cdb-a711-829d74d76a6a"
+             onclick="toggler('tl-24be2e46-c3ea-4cdb-a711-829d74d76a6a')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:34687' target='_blank'>Dibutyl phthalate</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -13213,7 +13212,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-6f67fea8-9b52-4b0f-80dc-0b09c5fa6afc_group">
+        <div class="group" id="tl-24be2e46-c3ea-4cdb-a711-829d74d76a6a_group">
 
     
 
@@ -13226,7 +13225,7 @@
 
       
 
-          <div class="row group-shown" id="d9d4b648-ea0f-4507-a6a7-abbaf3dc7209_group">
+          <div class="row group-shown" id="7ab2a3ef-8d77-459e-b556-482db7e4226b_group">
 
       
 
@@ -13238,8 +13237,8 @@
 
           <a name="10794063929263594"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'd9d4b648-ea0f-4507-a6a7-abbaf3dc7209-10794063929263594' )"
-               id="d9d4b648-ea0f-4507-a6a7-abbaf3dc7209-10794063929263594_heading">
+               onclick="toggler( '7ab2a3ef-8d77-459e-b556-482db7e4226b-10794063929263594' )"
+               id="7ab2a3ef-8d77-459e-b556-482db7e4226b-10794063929263594_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:34687' target='_blank'>Dibutyl phthalate</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -13321,7 +13320,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="d9d4b648-ea0f-4507-a6a7-abbaf3dc7209-10794063929263594_group">
+               id="7ab2a3ef-8d77-459e-b556-482db7e4226b-10794063929263594_group">
           <div class="col">
           <div class="container bars" id="stmt-23-0-0"
                data-stmt_hash="10794063929263594">
@@ -13410,8 +13409,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-c33abe4b-7d94-4292-b488-f195696f1187"
-             onclick="toggler('tl-c33abe4b-7d94-4292-b488-f195696f1187')">
+             id="tl-9c70da41-37a6-4913-8a95-a278b8728bb1"
+             onclick="toggler('tl-9c70da41-37a6-4913-8a95-a278b8728bb1')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:27899' target='_blank'>Cisplatin</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -13487,7 +13486,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-c33abe4b-7d94-4292-b488-f195696f1187_group">
+        <div class="group" id="tl-9c70da41-37a6-4913-8a95-a278b8728bb1_group">
 
     
 
@@ -13500,7 +13499,7 @@
 
       
 
-          <div class="row group-shown" id="5b40366a-c848-4867-bdd6-0b18271eb10d_group">
+          <div class="row group-shown" id="6d4b5fca-bc87-4cd0-a971-b6c371780a95_group">
 
       
 
@@ -13512,8 +13511,8 @@
 
           <a name="-3160329958434314"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '5b40366a-c848-4867-bdd6-0b18271eb10d--3160329958434314' )"
-               id="5b40366a-c848-4867-bdd6-0b18271eb10d--3160329958434314_heading">
+               onclick="toggler( '6d4b5fca-bc87-4cd0-a971-b6c371780a95--3160329958434314' )"
+               id="6d4b5fca-bc87-4cd0-a971-b6c371780a95--3160329958434314_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:27899' target='_blank'>Cisplatin</a> increases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -13595,7 +13594,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="5b40366a-c848-4867-bdd6-0b18271eb10d--3160329958434314_group">
+               id="6d4b5fca-bc87-4cd0-a971-b6c371780a95--3160329958434314_group">
           <div class="col">
           <div class="container bars" id="stmt-24-0-0"
                data-stmt_hash="-3160329958434314">
@@ -13684,8 +13683,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-faca5220-72ce-4b66-9908-cd4e2cebb5c0"
-             onclick="toggler('tl-faca5220-72ce-4b66-9908-cd4e2cebb5c0')">
+             id="tl-ef73f96d-f7d2-426e-9728-4a61eccda42d"
+             onclick="toggler('tl-ef73f96d-f7d2-426e-9728-4a61eccda42d')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/CHEBI:27899' target='_blank'>cisplatin</a></h5>
       </div>
@@ -13761,7 +13760,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-faca5220-72ce-4b66-9908-cd4e2cebb5c0_group">
+        <div class="group" id="tl-ef73f96d-f7d2-426e-9728-4a61eccda42d_group">
 
     
 
@@ -13774,7 +13773,7 @@
 
       
 
-          <div class="row group-shown" id="e41edd75-1438-44f4-84f9-29b185826f33_group">
+          <div class="row group-shown" id="739aa825-5e10-4d06-a959-1efca82b4c4b_group">
 
       
 
@@ -13786,8 +13785,8 @@
 
           <a name="30606812608550742"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'e41edd75-1438-44f4-84f9-29b185826f33-30606812608550742' )"
-               id="e41edd75-1438-44f4-84f9-29b185826f33-30606812608550742_heading">
+               onclick="toggler( '739aa825-5e10-4d06-a959-1efca82b4c4b-30606812608550742' )"
+               id="739aa825-5e10-4d06-a959-1efca82b4c4b-30606812608550742_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/CHEBI:27899' target='_blank'>cisplatin</a>.
@@ -13869,7 +13868,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="e41edd75-1438-44f4-84f9-29b185826f33-30606812608550742_group">
+               id="739aa825-5e10-4d06-a959-1efca82b4c4b-30606812608550742_group">
           <div class="col">
           <div class="container bars" id="stmt-25-0-0"
                data-stmt_hash="30606812608550742">
@@ -13958,8 +13957,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-97a090a5-23c9-4de8-96c6-af73c775338d"
-             onclick="toggler('tl-97a090a5-23c9-4de8-96c6-af73c775338d')">
+             id="tl-e3eab014-5e00-4d42-8850-a33092f620b6"
+             onclick="toggler('tl-e3eab014-5e00-4d42-8850-a33092f620b6')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/GO:0016477' target='_blank'>cell migration</a></h5>
       </div>
@@ -14035,7 +14034,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-97a090a5-23c9-4de8-96c6-af73c775338d_group">
+        <div class="group" id="tl-e3eab014-5e00-4d42-8850-a33092f620b6_group">
 
     
 
@@ -14048,7 +14047,7 @@
 
       
 
-          <div class="row group-shown" id="33312d32-1f85-439d-875e-9aab70d657dd_group">
+          <div class="row group-shown" id="635d0351-1c6a-49dc-b683-495421579d28_group">
 
       
 
@@ -14060,8 +14059,8 @@
 
           <a name="1499688180526077"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '33312d32-1f85-439d-875e-9aab70d657dd-1499688180526077' )"
-               id="33312d32-1f85-439d-875e-9aab70d657dd-1499688180526077_heading">
+               onclick="toggler( '635d0351-1c6a-49dc-b683-495421579d28-1499688180526077' )"
+               id="635d0351-1c6a-49dc-b683-495421579d28-1499688180526077_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/GO:0016477' target='_blank'>cell migration</a>.
@@ -14143,7 +14142,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="33312d32-1f85-439d-875e-9aab70d657dd-1499688180526077_group">
+               id="635d0351-1c6a-49dc-b683-495421579d28-1499688180526077_group">
           <div class="col">
           <div class="container bars" id="stmt-26-0-0"
                data-stmt_hash="1499688180526077">
@@ -14232,8 +14231,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-6f94143e-4811-444f-9b43-6b985bc2681d"
-             onclick="toggler('tl-6f94143e-4811-444f-9b43-6b985bc2681d')">
+             id="tl-3840d35a-700e-4730-a184-825c77eda861"
+             onclick="toggler('tl-3840d35a-700e-4730-a184-825c77eda861')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/GO:0016049' target='_blank'>cell growth</a></h5>
       </div>
@@ -14309,7 +14308,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-6f94143e-4811-444f-9b43-6b985bc2681d_group">
+        <div class="group" id="tl-3840d35a-700e-4730-a184-825c77eda861_group">
 
     
 
@@ -14322,7 +14321,7 @@
 
       
 
-          <div class="row group-shown" id="867922e9-690d-475d-8c17-6524293df572_group">
+          <div class="row group-shown" id="059cea35-3c1c-49b0-8f04-d84c72d790d7_group">
 
       
 
@@ -14334,8 +14333,8 @@
 
           <a name="-28874073033384128"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '867922e9-690d-475d-8c17-6524293df572--28874073033384128' )"
-               id="867922e9-690d-475d-8c17-6524293df572--28874073033384128_heading">
+               onclick="toggler( '059cea35-3c1c-49b0-8f04-d84c72d790d7--28874073033384128' )"
+               id="059cea35-3c1c-49b0-8f04-d84c72d790d7--28874073033384128_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/GO:0016049' target='_blank'>cell growth</a>.
@@ -14417,7 +14416,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="867922e9-690d-475d-8c17-6524293df572--28874073033384128_group">
+               id="059cea35-3c1c-49b0-8f04-d84c72d790d7--28874073033384128_group">
           <div class="col">
           <div class="container bars" id="stmt-27-0-0"
                data-stmt_hash="-28874073033384128">
@@ -14506,8 +14505,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-aef6f98c-273b-419f-80d7-64b9e574fd12"
-             onclick="toggler('tl-aef6f98c-273b-419f-80d7-64b9e574fd12')">
+             id="tl-5a64cf6e-1b48-4484-848f-91155152f19a"
+             onclick="toggler('tl-5a64cf6e-1b48-4484-848f-91155152f19a')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/GO:0030154' target='_blank'>cell differentiation</a></h5>
       </div>
@@ -14583,7 +14582,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-aef6f98c-273b-419f-80d7-64b9e574fd12_group">
+        <div class="group" id="tl-5a64cf6e-1b48-4484-848f-91155152f19a_group">
 
     
 
@@ -14596,7 +14595,7 @@
 
       
 
-          <div class="row group-shown" id="831399e4-608a-4854-a378-f707e1cee192_group">
+          <div class="row group-shown" id="5811a6dc-b45b-4b32-99ef-4e373279f5cb_group">
 
       
 
@@ -14608,8 +14607,8 @@
 
           <a name="9109581775311355"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '831399e4-608a-4854-a378-f707e1cee192-9109581775311355' )"
-               id="831399e4-608a-4854-a378-f707e1cee192-9109581775311355_heading">
+               onclick="toggler( '5811a6dc-b45b-4b32-99ef-4e373279f5cb-9109581775311355' )"
+               id="5811a6dc-b45b-4b32-99ef-4e373279f5cb-9109581775311355_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/GO:0030154' target='_blank'>cell differentiation</a>.
@@ -14691,7 +14690,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="831399e4-608a-4854-a378-f707e1cee192-9109581775311355_group">
+               id="5811a6dc-b45b-4b32-99ef-4e373279f5cb-9109581775311355_group">
           <div class="col">
           <div class="container bars" id="stmt-28-0-0"
                data-stmt_hash="9109581775311355">
@@ -14780,8 +14779,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-476a2f40-c138-4e4e-8eb7-7d2d0a921462"
-             onclick="toggler('tl-476a2f40-c138-4e4e-8eb7-7d2d0a921462')">
+             id="tl-c8607eab-4fd8-4beb-bc16-5cb31474a8e0"
+             onclick="toggler('tl-c8607eab-4fd8-4beb-bc16-5cb31474a8e0')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/hgnc:26661' target='_blank'>RNF168</a></h5>
       </div>
@@ -14857,7 +14856,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-476a2f40-c138-4e4e-8eb7-7d2d0a921462_group">
+        <div class="group" id="tl-c8607eab-4fd8-4beb-bc16-5cb31474a8e0_group">
 
     
 
@@ -14870,7 +14869,7 @@
 
       
 
-          <div class="row group-shown" id="5d3fd071-078c-4b5c-9699-e58e9f2ca3ea_group">
+          <div class="row group-shown" id="d605ad48-b0ab-465c-9d0e-ceeb4ce17215_group">
 
       
 
@@ -14882,8 +14881,8 @@
 
           <a name="18453871791343596"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '5d3fd071-078c-4b5c-9699-e58e9f2ca3ea-18453871791343596' )"
-               id="5d3fd071-078c-4b5c-9699-e58e9f2ca3ea-18453871791343596_heading">
+               onclick="toggler( 'd605ad48-b0ab-465c-9d0e-ceeb4ce17215-18453871791343596' )"
+               id="d605ad48-b0ab-465c-9d0e-ceeb4ce17215-18453871791343596_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/hgnc:26661' target='_blank'>RNF168</a>.
@@ -14965,7 +14964,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="5d3fd071-078c-4b5c-9699-e58e9f2ca3ea-18453871791343596_group">
+               id="d605ad48-b0ab-465c-9d0e-ceeb4ce17215-18453871791343596_group">
           <div class="col">
           <div class="container bars" id="stmt-29-0-0"
                data-stmt_hash="18453871791343596">
@@ -15054,8 +15053,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-dea35bc2-f7f2-47fc-8f54-20c2de86aac9"
-             onclick="toggler('tl-dea35bc2-f7f2-47fc-8f54-20c2de86aac9')">
+             id="tl-9171cdac-39d2-4982-9780-9273c43c2af5"
+             onclick="toggler('tl-9171cdac-39d2-4982-9780-9273c43c2af5')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/fplx:RAF' target='_blank'>RAF</a></h5>
       </div>
@@ -15131,7 +15130,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-dea35bc2-f7f2-47fc-8f54-20c2de86aac9_group">
+        <div class="group" id="tl-9171cdac-39d2-4982-9780-9273c43c2af5_group">
 
     
 
@@ -15144,7 +15143,7 @@
 
       
 
-          <div class="row group-shown" id="df7b7fb3-b432-4b0d-bf90-b2736609733a_group">
+          <div class="row group-shown" id="4cc184d6-9177-4ae9-9044-dd71a1c8eddd_group">
 
       
 
@@ -15156,8 +15155,8 @@
 
           <a name="-9035130467698491"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'df7b7fb3-b432-4b0d-bf90-b2736609733a--9035130467698491' )"
-               id="df7b7fb3-b432-4b0d-bf90-b2736609733a--9035130467698491_heading">
+               onclick="toggler( '4cc184d6-9177-4ae9-9044-dd71a1c8eddd--9035130467698491' )"
+               id="4cc184d6-9177-4ae9-9044-dd71a1c8eddd--9035130467698491_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> inhibits <a href='https://identifiers.org/fplx:RAF' target='_blank'>RAF</a>.
@@ -15239,7 +15238,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="df7b7fb3-b432-4b0d-bf90-b2736609733a--9035130467698491_group">
+               id="4cc184d6-9177-4ae9-9044-dd71a1c8eddd--9035130467698491_group">
           <div class="col">
           <div class="container bars" id="stmt-30-0-0"
                data-stmt_hash="-9035130467698491">
@@ -15328,8 +15327,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-9a4ce28e-9643-4a1f-b490-585a6b71defb"
-             onclick="toggler('tl-9a4ce28e-9643-4a1f-b490-585a6b71defb')">
+             id="tl-141241ff-3730-4dd0-a974-f29d2626db6f"
+             onclick="toggler('tl-141241ff-3730-4dd0-a974-f29d2626db6f')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> affects <a href='https://identifiers.org/mesh:D009361' target='_blank'>Neoplasm Invasiveness</a></h5>
       </div>
@@ -15405,7 +15404,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-9a4ce28e-9643-4a1f-b490-585a6b71defb_group">
+        <div class="group" id="tl-141241ff-3730-4dd0-a974-f29d2626db6f_group">
 
     
 
@@ -15418,7 +15417,7 @@
 
       
 
-          <div class="row group-shown" id="6da882d1-34a0-4c6c-bb6a-09af20833ffc_group">
+          <div class="row group-shown" id="78a0a80c-e250-44d1-93e5-ee4692bedc86_group">
 
       
 
@@ -15430,8 +15429,8 @@
 
           <a name="24637238492892575"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '6da882d1-34a0-4c6c-bb6a-09af20833ffc-24637238492892575' )"
-               id="6da882d1-34a0-4c6c-bb6a-09af20833ffc-24637238492892575_heading">
+               onclick="toggler( '78a0a80c-e250-44d1-93e5-ee4692bedc86-24637238492892575' )"
+               id="78a0a80c-e250-44d1-93e5-ee4692bedc86-24637238492892575_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a> activates <a href='https://identifiers.org/mesh:D009361' target='_blank'>Neoplasm Invasiveness</a>.
@@ -15513,7 +15512,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="6da882d1-34a0-4c6c-bb6a-09af20833ffc-24637238492892575_group">
+               id="78a0a80c-e250-44d1-93e5-ee4692bedc86-24637238492892575_group">
           <div class="col">
           <div class="container bars" id="stmt-31-0-0"
                data-stmt_hash="24637238492892575">
@@ -15602,8 +15601,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-edb97386-1bbd-4906-a32c-d18ead09c840"
-             onclick="toggler('tl-edb97386-1bbd-4906-a32c-d18ead09c840')">
+             id="tl-b2c45927-27d1-48cb-bf4e-ebeb9dbdf1ed"
+             onclick="toggler('tl-b2c45927-27d1-48cb-bf4e-ebeb9dbdf1ed')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:9195' target='_blank'>Soman</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -15679,7 +15678,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-edb97386-1bbd-4906-a32c-d18ead09c840_group">
+        <div class="group" id="tl-b2c45927-27d1-48cb-bf4e-ebeb9dbdf1ed_group">
 
     
 
@@ -15692,7 +15691,7 @@
 
       
 
-          <div class="row group-shown" id="7020b7e9-d029-4c26-b4e6-cbf6f5400c40_group">
+          <div class="row group-shown" id="645368f4-8bfb-417f-a818-aff7c380ad04_group">
 
       
 
@@ -15704,8 +15703,8 @@
 
           <a name="-20345684392270989"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '7020b7e9-d029-4c26-b4e6-cbf6f5400c40--20345684392270989' )"
-               id="7020b7e9-d029-4c26-b4e6-cbf6f5400c40--20345684392270989_heading">
+               onclick="toggler( '645368f4-8bfb-417f-a818-aff7c380ad04--20345684392270989' )"
+               id="645368f4-8bfb-417f-a818-aff7c380ad04--20345684392270989_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:9195' target='_blank'>Soman</a> increases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -15787,7 +15786,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="7020b7e9-d029-4c26-b4e6-cbf6f5400c40--20345684392270989_group">
+               id="645368f4-8bfb-417f-a818-aff7c380ad04--20345684392270989_group">
           <div class="col">
           <div class="container bars" id="stmt-32-0-0"
                data-stmt_hash="-20345684392270989">
@@ -15876,8 +15875,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-a56ea81f-bd6f-49ff-89ad-b00c76b542ad"
-             onclick="toggler('tl-a56ea81f-bd6f-49ff-89ad-b00c76b542ad')">
+             id="tl-af0037cd-ed91-4b08-bad8-7d53c3e53ca6"
+             onclick="toggler('tl-af0037cd-ed91-4b08-bad8-7d53c3e53ca6')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:641' target='_blank'>N-methyl-4-phenylpyridinium</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -15953,7 +15952,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-a56ea81f-bd6f-49ff-89ad-b00c76b542ad_group">
+        <div class="group" id="tl-af0037cd-ed91-4b08-bad8-7d53c3e53ca6_group">
 
     
 
@@ -15966,7 +15965,7 @@
 
       
 
-          <div class="row group-shown" id="deb87d20-0f15-4747-b2d6-ba69846f0d4b_group">
+          <div class="row group-shown" id="a6210ca7-5eaf-45fb-a08e-95a6068f5dda_group">
 
       
 
@@ -15978,8 +15977,8 @@
 
           <a name="-23210442543763489"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'deb87d20-0f15-4747-b2d6-ba69846f0d4b--23210442543763489' )"
-               id="deb87d20-0f15-4747-b2d6-ba69846f0d4b--23210442543763489_heading">
+               onclick="toggler( 'a6210ca7-5eaf-45fb-a08e-95a6068f5dda--23210442543763489' )"
+               id="a6210ca7-5eaf-45fb-a08e-95a6068f5dda--23210442543763489_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:641' target='_blank'>N-methyl-4-phenylpyridinium</a> increases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -16061,7 +16060,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="deb87d20-0f15-4747-b2d6-ba69846f0d4b--23210442543763489_group">
+               id="a6210ca7-5eaf-45fb-a08e-95a6068f5dda--23210442543763489_group">
           <div class="col">
           <div class="container bars" id="stmt-33-0-0"
                data-stmt_hash="-23210442543763489">
@@ -16150,8 +16149,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-679e5fad-db48-4fff-b757-7fb9de6a1268"
-             onclick="toggler('tl-679e5fad-db48-4fff-b757-7fb9de6a1268')">
+             id="tl-853a7b69-d0a0-4c61-92d7-833cc47d319d"
+             onclick="toggler('tl-853a7b69-d0a0-4c61-92d7-833cc47d319d')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/fplx:Cyclin_E' target='_blank'>Cyclin_E</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -16227,7 +16226,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-679e5fad-db48-4fff-b757-7fb9de6a1268_group">
+        <div class="group" id="tl-853a7b69-d0a0-4c61-92d7-833cc47d319d_group">
 
     
 
@@ -16240,7 +16239,7 @@
 
       
 
-          <div class="row group-shown" id="f0463d6b-15e3-4bc3-a318-0daa12dabbf6_group">
+          <div class="row group-shown" id="6d541f5c-b94f-4433-9885-361cdbbe82fc_group">
 
       
 
@@ -16252,8 +16251,8 @@
 
           <a name="-22128895644330509"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'f0463d6b-15e3-4bc3-a318-0daa12dabbf6--22128895644330509' )"
-               id="f0463d6b-15e3-4bc3-a318-0daa12dabbf6--22128895644330509_heading">
+               onclick="toggler( '6d541f5c-b94f-4433-9885-361cdbbe82fc--22128895644330509' )"
+               id="6d541f5c-b94f-4433-9885-361cdbbe82fc--22128895644330509_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/fplx:Cyclin_E' target='_blank'>Cyclin_E</a> inhibits <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -16335,7 +16334,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="f0463d6b-15e3-4bc3-a318-0daa12dabbf6--22128895644330509_group">
+               id="6d541f5c-b94f-4433-9885-361cdbbe82fc--22128895644330509_group">
           <div class="col">
           <div class="container bars" id="stmt-34-0-0"
                data-stmt_hash="-22128895644330509">
@@ -16424,8 +16423,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-6af29296-0a4f-46e7-84b9-60126cb0e569"
-             onclick="toggler('tl-6af29296-0a4f-46e7-84b9-60126cb0e569')">
+             id="tl-bc1a4482-df1c-41e7-b629-c441c57a4e1f"
+             onclick="toggler('tl-bc1a4482-df1c-41e7-b629-c441c57a4e1f')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/hgnc:1516' target='_blank'>CAT</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -16501,7 +16500,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-6af29296-0a4f-46e7-84b9-60126cb0e569_group">
+        <div class="group" id="tl-bc1a4482-df1c-41e7-b629-c441c57a4e1f_group">
 
     
 
@@ -16514,7 +16513,7 @@
 
       
 
-          <div class="row group-shown" id="44d3ecc3-cbff-41db-a583-cc0e4438a261_group">
+          <div class="row group-shown" id="44a14f6e-ab55-4d39-809f-f1197c857e23_group">
 
       
 
@@ -16526,8 +16525,8 @@
 
           <a name="-5502080993970647"></a>
           <div class="row statement group_heading"
-               onclick="toggler( '44d3ecc3-cbff-41db-a583-cc0e4438a261--5502080993970647' )"
-               id="44d3ecc3-cbff-41db-a583-cc0e4438a261--5502080993970647_heading">
+               onclick="toggler( '44a14f6e-ab55-4d39-809f-f1197c857e23--5502080993970647' )"
+               id="44a14f6e-ab55-4d39-809f-f1197c857e23--5502080993970647_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/hgnc:1516' target='_blank'>CAT</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -16609,7 +16608,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="44d3ecc3-cbff-41db-a583-cc0e4438a261--5502080993970647_group">
+               id="44a14f6e-ab55-4d39-809f-f1197c857e23--5502080993970647_group">
           <div class="col">
           <div class="container bars" id="stmt-35-0-0"
                data-stmt_hash="-5502080993970647">
@@ -16698,8 +16697,8 @@
     
 
         <div class="row super_group_heading"
-             id="tl-2efea5cd-f1ac-4329-a8d0-511db450b2d9"
-             onclick="toggler('tl-2efea5cd-f1ac-4329-a8d0-511db450b2d9')">
+             id="tl-543fb211-3b08-4753-aebd-99d19d442359"
+             onclick="toggler('tl-543fb211-3b08-4753-aebd-99d19d442359')">
       <div class="col-auto nvp">
         <h5 class="align-middle"><a href='https://identifiers.org/CHEBI:1391' target='_blank'>3,4-methylenedioxymethamphetamine</a> affects <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a></h5>
       </div>
@@ -16775,7 +16774,7 @@
     </div>
         <div class="row">
         <div class="col">
-        <div class="group" id="tl-2efea5cd-f1ac-4329-a8d0-511db450b2d9_group">
+        <div class="group" id="tl-543fb211-3b08-4753-aebd-99d19d442359_group">
 
     
 
@@ -16788,7 +16787,7 @@
 
       
 
-          <div class="row group-shown" id="b03360aa-d3af-455f-afbc-aa0bff3b7511_group">
+          <div class="row group-shown" id="508bdf7c-5793-4b62-93ce-d64d3c9d78cc_group">
 
       
 
@@ -16800,8 +16799,8 @@
 
           <a name="18287703302757010"></a>
           <div class="row statement group_heading"
-               onclick="toggler( 'b03360aa-d3af-455f-afbc-aa0bff3b7511-18287703302757010' )"
-               id="b03360aa-d3af-455f-afbc-aa0bff3b7511-18287703302757010_heading">
+               onclick="toggler( '508bdf7c-5793-4b62-93ce-d64d3c9d78cc-18287703302757010' )"
+               id="508bdf7c-5793-4b62-93ce-d64d3c9d78cc-18287703302757010_heading">
                       <div class="col-auto text-left nvp">
                         <h5>
                           <a href='https://identifiers.org/CHEBI:1391' target='_blank'>3,4-methylenedioxymethamphetamine</a> decreases the amount of <a href='https://identifiers.org/hgnc:13486' target='_blank'>USP27X</a>.
@@ -16883,7 +16882,7 @@
                       </div>
                     </div>  <!-- end statement heading row -->
           <div class="row group"
-               id="b03360aa-d3af-455f-afbc-aa0bff3b7511-18287703302757010_group">
+               id="508bdf7c-5793-4b62-93ce-d64d3c9d78cc-18287703302757010_group">
           <div class="col">
           <div class="container bars" id="stmt-36-0-0"
                data-stmt_hash="18287703302757010">
