@@ -23,8 +23,15 @@ from indra.assemblers.html import HtmlAssembler
 from indra.databases import hgnc_client
 from indra.sources.indra_db_rest import get_statements
 from indra.statements import (
-    Desumoylation, Deubiquitination, RegulateActivity, RegulateAmount, RemoveModification, Statement, stmts_from_json,
-    stmts_from_json_file, stmts_to_json_file,
+    Desumoylation,
+    Deubiquitination,
+    RegulateActivity,
+    RegulateAmount,
+    RemoveModification,
+    Statement,
+    stmts_from_json,
+    stmts_from_json_file,
+    stmts_to_json_file,
 )
 from indra.tools import assemble_corpus as ac
 
@@ -339,10 +346,10 @@ def main(force: bool):
     rv = get_rv(force=force)
 
     # Load KO gene set enrichment analysis
-    with DATA_DUR.joinpath('ko_gsea.json').open() as file:
+    with DATA_DUR.joinpath("ko_gsea.json").open() as file:
         ko_gsea_dict = json.load(file)
     for hgnc_symbol, enrichments in ko_gsea_dict.items():
-        rv[hgnc_symbol]['ko_gsea'] = enrichments
+        rv[hgnc_symbol]["ko_gsea"] = enrichments
 
     # Load INDRA statements
     dub_symbol_statments = {}
