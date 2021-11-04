@@ -106,10 +106,10 @@ def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
     ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=30)
     stmts = ip.statements
     stmts_to_json_file(stmts, path)
-    soruce_counts = ip.get_source_counts()
+    source_counts = ip.get_source_counts()
     ev_counts = ip.get_ev_counts()
-    meta = {'source_counts': soruce_counts,
-            'ev_counts': ev_counts}
+    meta = {'source_counts': {int(k): v for k, v in source_counts.items()},
+            'ev_counts': {int(k): v for k, v in ev_counts.items()}}
     with open(path_meta, 'w') as fh:
         json.dump(meta, fh, indent=1)
     return stmts, meta
@@ -127,16 +127,32 @@ def get_interaction_stmts(source: str, target: str, force: bool = False) -> list
     return ip.statements
 
 
+def filter_meta_to_stmts(stmts, meta):
+    """Filter meta data to only contain statements that are in the list of stmts."""
+    new_meta = {}
+    for k, v in meta.items():
+        new_meta[k] = {stmt.get_hash(): v[stmt.get_hash()] for stmt in stmts}
+    return new_meta
+
+
 def dubportal_preassembly(stmts: list[Statement], meta: Mapping[str, Mapping[int, str]]) -> list[Statement]:
     stmts = filter_out_medscan(stmts)
     stmts = filter_curations(stmts)
     stmts = only_dubbing(stmts)
     stmts = first_k_evidences(stmts, k=10)
     stmts = ac.filter_grounded_only(stmts)
-    hashes_remaining = {str(stmt.get_hash()) for stmt in stmts}
-    for key, data in meta.items():
-        meta[key] = {k: v for k, v in data.items() if k in hashes_remaining}
+    meta = filter_meta_to_stmts(stmts, meta)
     return stmts, meta
+
+
+def filter_remove_mod(stmts, meta, inverse=False):
+    if not inverse:
+        stmts = [stmt for stmt in stmts if isinstance(stmt, RemoveModification)]
+    else:
+        stmts = [stmt for stmt in stmts if not isinstance(stmt, RemoveModification)]
+    meta = filter_meta_to_stmts(stmts, meta)
+    return stmts, meta
+
 
 def get_pmid_count(gene_symbol: str) -> int:
     """Get the number of PMIDs for a given DUB gene symbol."""
@@ -439,7 +455,7 @@ def _main_helper(force: bool):
     for key, value in rv.items():
         gene_stmts, gene_stmts_meta = get_gene_statements(value["hgnc_id"])
         gene_stmts, gene_stmts_meta = dubportal_preassembly(gene_stmts, gene_stmts_meta)
-        dub_symbol_statments[value["hgnc_symbol"]] = gene_stmts
+        dub_symbol_statments[value["hgnc_symbol"]] = (gene_stmts, gene_stmts_meta)
         rv[key]["n_statements"] = len(gene_stmts)
         rv[key]["n_dub_statements"] = sum(isinstance(stmt, Deubiquitination) for stmt in gene_stmts)
         rv[key]["n_other_statements"] = len(gene_stmts) - rv[key]["n_dub_statements"]
@@ -463,17 +479,21 @@ def _main_helper(force: bool):
     for row in tqdm(rows, desc="Putting it all together"):
         hgnc_symbol = row["hgnc_symbol"]
 
-        stmts = dub_symbol_statments.get(hgnc_symbol, [])
+        stmts, stmts_meta = dub_symbol_statments.get(hgnc_symbol, [])
+        stmts_dub, stmts_meta_dub = filter_remove_mod(stmts, stmts_meta, False)
         dub_assembler = HtmlAssembler(
-            [stmt for stmt in stmts if isinstance(stmt, RemoveModification)],
+            stmts_dub,
             db_rest_url="https://db.indra.bio",
-            source_counts=gene_stmts_meta['source_counts'],
-            ev_counts=gene_stmts_meta['ev_counts'],
+            source_counts=stmts_meta_dub['source_counts'],
+            ev_counts=stmts_meta_dub['ev_counts'],
         )
         dub_stmt_html = dub_assembler.make_model(template=stmt_template, grouping_level="statement")
+        stmts_other, stmts_meta_other = filter_remove_mod(stmts, stmts_meta, True)
         other_assembler = HtmlAssembler(
-            [stmt for stmt in stmts if not isinstance(stmt, RemoveModification)],
+            stmts_other,
             db_rest_url="https://db.indra.bio",
+            source_counts=stmts_meta_other['source_counts'],
+            ev_counts=stmts_meta_other['ev_counts'],
         )
         other_stmt_html = other_assembler.make_model(template=stmt_template)
 
