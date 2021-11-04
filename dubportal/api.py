@@ -95,13 +95,18 @@ def get_go_type(identifier: str) -> Optional[str]:
 def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
     """Get INDRA statements for the given gene."""
     path = pystow.join("dubportal", "single", name=f"{hgnc_id}.json")
+    path_meta = pystow.join("dubportal", "single", name=f"{hgnc_id}_meta.json")
     if path.is_file() and not force:
         return stmts_from_json_file(path)
     path.parent.mkdir(exist_ok=True, parents=True)
     ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=30)
     stmts = ip.statements
     stmts_to_json_file(stmts, path)
-    return stmts
+    soruce_counts = ip.get_source_counts()
+    meta = {'source_counts': soruce_counts}
+    with open(path_meta, 'w') as fh:
+        json.dump(meta, fh, indent=1)
+    return stmts, meta
 
 
 def get_interaction_stmts(source: str, target: str, force: bool = False) -> list[Statement]:
@@ -417,7 +422,7 @@ def _main_helper(force: bool):
     # Load INDRA statements
     dub_symbol_statments = {}
     for key, value in rv.items():
-        gene_stmts = get_gene_statements(value["hgnc_id"])
+        gene_stmts, gene_stmts_meta = get_gene_statements(value["hgnc_id"])
         gene_stmts = dubportal_preassembly(gene_stmts)
         dub_symbol_statments[value["hgnc_symbol"]] = gene_stmts
         rv[key]["n_statements"] = len(gene_stmts)
@@ -447,6 +452,8 @@ def _main_helper(force: bool):
         dub_assembler = HtmlAssembler(
             [stmt for stmt in stmts if isinstance(stmt, RemoveModification)],
             db_rest_url="https://db.indra.bio",
+            source_counts=gene_stmts_meta['source_counts'],
+            ev_counts=gene_stmts_meta['ev_counts'],
         )
         dub_stmt_html = dub_assembler.make_model(template=stmt_template, grouping_level="statement")
         other_assembler = HtmlAssembler(
@@ -459,6 +466,8 @@ def _main_helper(force: bool):
             record=row,
             dub_stmt_html=markupsafe.Markup(dub_stmt_html),
             other_stmt_html=markupsafe.Markup(other_stmt_html),
+            source_counts=gene_stmts_meta['source_counts'],
+            ev_counts=gene_stmts_meta['ev_counts'],
         )
         directory = DOCS.joinpath(row["hgnc_symbol"])
         directory.mkdir(exist_ok=True, parents=True)
