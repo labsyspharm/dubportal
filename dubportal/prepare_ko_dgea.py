@@ -9,9 +9,8 @@ import zipfile
 import click
 import pandas as pd
 import pyobo
-from more_click import verbose_option
-
 from indra.databases import hgnc_client
+from more_click import verbose_option
 
 HERE = pathlib.Path(__file__).parent.resolve()
 RAW = HERE.joinpath("raw")
@@ -35,13 +34,11 @@ def get_dgea():
 
     with zipfile.ZipFile(INPUT_PATH) as zip_file:
         for zip_info in zip_file.filelist:
-            if not zip_info.filename.startswith(
-                "results"
-            ) or not zip_info.filename.endswith(".txt"):
+            if not zip_info.filename.startswith("results") or not zip_info.filename.endswith(
+                ".txt"
+            ):
                 continue
-            symbol = zip_info.filename.removeprefix("results/").removesuffix(
-                "_res_table.txt"
-            )
+            symbol = zip_info.filename.removeprefix("results/").removesuffix("_res_table.txt")
             gene_id = hgnc_client.get_current_hgnc_id(symbol)
             gene_symbol = hgnc_client.get_hgnc_name(gene_id)
             if gene_id is None:

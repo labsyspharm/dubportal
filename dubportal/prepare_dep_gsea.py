@@ -7,7 +7,6 @@ import pathlib
 
 import pandas as pd
 import pyobo
-
 from indra.databases import go_client, hgnc_client
 
 HERE = pathlib.Path(__file__).parent.resolve()
@@ -35,20 +34,14 @@ def main() -> None:
     df = pd.read_csv(INPUT_PATH, sep="\t")
     df["ID"] = df["ID"].map(lambda s: clean_go_prefix(GO_FIXES.get(s, s)))
     df["go_id"] = (
-        df["ID"]
-        .map(get_reverse_mapping())
-        .map(lambda s: s.removeprefix("GO:"), na_action="ignore")
+        df["ID"].map(get_reverse_mapping()).map(lambda s: s.removeprefix("GO:"), na_action="ignore")
     )
-    df["go_name"] = df["go_id"].map(
-        lambda s: go_client.get_go_label(f"GO:{s}"), na_action="ignore"
-    )
+    df["go_name"] = df["go_id"].map(lambda s: go_client.get_go_label(f"GO:{s}"), na_action="ignore")
     df["hgnc_id"] = df["DUB"].map(hgnc_client.get_current_hgnc_id)
     df["hgnc_symbol"] = df["hgnc_id"].map(hgnc_client.get_hgnc_name)
     del df["DUB"]
     del df["Description"]
-    df = df[
-        ["hgnc_id", "hgnc_symbol", "go_id", "go_name", "pvalue", "p.adjust", "qvalue"]
-    ]
+    df = df[["hgnc_id", "hgnc_symbol", "go_id", "go_name", "pvalue", "p.adjust", "qvalue"]]
 
     # FIXME these IDs are not taking in the fixes from above
     df = df[df["go_id"].notna()]
@@ -77,12 +70,7 @@ def get_reverse_mapping() -> dict[str, str]:
 
 
 def clean_go_prefix(s: str) -> str:
-    return (
-        s.removeprefix("GOBP_")
-        .removeprefix("GO_")
-        .removeprefix("GOCC_")
-        .removeprefix("GOMF_")
-    )
+    return s.removeprefix("GOBP_").removeprefix("GO_").removeprefix("GOCC_").removeprefix("GOMF_")
 
 
 if __name__ == "__main__":

@@ -2,28 +2,21 @@ import json
 import logging
 import os
 import pathlib
-from collections import defaultdict
 from functools import lru_cache
 from operator import itemgetter
-from typing import Optional
+from typing import Mapping, Optional
 
 import click
+import famplex
 import markupsafe
 import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
+import pyobo.sources.reactome
 import pystow
 import seaborn as sns
-from jinja2 import Environment, FileSystemLoader
-from matplotlib_venn import venn2
-from more_click import force_option, verbose_option
-from pyobo.struct import has_part
-from tqdm import tqdm
-from tqdm.contrib.logging import logging_redirect_tqdm
-
-import famplex
 from indra.assemblers.html import HtmlAssembler
-from indra.databases import hgnc_client
+from indra.databases import go_client, hgnc_client
 from indra.sources.indra_db_rest import get_statements
 from indra.statements import (
     Desumoylation,
@@ -36,6 +29,11 @@ from indra.statements import (
     stmts_to_json_file,
 )
 from indra.tools import assemble_corpus as ac
+from jinja2 import Environment, FileSystemLoader
+from matplotlib_venn import venn2
+from more_click import force_option, verbose_option
+from tqdm import tqdm
+from tqdm.contrib.logging import logging_redirect_tqdm
 
 logger = logging.getLogger(__name__)
 
@@ -50,9 +48,7 @@ NDEX_LINKS = DOCS.joinpath("network_index.json")
 STATEMENTS_DIR = RAW.joinpath("statements")
 STATEMENTS_DIR.mkdir(exist_ok=True, parents=True)
 
-environment = Environment(
-    autoescape=True, loader=FileSystemLoader(HERE), trim_blocks=False
-)
+environment = Environment(autoescape=True, loader=FileSystemLoader(HERE), trim_blocks=False)
 
 index_template = environment.get_template("index.html")
 gene_template = environment.get_template("gene.html")
@@ -69,9 +65,7 @@ GENE_FIXES = {
 #: A set of HGNC gene symbol strings corresponding to DUBs,
 #: based on HGNC gene family annotations
 FAMPLEX_DUBS = {
-    identifier
-    for prefix, identifier in famplex.descendant_terms("FPLX", DUB)
-    if prefix == "HGNC"
+    identifier for prefix, identifier in famplex.descendant_terms("FPLX", DUB) if prefix == "HGNC"
 }
 
 
@@ -91,14 +85,10 @@ def get_dub_family(gene_symbol: str) -> Optional[str]:
 
 def get_go_type(identifier: str) -> Optional[str]:
     """Get the GO type by the GO identifier."""
-    if pyobo.has_ancestor("go", identifier, "go", "0008150"):
-        return "Biological Process"
-    elif pyobo.has_ancestor("go", identifier, "go", "0005575"):
-        return "Cellular Component"
-    elif pyobo.has_ancestor("go", identifier, "go", "0003674"):
-        return "Molecular Function"
-    else:
+    go_namespace = go_client.get_namespace(f"GO:{identifier}")
+    if go_namespace is None:
         return None
+    return go_namespace.replace("_", " ").title()
 
 
 def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
@@ -113,9 +103,7 @@ def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
     return stmts
 
 
-def get_interaction_stmts(
-    source: str, target: str, force: bool = False
-) -> list[Statement]:
+def get_interaction_stmts(source: str, target: str, force: bool = False) -> list[Statement]:
     """Get INDRA statements for the given interaction between source/target."""
     path = pystow.join("dubportal", "interaction", source, name=f"{target}.json")
     if path.is_file() and not force:
@@ -201,23 +189,17 @@ def safe_get_curations():
 
 
 def shared_reactome(hgnc_id_1: str, hgnc_id_2: str) -> set[str]:
-    r = get_reactome_proteins()
+    uniprot_to_pathways = get_protein_to_pathways()
     uniprot_a = hgnc_client.get_uniprot_id(hgnc_id_1)
+    uniprot_a_pathways = uniprot_to_pathways.get(uniprot_a, set())
     uniprot_b = hgnc_client.get_uniprot_id(hgnc_id_2)
-    return set(r.get(uniprot_a, set())).intersection(r.get(uniprot_b, set()))
+    uniprot_b_pathways = uniprot_to_pathways.get(uniprot_b, set())
+    return uniprot_a_pathways.intersection(uniprot_b_pathways)
 
 
 @lru_cache(maxsize=1)
-def get_reactome_proteins() -> dict[str, set[str]]:
-    rv = defaultdict(set)
-    for reactome_id, entities in pyobo.get_id_multirelations_mapping(
-        "reactome", has_part, invert=True
-    ).items():
-        for entity in entities:
-            if entity.prefix != "uniprot":
-                continue
-            rv[entity.identifier].add(reactome_id)
-    return dict(rv)
+def get_protein_to_pathways() -> Mapping[str, set[str]]:
+    return pyobo.sources.reactome.get_protein_to_pathways()
 
 
 def get_processed_data() -> dict[str, any]:
@@ -237,13 +219,9 @@ def get_processed_data() -> dict[str, any]:
 
     rv = {}
 
-    df["DepMap_coDependency"] = df["DepMap_coDependency"].map(
-        lambda s: GENE_FIXES.get(s, s)
-    )
+    df["DepMap_coDependency"] = df["DepMap_coDependency"].map(lambda s: GENE_FIXES.get(s, s))
     df["dep_gene_id"] = df["DepMap_coDependency"].map(hgnc_client.get_current_hgnc_id)
-    df["dep_gene_symbol"] = df["dep_gene_id"].map(
-        hgnc_client.get_hgnc_name, na_action="ignore"
-    )
+    df["dep_gene_symbol"] = df["dep_gene_id"].map(hgnc_client.get_hgnc_name, na_action="ignore")
 
     for (dub_hgnc_id, dub_hgnc_symbol), sdf in tqdm(
         df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]),
@@ -262,15 +240,9 @@ def get_processed_data() -> dict[str, any]:
 
         # Get gene dependencies for this DUB
         depmap_gene_records = []
-        for _, row in tqdm(
-            sdf.iterrows(), unit="dep", leave=False, desc="Mapping dependencies"
-        ):
+        for _, row in tqdm(sdf.iterrows(), unit="dep", leave=False, desc="Mapping dependencies"):
             depmap_gene_id = row["dep_gene_id"]
-            if (
-                pd.isna(depmap_gene_id)
-                or pd.isnull(depmap_gene_id)
-                or not depmap_gene_id
-            ):
+            if pd.isna(depmap_gene_id) or pd.isnull(depmap_gene_id) or not depmap_gene_id:
                 continue
             depmap_gene_symbol = row["dep_gene_symbol"]
             stmts = get_interaction_stmts(dub_hgnc_symbol, depmap_gene_symbol)
@@ -440,9 +412,7 @@ def _main_helper(force: bool):
         gene_stmts = dubportal_preassembly(gene_stmts)
         dub_symbol_statments[value["hgnc_symbol"]] = gene_stmts
         rv[key]["n_statements"] = len(gene_stmts)
-        rv[key]["n_dub_statements"] = sum(
-            isinstance(stmt, Deubiquitination) for stmt in gene_stmts
-        )
+        rv[key]["n_dub_statements"] = sum(isinstance(stmt, Deubiquitination) for stmt in gene_stmts)
         rv[key]["n_other_statements"] = len(gene_stmts) - rv[key]["n_dub_statements"]
 
     rows = sorted(rv.values(), key=itemgetter("hgnc_symbol"))
@@ -469,9 +439,7 @@ def _main_helper(force: bool):
             [stmt for stmt in stmts if isinstance(stmt, RemoveModification)],
             db_rest_url="https://db.indra.bio",
         )
-        dub_stmt_html = dub_assembler.make_model(
-            template=stmt_template, grouping_level="statement"
-        )
+        dub_stmt_html = dub_assembler.make_model(template=stmt_template, grouping_level="statement")
         other_assembler = HtmlAssembler(
             [stmt for stmt in stmts if not isinstance(stmt, RemoveModification)],
             db_rest_url="https://db.indra.bio",

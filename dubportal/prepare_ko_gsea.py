@@ -4,7 +4,6 @@ from typing import Optional
 
 import pandas as pd
 import pyobo
-
 from indra.databases import hgnc_client
 
 HERE = pathlib.Path(__file__).parent.resolve()
@@ -83,9 +82,7 @@ def _get(row: dict[str, any]) -> tuple[str, str, str]:
         identifier = pyobo.get_xref("msig", msig_id, prefix)
         if identifier:
             identifier = (
-                identifier.removeprefix(prefix)
-                .removeprefix(prefix.upper())
-                .removeprefix(":")
+                identifier.removeprefix(prefix).removeprefix(prefix.upper()).removeprefix(":")
             )
             return prefix, identifier, pyobo.get_name(prefix, identifier)
     return "msig", msig_id, row["pathway"]

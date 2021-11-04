@@ -1,17 +1,16 @@
 import json
-import pickle
-import pandas
 import logging
-from indra.tools import assemble_corpus as ac
-from indra.databases import hgnc_client
-from indra.sources.indra_db_rest import get_statements
-from indra_db.client.principal.curation import get_curations
-from indra.databases import ndex_client
+import pickle
+
+import pandas
 from indra.assemblers.cx import CxAssembler
 from indra.assemblers.cx.hub_layout import add_semantic_hub_layout
+from indra.databases import hgnc_client, ndex_client
+from indra.sources.indra_db_rest import get_statements
+from indra.tools import assemble_corpus as ac
+from indra_db.client.principal.curation import get_curations
 
 from .api import INPUT_PATH
-
 
 curs = get_curations()
 
