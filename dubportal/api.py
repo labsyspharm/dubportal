@@ -18,6 +18,7 @@ import pystow
 import seaborn as sns
 from indra.assemblers.html import HtmlAssembler
 from indra.databases import go_client, hgnc_client
+from indra.literature import pubmed_client
 from indra.sources.indra_db_rest import get_statements
 from indra.statements import (
     Desumoylation,
@@ -130,6 +131,10 @@ def dubportal_preassembly(stmts: list[Statement]) -> list[Statement]:
     stmts = first_k_evidences(stmts, k=10)
     stmts = ac.filter_grounded_only(stmts)
     return stmts
+
+def get_pmid_count(gene_symbol: str) -> int:
+    """Get the number of PMIDs for a given DUB gene symbol."""
+    return pubmed_client.get_id_count(gene_symbol)
 
 
 def filter_stmt_type(stmts: list[Statement], types) -> list[Statement]:
@@ -246,7 +251,9 @@ def get_processed_data() -> dict[str, any]:
     ):
         # Non-grouping operations
         fraction_dependent = sdf.iloc[0]["fraction_cell_lines_dependent_on_DUB"]
-        papers = int(sdf.iloc[0]["PubMed_papers"].replace(",", ""))
+        # papers = int(sdf.iloc[0]["PubMed_papers"].replace(",", ""))
+        # We actively query for the number of papers
+        papers = get_pmid_count(dub_hgnc_symbol)
 
         # FamPlex identifier for the DUB class
         dub_family = get_dub_family(dub_hgnc_symbol)
