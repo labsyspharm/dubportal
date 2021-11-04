@@ -103,7 +103,9 @@ def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
     stmts = ip.statements
     stmts_to_json_file(stmts, path)
     soruce_counts = ip.get_source_counts()
-    meta = {'source_counts': soruce_counts}
+    ev_counts = ip.get_ev_counts()
+    meta = {'source_counts': soruce_counts,
+            'ev_counts': ev_counts}
     with open(path_meta, 'w') as fh:
         json.dump(meta, fh, indent=1)
     return stmts, meta
