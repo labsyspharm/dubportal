@@ -2,17 +2,18 @@ import json
 import logging
 import os
 import pathlib
+from collections import defaultdict
 from functools import lru_cache
 from operator import itemgetter
 from typing import Mapping, Optional
 
+import bioversions
 import click
 import famplex
 import markupsafe
 import matplotlib.pyplot as plt
 import pandas as pd
 import pyobo
-import pyobo.sources.reactome
 import pystow
 import seaborn as sns
 from indra.assemblers.html import HtmlAssembler
@@ -199,7 +200,15 @@ def shared_reactome(hgnc_id_1: str, hgnc_id_2: str) -> set[str]:
 
 @lru_cache(maxsize=1)
 def get_protein_to_pathways() -> Mapping[str, set[str]]:
-    return pyobo.sources.reactome.get_protein_to_pathways()
+    """Get protein to pathways from reactome."""
+    version = bioversions.get_version("reactome")
+    url = f"https://reactome.org/download/{version}/UniProt2Reactome_All_Levels.txt"
+    rv = defaultdict(set)
+    df = pd.read_csv(url, sep="\t", header=None, usecols=[0, 1], dtype=str)
+    print(df.head())
+    for uniprot_id, reactome_id in df.values:
+        rv[uniprot_id].add(reactome_id)
+    return dict(rv)
 
 
 def get_processed_data() -> dict[str, any]:
