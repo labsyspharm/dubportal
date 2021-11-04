@@ -1,0 +1,35 @@
+name: Update DUB Portal
+author: Charles Tapley Hoyt
+description: |
+  This action downloads the most recent information on all DUBs
+  from the INDRA Database on a chronological basis.
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          persist-credentials: false
+          # otherwise, you will failed to push refs to dest repo
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Create local changes
+        run: |
+          pip install tox
+          tox
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Automatically update DUB Portal" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
