@@ -97,8 +97,11 @@ def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
     """Get INDRA statements for the given gene."""
     path = pystow.join("dubportal", "single", name=f"{hgnc_id}.json")
     path_meta = pystow.join("dubportal", "single", name=f"{hgnc_id}_meta.json")
-    if path.is_file() and not force:
-        return stmts_from_json_file(path)
+    if path.is_file() and path_meta.is_file() and not force:
+        stmts = stmts_from_json_file(path)
+        with open(path_meta, "r") as fh:
+            meta = json.load(fh)
+        return stmts, meta
     path.parent.mkdir(exist_ok=True, parents=True)
     ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=30)
     stmts = ip.statements
@@ -124,13 +127,16 @@ def get_interaction_stmts(source: str, target: str, force: bool = False) -> list
     return ip.statements
 
 
-def dubportal_preassembly(stmts: list[Statement]) -> list[Statement]:
+def dubportal_preassembly(stmts: list[Statement], meta: Mapping[str, Mapping[int, str]]) -> list[Statement]:
     stmts = filter_out_medscan(stmts)
     stmts = filter_curations(stmts)
     stmts = only_dubbing(stmts)
     stmts = first_k_evidences(stmts, k=10)
     stmts = ac.filter_grounded_only(stmts)
-    return stmts
+    hashes_remaining = {str(stmt.get_hash()) for stmt in stmts}
+    for key, data in meta.items():
+        meta[key] = {k: v for k, v in data.items() if k in hashes_remaining}
+    return stmts, meta
 
 def get_pmid_count(gene_symbol: str) -> int:
     """Get the number of PMIDs for a given DUB gene symbol."""
@@ -432,7 +438,7 @@ def _main_helper(force: bool):
     dub_symbol_statments = {}
     for key, value in rv.items():
         gene_stmts, gene_stmts_meta = get_gene_statements(value["hgnc_id"])
-        gene_stmts = dubportal_preassembly(gene_stmts)
+        gene_stmts, gene_stmts_meta = dubportal_preassembly(gene_stmts, gene_stmts_meta)
         dub_symbol_statments[value["hgnc_symbol"]] = gene_stmts
         rv[key]["n_statements"] = len(gene_stmts)
         rv[key]["n_dub_statements"] = sum(isinstance(stmt, Deubiquitination) for stmt in gene_stmts)
