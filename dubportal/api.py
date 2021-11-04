@@ -118,7 +118,7 @@ def get_interaction_stmts(source: str, target: str, force: bool = False) -> list
         return stmts_from_json_file(path)
 
     path.parent.mkdir(exist_ok=True, parents=True)
-    ip = get_statements(subject=source, object=target, ev_limit=30)
+    ip = get_statements(agents=[source, target], ev_limit=1)
     stmts_to_json_file(ip.statements, path)
     return ip.statements
 
