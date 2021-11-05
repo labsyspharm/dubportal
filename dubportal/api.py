@@ -147,13 +147,15 @@ def dubportal_preassembly(stmts: list[Statement], meta: Mapping[str, Mapping[int
     return stmts, meta
 
 
-def filter_remove_mod(stmts, meta, inverse=False):
-    if not inverse:
-        stmts = [stmt for stmt in stmts if isinstance(stmt, RemoveModification)]
-    else:
-        stmts = [stmt for stmt in stmts if not isinstance(stmt, RemoveModification)]
-    meta = filter_meta_to_stmts(stmts, meta)
-    return stmts, meta
+def filter_to_dub_action(stmts, meta, dub_name, inverse=False):
+    """Filter statements to only include statements that reflect DUB action."""
+    stmts_filt = [stmt for stmt in stmts if isinstance(stmt, RemoveModification)]
+    stmts_filt = [stmt for stmt in stmts_filt if stmt.enz and stmt.enz.name == dub_name]
+    if inverse:
+        hashes = {stmt.get_hash() for stmt in stmts_filt}
+        stmts_filt = [stmt for stmt in stmts if stmt.get_hash() not in hashes]
+    meta = filter_meta_to_stmts(stmts_filt, meta)
+    return stmts_filt, meta
 
 
 def get_pmid_count(gene_symbol: str) -> int:
@@ -482,7 +484,8 @@ def _main_helper(force: bool):
         hgnc_symbol = row["hgnc_symbol"]
 
         stmts, stmts_meta = dub_symbol_statments.get(hgnc_symbol, [])
-        stmts_dub, stmts_meta_dub = filter_remove_mod(stmts, stmts_meta, False)
+        stmts_dub, stmts_meta_dub = filter_to_dub_action(stmts, stmts_meta,
+                                                         hgnc_symbol, False)
         dub_assembler = HtmlAssembler(
             stmts_dub,
             db_rest_url="https://db.indra.bio",
@@ -490,7 +493,8 @@ def _main_helper(force: bool):
             ev_counts=stmts_meta_dub['ev_counts'],
         )
         dub_stmt_html = dub_assembler.make_model(template=stmt_template, grouping_level="statement")
-        stmts_other, stmts_meta_other = filter_remove_mod(stmts, stmts_meta, True)
+        stmts_other, stmts_meta_other = filter_to_dub_action(stmts, stmts_meta,
+                                                             hgnc_symbol, True)
         other_assembler = HtmlAssembler(
             stmts_other,
             db_rest_url="https://db.indra.bio",
