@@ -162,10 +162,6 @@ def filter_to_dub_action(stmts, meta, dub_name, inverse=False):
     return stmts_filt, meta
 
 
-def get_pmid_count(gene_symbol: str) -> int:
-    """Get the number of PMIDs for a given DUB gene symbol."""
-    return pubmed_client.get_id_count(gene_symbol)
-
 
 def filter_stmt_type(stmts: list[Statement], types) -> list[Statement]:
     return [stmt for stmt in stmts if isinstance(stmt, types)]
@@ -281,9 +277,8 @@ def get_processed_data() -> dict[str, any]:
     ):
         # Non-grouping operations
         fraction_dependent = sdf.iloc[0]["fraction_cell_lines_dependent_on_DUB"]
-        # papers = int(sdf.iloc[0]["PubMed_papers"].replace(",", ""))
-        # We actively query for the number of papers
-        papers = get_pmid_count(dub_hgnc_symbol)
+        # We actively query for the number of PMIDs for a given DUB gene symbol
+        papers = pubmed_client.get_id_count(dub_hgnc_symbol)
 
         # FamPlex identifier for the DUB class
         dub_family = get_dub_family(dub_hgnc_symbol)
