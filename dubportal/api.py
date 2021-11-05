@@ -18,6 +18,7 @@ import pystow
 import seaborn as sns
 from indra.assemblers.html import HtmlAssembler
 from indra.databases import go_client, hgnc_client
+from indra.literature import pubmed_client
 from indra.sources.indra_db_rest import get_statements
 from indra.statements import (
     Desumoylation,
@@ -95,13 +96,27 @@ def get_go_type(identifier: str) -> Optional[str]:
 def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
     """Get INDRA statements for the given gene."""
     path = pystow.join("dubportal", "single", name=f"{hgnc_id}.json")
-    if path.is_file() and not force:
-        return stmts_from_json_file(path)
+    path_meta = pystow.join("dubportal", "single", name=f"{hgnc_id}_meta.json")
+    if path.is_file() and path_meta.is_file() and not force:
+        stmts = stmts_from_json_file(path)
+        with open(path_meta, "r") as fh:
+            meta = json.load(fh)
+            for key, data in meta.items():
+                meta[key] = {int(k): v for k, v in data.items()}
+        return stmts, meta
     path.parent.mkdir(exist_ok=True, parents=True)
     ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=30)
     stmts = ip.statements
     stmts_to_json_file(stmts, path)
-    return stmts
+    source_counts = ip.get_source_counts()
+    ev_counts = ip.get_ev_counts()
+    meta = {
+        "source_counts": {int(k): v for k, v in source_counts.items()},
+        "ev_counts": {int(k): v for k, v in ev_counts.items()},
+    }
+    with open(path_meta, "w") as fh:
+        json.dump(meta, fh, indent=1)
+    return stmts, meta
 
 
 def get_interaction_stmts(source: str, target: str, force: bool = False) -> list[Statement]:
@@ -111,18 +126,41 @@ def get_interaction_stmts(source: str, target: str, force: bool = False) -> list
         return stmts_from_json_file(path)
 
     path.parent.mkdir(exist_ok=True, parents=True)
-    ip = get_statements(subject=source, object=target, ev_limit=30)
+    ip = get_statements(agents=[source, target], ev_limit=1)
     stmts_to_json_file(ip.statements, path)
     return ip.statements
 
 
-def dubportal_preassembly(stmts: list[Statement]) -> list[Statement]:
+def filter_meta_to_stmts(stmts, meta):
+    """Filter meta data to only contain statements that are in the list of stmts."""
+    new_meta = {}
+    for k, v in meta.items():
+        new_meta[k] = {stmt.get_hash(): v[stmt.get_hash()] for stmt in stmts}
+    return new_meta
+
+
+def dubportal_preassembly(
+    stmts: list[Statement], meta: Mapping[str, Mapping[int, str]]
+) -> list[Statement]:
     stmts = filter_out_medscan(stmts)
     stmts = filter_curations(stmts)
     stmts = only_dubbing(stmts)
     stmts = first_k_evidences(stmts, k=10)
     stmts = ac.filter_grounded_only(stmts)
-    return stmts
+    meta = filter_meta_to_stmts(stmts, meta)
+    return stmts, meta
+
+
+def filter_to_dub_action(stmts, meta, dub_name, inverse=False):
+    """Filter statements to only include statements that reflect DUB action."""
+    stmts_filt = [stmt for stmt in stmts if isinstance(stmt, RemoveModification)]
+    stmts_filt = [stmt for stmt in stmts_filt if stmt.enz and stmt.enz.name == dub_name]
+    if inverse:
+        hashes = {stmt.get_hash() for stmt in stmts_filt}
+        stmts_filt = [stmt for stmt in stmts if stmt.get_hash() not in hashes]
+    meta = filter_meta_to_stmts(stmts_filt, meta)
+    return stmts_filt, meta
+
 
 
 def filter_stmt_type(stmts: list[Statement], types) -> list[Statement]:
@@ -239,7 +277,8 @@ def get_processed_data() -> dict[str, any]:
     ):
         # Non-grouping operations
         fraction_dependent = sdf.iloc[0]["fraction_cell_lines_dependent_on_DUB"]
-        papers = int(sdf.iloc[0]["PubMed_papers"].replace(",", ""))
+        # We actively query for the number of PMIDs for a given DUB gene symbol
+        papers = pubmed_client.get_id_count(dub_hgnc_symbol)
 
         # FamPlex identifier for the DUB class
         dub_family = get_dub_family(dub_hgnc_symbol)
@@ -417,9 +456,9 @@ def _main_helper(force: bool):
     # Load INDRA statements
     dub_symbol_statments = {}
     for key, value in rv.items():
-        gene_stmts = get_gene_statements(value["hgnc_id"])
-        gene_stmts = dubportal_preassembly(gene_stmts)
-        dub_symbol_statments[value["hgnc_symbol"]] = gene_stmts
+        gene_stmts, gene_stmts_meta = get_gene_statements(value["hgnc_id"])
+        gene_stmts, gene_stmts_meta = dubportal_preassembly(gene_stmts, gene_stmts_meta)
+        dub_symbol_statments[value["hgnc_symbol"]] = (gene_stmts, gene_stmts_meta)
         rv[key]["n_statements"] = len(gene_stmts)
         rv[key]["n_dub_statements"] = sum(isinstance(stmt, Deubiquitination) for stmt in gene_stmts)
         rv[key]["n_other_statements"] = len(gene_stmts) - rv[key]["n_dub_statements"]
@@ -443,15 +482,21 @@ def _main_helper(force: bool):
     for row in tqdm(rows, desc="Putting it all together"):
         hgnc_symbol = row["hgnc_symbol"]
 
-        stmts = dub_symbol_statments.get(hgnc_symbol, [])
+        stmts, stmts_meta = dub_symbol_statments.get(hgnc_symbol, [])
+        stmts_dub, stmts_meta_dub = filter_to_dub_action(stmts, stmts_meta, hgnc_symbol, False)
         dub_assembler = HtmlAssembler(
-            [stmt for stmt in stmts if isinstance(stmt, RemoveModification)],
+            stmts_dub,
             db_rest_url="https://db.indra.bio",
+            source_counts=stmts_meta_dub["source_counts"],
+            ev_counts=stmts_meta_dub["ev_counts"],
         )
         dub_stmt_html = dub_assembler.make_model(template=stmt_template, grouping_level="statement")
+        stmts_other, stmts_meta_other = filter_to_dub_action(stmts, stmts_meta, hgnc_symbol, True)
         other_assembler = HtmlAssembler(
-            [stmt for stmt in stmts if not isinstance(stmt, RemoveModification)],
+            stmts_other,
             db_rest_url="https://db.indra.bio",
+            source_counts=stmts_meta_other["source_counts"],
+            ev_counts=stmts_meta_other["ev_counts"],
         )
         other_stmt_html = other_assembler.make_model(template=stmt_template)
 
@@ -459,6 +504,8 @@ def _main_helper(force: bool):
             record=row,
             dub_stmt_html=markupsafe.Markup(dub_stmt_html),
             other_stmt_html=markupsafe.Markup(other_stmt_html),
+            source_counts=gene_stmts_meta["source_counts"],
+            ev_counts=gene_stmts_meta["ev_counts"],
         )
         directory = DOCS.joinpath(row["hgnc_symbol"])
         directory.mkdir(exist_ok=True, parents=True)
