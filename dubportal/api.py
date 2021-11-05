@@ -101,6 +101,8 @@ def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
         stmts = stmts_from_json_file(path)
         with open(path_meta, "r") as fh:
             meta = json.load(fh)
+            for key, data in meta.items():
+                meta[key] = {int(k): v for k, v in data.items()}
         return stmts, meta
     path.parent.mkdir(exist_ok=True, parents=True)
     ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=30)
