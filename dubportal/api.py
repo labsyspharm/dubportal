@@ -110,9 +110,11 @@ def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
     stmts_to_json_file(stmts, path)
     source_counts = ip.get_source_counts()
     ev_counts = ip.get_ev_counts()
-    meta = {'source_counts': {int(k): v for k, v in source_counts.items()},
-            'ev_counts': {int(k): v for k, v in ev_counts.items()}}
-    with open(path_meta, 'w') as fh:
+    meta = {
+        "source_counts": {int(k): v for k, v in source_counts.items()},
+        "ev_counts": {int(k): v for k, v in ev_counts.items()},
+    }
+    with open(path_meta, "w") as fh:
         json.dump(meta, fh, indent=1)
     return stmts, meta
 
@@ -137,7 +139,9 @@ def filter_meta_to_stmts(stmts, meta):
     return new_meta
 
 
-def dubportal_preassembly(stmts: list[Statement], meta: Mapping[str, Mapping[int, str]]) -> list[Statement]:
+def dubportal_preassembly(
+    stmts: list[Statement], meta: Mapping[str, Mapping[int, str]]
+) -> list[Statement]:
     stmts = filter_out_medscan(stmts)
     stmts = filter_curations(stmts)
     stmts = only_dubbing(stmts)
@@ -484,22 +488,20 @@ def _main_helper(force: bool):
         hgnc_symbol = row["hgnc_symbol"]
 
         stmts, stmts_meta = dub_symbol_statments.get(hgnc_symbol, [])
-        stmts_dub, stmts_meta_dub = filter_to_dub_action(stmts, stmts_meta,
-                                                         hgnc_symbol, False)
+        stmts_dub, stmts_meta_dub = filter_to_dub_action(stmts, stmts_meta, hgnc_symbol, False)
         dub_assembler = HtmlAssembler(
             stmts_dub,
             db_rest_url="https://db.indra.bio",
-            source_counts=stmts_meta_dub['source_counts'],
-            ev_counts=stmts_meta_dub['ev_counts'],
+            source_counts=stmts_meta_dub["source_counts"],
+            ev_counts=stmts_meta_dub["ev_counts"],
         )
         dub_stmt_html = dub_assembler.make_model(template=stmt_template, grouping_level="statement")
-        stmts_other, stmts_meta_other = filter_to_dub_action(stmts, stmts_meta,
-                                                             hgnc_symbol, True)
+        stmts_other, stmts_meta_other = filter_to_dub_action(stmts, stmts_meta, hgnc_symbol, True)
         other_assembler = HtmlAssembler(
             stmts_other,
             db_rest_url="https://db.indra.bio",
-            source_counts=stmts_meta_other['source_counts'],
-            ev_counts=stmts_meta_other['ev_counts'],
+            source_counts=stmts_meta_other["source_counts"],
+            ev_counts=stmts_meta_other["ev_counts"],
         )
         other_stmt_html = other_assembler.make_model(template=stmt_template)
 
@@ -507,8 +509,8 @@ def _main_helper(force: bool):
             record=row,
             dub_stmt_html=markupsafe.Markup(dub_stmt_html),
             other_stmt_html=markupsafe.Markup(other_stmt_html),
-            source_counts=gene_stmts_meta['source_counts'],
-            ev_counts=gene_stmts_meta['ev_counts'],
+            source_counts=gene_stmts_meta["source_counts"],
+            ev_counts=gene_stmts_meta["ev_counts"],
         )
         directory = DOCS.joinpath(row["hgnc_symbol"])
         directory.mkdir(exist_ok=True, parents=True)
