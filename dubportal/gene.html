@@ -82,7 +82,7 @@
                            href="https://db.indra.bio/statements/from_agents?format=html&subject={{ record.hgnc_symbol }}&type=Deubiquitination">
                             deubiquitinations</a>
                         <a class="badge badge-info"
-                           href="https://db.indra.bio/statements/from_agents?format=html&subject={{ record.hgnc_symbol }}">
+                           href="https://db.indra.bio/statements/from_agents?format=html&agent={{ record.hgnc_symbol }}">
                             all statements</a>
                     </dd>
                     <dt class="col-4">Pathway Commons</dt>
@@ -167,7 +167,7 @@
                                 {% endif %}
                                 {% if 0 < row.interactions.indra %}
                                     <a class="badge badge-primary"
-                                       href="https://db.indra.bio/statements/from_agents?format=html&subject={{ record.hgnc_symbol }}&object={{ row.hgnc_symbol }}">
+                                       href="https://db.indra.bio/statements/from_agents?format=html&agent0={{ record.hgnc_symbol }}&agent1={{ row.hgnc_symbol }}">
                                         INDRA ({{ row.interactions.indra }}) <i class="fas fa-link"></i>
                                     </a>
                                 {% endif %}
@@ -345,9 +345,10 @@
                     </table>
                 {% endif %}
             {% endif %}
-                <h2>Text Mining</h2>
+                <h2>Literature Mining</h2>
                 <p>
-                    The INDRA database was queried for text mining results related to {{ record.hgnc_symbol }}.
+                    <a href='https://www.indra.bio'>INDRA</a> was used to automatically assemble known mechanisms
+                    related to {{ record.hgnc_symbol }} from literature and knowledge bases.
                     The first section shows only DUB activity and the second shows all other results.
                 </p>
                 <h3>Deubiquitinase Activity</h3>
