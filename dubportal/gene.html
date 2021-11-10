@@ -238,16 +238,16 @@
                     {% for row in record.depmap.enrichment %}
                         <tr>
                             <td>
-                                <a href="https://bioregistry.io/{{ row.identifier }}"
+                                <a href="https://bioregistry.io/go:{{ row.identifier }}"
                                    data-toggle="tooltip" data-html="true"
-                                   title="{{ row.identifier }}<br>Click for external information from the Gene Ontology.">
-                                    {{ row.identifier }}
+                                   title="GO:{{ row.identifier }}<br>Click for external information from the Gene Ontology.">
+                                    GO:{{ row.identifier }}
                                 </a>
                             </td>
                             <td>
                                 <a data-toggle="tooltip" data-html="true"
-                                   title="{{ row.identifier }}<br>Click for external information from the Gene Ontology."
-                                   href="https://bioregistry.io/{{ row.identifier }}">
+                                   title="GO:{{ row.identifier }}<br>Click for external information from the Gene Ontology."
+                                   href="https://bioregistry.io/go:{{ row.identifier }}">
                                     {{ row.name }}
                                 </a>
                             </td>
