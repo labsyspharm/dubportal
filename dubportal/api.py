@@ -512,6 +512,7 @@ def _main_helper(force: bool):
     unique_famplex = _d(sorted(FAMPLEX_DUBS - set(rv)))
 
     about_html = about_template.render(
+        date=all_data["metadata"]["date"],
         unique_famplex=unique_famplex,
         unique_dubportal=unique_dubportal,
         versions=all_data["versions"],

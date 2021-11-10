@@ -12,23 +12,171 @@
 {% endblock %}
 
 {% block content %}
-    <h1 align="center">About</h1>
-    <p>This page is about the comparison between DUBs listed here and external resources, like FamPlex.</p>
-    <h2>Comparison to External Resources</h2>
-    <dl class="row">
-        <dt class="col-4">Unique to the DUB Portal</dt>
-        <dd class="col-8">
-            {% for row in unique_dubportal %}
-                <a data-toggle="tooltip" data-html="true" title="{{ row.name }}" class="badge badge-info"
-                   href="https://bioregistry.io/hgnc:{{ row.identifier }}">{{ row.symbol }}</a>
-            {% endfor %}
+    <p>
+        This website accompanies the manuscript:
+    </p>
+    <p>
+        <a href="https://www.biorxiv.org/content/early/2021/08/07/2021.08.06.455458">Integrating multi-omics data
+            reveals function and therapeutic potential
+            of deubiquitinating enzymes</a>
+        <br/>(2021) Laura M Doherty, Caitlin E Mills, Sarah A Boswell, Xiaoxi Liu, Charles Tapley Hoyt, Benjamin M
+        Gyori, Sara J Buhrlage, and Peter Karl Sorger.
+        <br/><i>bioRxiv</i>, 2021.08.06.455458.
+    </p>
+    <p>
+        Doherty <i>et al.</i> analyze deubiquitinating enzymes (DUBs) for relationships with other genes in the <a
+            href="https://depmap.org">Cancer Dependency Map</a>, <a href="https://clue.io/cmap">Connectivity Map</a>, <a
+            href="https://portals.broadinstitute.org/ccle">Cancer Cell
+        Line Encyclopedia</a>, and protein-protein interaction databases: <a href="https://thebiogrid.org/">BioGRID</a>,
+        <a href="https://www.pathwaycommons.org/">Pathway Commons</a>,
+        <a href="https://reactome.org/">Reactome</a>, <a href="https://www.ebi.ac.uk/intact/">IntAct</a>, and NURSA. The
+        DUB Portal presents these results in an interactive form, extends them
+        with additional literature context, and links them directly to outside resources.
+    </p>
+    <h2>Landing page</h2>
+    <p>
+        The landing page at <a
+            href="https://labsyspharm.github.io/dubportal/">https://labsyspharm.github.io/dubportal/</a> shows a table
+        of 99 DUBs analyzed in Doherty <i>et al.</i> with some key properties and metrics associated with them. The
+        column of the table can be interpreted as follows:
+    </p>
+    <dl>
+        <dt>DUB</dt>
+        <dd>
+            The official <a href="https://www.genenames.org/">HUGO Gene Nomenclatur Consortium (HGNC)</a> gene symbol
+            of the DUB gene
         </dd>
-        <dt class="col-4">Unique to FamPlex</dt>
-        <dd class="col-8">
-            {% for row in unique_famplex %}
-                <a data-toggle="tooltip" data-html="true" title="{{ row.name }}" class="badge badge-info"
-                   href="https://bioregistry.io/hgnc:{{ row.identifier }}">{{ row.symbol }}</a>
-            {% endfor %}
+        <dt>DUB name</dt>
+        <dd>
+            The gene name associated with the DUB as provided by HGNC
+        </dd>
+        <dt>DUB family</dt>
+        <dd>
+            The family to which a given DUB belongs in the <a href="https://github.com/sorgerlab/famplex">FamPlex
+            ontology</a>
+        </dd>
+        <dt># Papers</dt>
+        <dd>
+            The number of publications about the DUB indexed in <a href="https://pubmed.ncbi.nlm.nih.gov/">PubMed</a>,
+            as determined by a search using the <a href="https://www.ncbi.nlm.nih.gov/books/NBK25499/">PubMed API</a>.
+            The number in this column also links to PubMed where the set of papers can be browsed. (Note: the count
+            displayed on the DUB Portal and the PubMed website can differ depending on the actual state of the PubMed
+            web service)
+        </dd>
+        <dt># DUB Stmts</dt>
+        <dd>
+            The number of distinct statements assembled by INDRA (indra.bio) by text mining the literature
+            and processing pathway databases in which the given DUB is reported to deubiquitinate a target.
+        </dd>
+        <dt># Other Stmts</dt>
+        <dd>
+            The number number of distinct statements assembled by INDRA (indra.bio) by text mining the literature and
+            processing pathway databases in which the given DUB appears in any role, except for statements counted under
+            # DUB Stmts.
+        </dd>
+        <dt>Dependent Cell Lines</dt>
+        <dd>
+            The percentage of cell lines that show dependency for the given DUB per the Cancer Dependency Map.
+        </dd>
+        <dt># Sig. ORA Gene Sets (DepMap)</dt>
+        <dd>
+            The number of gene sets considered significant (<i>p < 0.05</i>) by over-representation analysis with
+            multiple hypothesis testing correction using genes depending on a given DUB as the query set.
+        </dd>
+        <dt>DGEA</dt>
+        <dd>
+            How many genes were significantly differentially expressed due to knockout of the given DUB
+        </dd>
+        <dt># Sig. GSEA Gene Sets (DGEA)</dt>
+        <dd>
+            The number of gene sets considered significant (<i>p < 0.05</i>) by GSEA analysis with multiple hypothesis
+            testing correction using genes differentially expressed by knocking out the given DUB as the query set
         </dd>
     </dl>
+    <p>
+        By clicking on the DUB’s gene symbol or name, a page is displayed with detailed information specific to the
+        given DUB.
+    </p>
+    <h2>DUB-specific pages</h2>
+    <p>
+        In the header, the DUB’s official gene symbol and name are listed along with links to a landing page for the
+        given DUB and its orthologs across outside resources including HGNC, Entrez Gene, UniProt, MGI, and RGD. Links
+        to Pathway Commons as well as the INDRA Database are also shown allowing browsing interactions associated with
+        the DUB.
+    </p>
+    <p>
+        The <b>DepMap Analysis</b> section summarizes the method used in the analysis in Doherty <i>et al.</i> and then
+        shows the table of seven top-correlated genes for the given DUB. The table provides the DepMap Correlation for
+        each gene and Evidence from multiple sources that provide support for the given correlation in the form of prior
+        knowledge about protein interactions. The evidence column contains badges for each interaction source (e.g.,
+        BioGRID, INDRA), in some cases also linking to a relevant page in the given resource.
+    </p>
+    <p>
+        The <b>Dependency GO Term Enrichment</b> section shows GSEA analysis results on the genes
+        correlated using terms from the Gene Ontology and gene sets derived from the Gene Ontology
+        Annotations database via MSigDB. Results below a <i>p</i>-value of 0.05 are shown in a table. The table contains
+        the following columns:
+    </p>
+    <dl>
+        <dt>GO identifier</dt>
+        <dd>The identifier for the enriched GO term</dd>
+        <dt>GO Name</dt>
+        <dd>The standard name for the enriched GO term</dd>
+        <dt>GO Type</dt>
+        <dd>The type of GO term (Biological Process, Cellular Component or Molecular Function)</dd>
+        <dt><i>p</i>-value, adjusted <i>p</i>-value, and <i>q</i>-value</dt>
+        <dd>The raw and adjusted p-value and the q-value associated with the enrichment.</dd>
+    </dl>
+    <p>
+        The <b>Literature Mining</b> section extends on Doherty <i>et al.</i> to provide additional context on a given
+        DUB, assembled
+        from the scientific literature and pathway databases using the INDRA knowledge assembly system. Statements
+        specific to the given DUB's deubiquitinase activity are shown in the first list, and all other Statements
+        involving the DUB are shown in the second list. Both statement lists consist of a list of headings with each
+        heading representing an interaction or regulation relationships such as “ATXN3 deubiquitinates STUB1”. Clicking
+        on each heading opens up a list of specific evidence sentences from the literature supporting that statement
+        with the names of entities highlighted and with links to the source publication. Statements can also be curated
+        for correctness. To do this, click on the arrow to the left of the name of the source of the evidence to link
+        out to the INDRA Database website where curations can be submitted as described in <a
+            href="https://indra.readthedocs.io/en/latest/tutorials/html_curation.html#curating-a-statement">this
+        tutorial</a>. Statements curated as incorrect are excluded when the DUB Portal is rebuilt.
+    </p>
+    <h2>Maintenance</h2>
+    <p>
+        The DUB Portal is built and kept up to date automatically on a weekly basis using Github Actions workflows
+        running Python code
+        available at <a href="https://github.com/labsyspharm/dubportal">https://github.com/labsyspharm/dubportal</a>.
+        The number of publications as well as the number and list of INDRA Statements for each DUB are updated with each
+        build to pull the latest available content.
+    </p>
+    <h2>Versioning</h2>
+    <dl>
+        <dt>HGNC*</dt>
+        <dd>{{ date }}</dd>
+        <dt>INDRA*</dt>
+        <dd>{{ date }}</dd>
+        <dt>PubMed*</dt>
+        <dd>{{ date }}</dd>
+        <!--
+        TODO @laura
+        MSigDB
+        NURSA
+        BioGrid
+        IntAct
+        -->
+        {% for key, value in versions|dictsort %}
+            <dt>{{ key }}*</dt>
+            <dd>{{ value }}</dd>
+        {% endfor %}
+    </dl>
+    <p>Resources with an asterisk are automatically updated.</p>
+    <h2>Contact</h2>
+    <p>
+        The DUB Portal was built by the INDRA team (<a href="https://indralab.github.io">indralab.github.io</a>), part
+        of the Laboratory of Systems Pharmacology,
+        Harvard Medical School. Please contact <a href="mailto:indra.sysbio@gmail.com">indra.sysbio@gmail.com</a> or
+        submit an issue at
+        <a href="https://github.com/labsyspharm/dubportal/issues">https://github.com/labsyspharm/dubportal</a> with
+        questions or comments.
+    </p>
 {% endblock %}
