@@ -54,13 +54,43 @@
             <th>DUB</th>
             <th>DUB Name</th>
             <th>DUB Family</th>
-            <th style="text-align: right"># Papers</th>
-            <th style="text-align: right"># DUB Stmts.</th>
-            <th style="text-align: right"># Other Stmts.</th>
+            <th style="text-align: right">
+                <span data-toggle="tooltip" data-html="true"
+                      title="Shows the number of papers returned by a query to PubMed on {{ date }}">
+                    # Papers
+                </span>
+            </th>
+            <th style="text-align: right">
+                <span data-toggle="tooltip" data-html="true"
+                      title="Shows the number of statements about the DUB's activity retrieved from the INDRA Database on {{ date }}">
+                    # DUB Stmts.
+                </span>
+            </th>
+            <th style="text-align: right">
+                <span data-toggle="tooltip" data-html="true"
+                      title="Shows the number of statements about other aspects of the DUB (besides its activity) retrieved from the INDRA Database on {{ date }}">
+                    # Other Stmts.
+                </span>
+            </th>
             <th style="text-align: right">Dependent Cell Lines</th>
-            <th># Sig. ORA Gene Sets (DepMap)</th>
-            <th>DGEA</th>
-            <th># Sig. GSEA Gene Sets (DGEA)</th>
+            <th>
+                <span data-toggle="tooltip" data-html="true"
+                      title="Shows the number of gene sets considered significant by over-representation analysis with multiple hypothesis testing correction using genes depending on a given DUB as the query set.">
+                    # Sig. ORA Gene Sets (DepMap)
+                </span>
+            </th>
+            <th>
+                <span data-toggle="tooltip" data-html="true"
+                      title="Shows how many genes were significantly differentially expressed due to knockout of the given DUB.">
+                DGEA
+                </span>
+            </th>
+            <th>
+                <span data-toggle="tooltip" data-html="true"
+                      title="Shows the number of gene sets considered significant by GSEA analysis with multiple hypothesis testing correction using genes differentially expressed by knocking out the given DUB as the query set.">
+                    # Sig. GSEA Gene Sets (DGEA)
+                </span>
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -91,10 +121,10 @@
                 </td>
                 <td style="text-align: right">
                     <a data-toggle="tooltip" data-html="true"
-                    title="Click to see publications for {{ row.hgnc_symbol }} on PubMed."
-                    href="https://pubmed.ncbi.nlm.nih.gov/?term={{ row.hgnc_symbol }}[Text Word]">
-                    {{ row.papers }}
-                 </a>
+                       title="Click to see publications for {{ row.hgnc_symbol }} on PubMed."
+                       href="https://pubmed.ncbi.nlm.nih.gov/?term={{ row.hgnc_symbol }}[Text Word]">
+                        {{ row.papers }}
+                    </a>
                 </td>
                 <td style="text-align: right">{{ row.n_dub_statements }}</td>
                 <td style="text-align: right">{{ row.n_other_statements }}</td>

@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 import os
@@ -73,14 +74,18 @@ FAMPLEX_DUBS = {
     identifier for prefix, identifier in famplex.descendant_terms("FPLX", DUB) if prefix == "HGNC"
 }
 
+REACTOME_VERSION = bioversions.get_version("reactome")
+
 
 def _get_hgnc_names() -> dict[str, str]:
     """Get a dictionary from HGNC gene identifiers to their full names."""
+    print("Loading HGNC")
     df = pd.read_csv(
         "http://ftp.ebi.ac.uk/pub/databases/genenames/new/tsv/hgnc_complete_set.txt",
         sep="\t",
         usecols=[0, 2],
     )
+    print("Done loading HGNC")
     df["hgnc_id"] = df["hgnc_id"].map(lambda s: s.removeprefix("HGNC:"))
     return dict(df.values)
 
@@ -255,8 +260,8 @@ def shared_reactome(hgnc_id_1: str, hgnc_id_2: str) -> set[str]:
 @lru_cache(maxsize=1)
 def get_protein_to_pathways() -> Mapping[str, set[str]]:
     """Get protein to pathways from Reactome."""
-    version = bioversions.get_version("reactome")
-    url = f"https://reactome.org/download/{version}/UniProt2Reactome_All_Levels.txt"
+
+    url = f"https://reactome.org/download/{REACTOME_VERSION}/UniProt2Reactome_All_Levels.txt"
     rv = defaultdict(set)
     df = pd.read_csv(url, sep="\t", header=None, usecols=[0, 1], dtype=str)
     for uniprot_id, reactome_id in df.values:
@@ -279,7 +284,7 @@ def get_processed_data() -> dict[str, any]:
     df["dub_hgnc_symbol"] = df["dub_hgnc_id"].map(hgnc_client.get_hgnc_name)
     del df["DUB"]
 
-    rv = {}
+    rv_inner = {}
 
     df["DepMap_coDependency"] = df["DepMap_coDependency"].map(lambda s: GENE_FIXES.get(s, s))
     df["dep_gene_id"] = df["DepMap_coDependency"].map(hgnc_client.get_current_hgnc_id)
@@ -295,7 +300,11 @@ def get_processed_data() -> dict[str, any]:
         # Non-grouping operations
         fraction_dependent = sdf.iloc[0]["fraction_cell_lines_dependent_on_DUB"]
         # We actively query for the number of PMIDs for a given DUB gene symbol
-        papers = pubmed_client.get_id_count(dub_hgnc_symbol)
+        try:
+            papers = pubmed_client.get_id_count(dub_hgnc_symbol)
+        except ValueError:
+            it.write(f"pubmed lookup failed for {dub_hgnc_symbol}")
+            papers = -1
 
         # FamPlex identifier for the DUB class
         dub_family = get_dub_family(dub_hgnc_symbol)
@@ -372,7 +381,7 @@ def get_processed_data() -> dict[str, any]:
             for record in symbol_to_depmap_enrichment.get(dub_hgnc_symbol, [])
         ]
 
-        rv[dub_hgnc_symbol] = dict(
+        rv_inner[dub_hgnc_symbol] = dict(
             hgnc_id=dub_hgnc_id,
             hgnc_symbol=dub_hgnc_symbol,
             hgnc_name=_hgnc_id_to_name.get(dub_hgnc_id),
@@ -396,7 +405,15 @@ def get_processed_data() -> dict[str, any]:
                 enrichment=symbol_to_ko_gsea.get(dub_hgnc_symbol),
             ),
         )
-    return rv
+    return {
+        "data": rv_inner,
+        "metadata": {
+            "date": datetime.datetime.now().strftime("%Y-%m-%d"),
+        },
+        "versions": {
+            "reactome": REACTOME_VERSION,
+        },
+    }
 
 
 def cdict(**kwargs):
@@ -413,7 +430,7 @@ def get_rv(force: bool):
         json.dump(rv, file, indent=2, sort_keys=True)
 
     # Make a venn diagram describing the overlaps
-    venn2([set(rv), FAMPLEX_DUBS], ["DUB Portal", "FamPlex"])
+    venn2([set(rv["data"]), FAMPLEX_DUBS], ["DUB Portal", "FamPlex"])
     plt.tight_layout()
     plt.savefig(DOCS.joinpath("overlap.svg"))
 
@@ -443,7 +460,8 @@ def main(force: bool):
 
 
 def _main_helper(force: bool):
-    rv = get_rv(force=force)
+    all_data = get_rv(force=force)
+    rv = all_data["data"]
 
     fraction_direct_explained = {
         symbol: (
@@ -486,7 +504,7 @@ def _main_helper(force: bool):
         rv[key]["n_other_statements"] = len(gene_stmts) - rv[key]["n_dub_statements"]
 
     rows = sorted(rv.values(), key=itemgetter("hgnc_symbol"))
-    index_html = index_template.render(rows=rows)
+    index_html = index_template.render(rows=rows, date=all_data["metadata"]["date"])
     with open(os.path.join(DOCS, "index.html"), "w") as file:
         print(index_html, file=file)
 
@@ -494,7 +512,9 @@ def _main_helper(force: bool):
     unique_famplex = _d(sorted(FAMPLEX_DUBS - set(rv)))
 
     about_html = about_template.render(
-        unique_famplex=unique_famplex, unique_dubportal=unique_dubportal
+        unique_famplex=unique_famplex,
+        unique_dubportal=unique_dubportal,
+        versions=all_data["versions"],
     )
     about_dir = DOCS.joinpath("about")
     about_dir.mkdir(exist_ok=True, parents=True)
@@ -528,6 +548,7 @@ def _main_helper(force: bool):
             record=row,
             dub_stmt_html=markupsafe.Markup(dub_stmt_html),
             other_stmt_html=markupsafe.Markup(other_stmt_html),
+            # FIXME @bgyori this was only defined in a loop
             source_counts=gene_stmts_meta["source_counts"],
             ev_counts=gene_stmts_meta["ev_counts"],
         )
