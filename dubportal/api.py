@@ -5,7 +5,7 @@ import pathlib
 from collections import defaultdict
 from functools import lru_cache
 from operator import itemgetter
-from typing import Mapping, Optional
+from typing import Iterable, Mapping, Optional
 
 import bioversions
 import click
@@ -13,7 +13,6 @@ import famplex
 import markupsafe
 import matplotlib.pyplot as plt
 import pandas as pd
-import pyobo
 import pystow
 import seaborn as sns
 from indra.assemblers.html import HtmlAssembler
@@ -38,6 +37,10 @@ from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
 logger = logging.getLogger(__name__)
+
+# Turn off logging from INDRA API - we use tqdm to better log these.
+logging.getLogger("indra_db_rest.query_processor").setLevel(logging.WARNING)
+logging.getLogger("indra_db_rest.request_logs").setLevel(logging.WARNING)
 
 HERE = pathlib.Path(__file__).parent.resolve()
 DOCS = HERE.parent.joinpath("docs")
@@ -69,6 +72,20 @@ GENE_FIXES = {
 FAMPLEX_DUBS = {
     identifier for prefix, identifier in famplex.descendant_terms("FPLX", DUB) if prefix == "HGNC"
 }
+
+
+def _get_hgnc_names() -> dict[str, str]:
+    """Get a dictionary from HGNC gene identifiers to their full names."""
+    df = pd.read_csv(
+        "http://ftp.ebi.ac.uk/pub/databases/genenames/new/tsv/hgnc_complete_set.txt",
+        sep="\t",
+        usecols=[0, 2],
+    )
+    df["hgnc_id"] = df["hgnc_id"].map(lambda s: s.removeprefix("HGNC:"))
+    return dict(df.values)
+
+
+_hgnc_id_to_name = _get_hgnc_names()
 
 
 def get_dub_family(gene_symbol: str) -> Optional[str]:
@@ -162,7 +179,6 @@ def filter_to_dub_action(stmts, meta, dub_name, inverse=False):
     return stmts_filt, meta
 
 
-
 def filter_stmt_type(stmts: list[Statement], types) -> list[Statement]:
     return [stmt for stmt in stmts if isinstance(stmt, types)]
 
@@ -238,12 +254,11 @@ def shared_reactome(hgnc_id_1: str, hgnc_id_2: str) -> set[str]:
 
 @lru_cache(maxsize=1)
 def get_protein_to_pathways() -> Mapping[str, set[str]]:
-    """Get protein to pathways from reactome."""
+    """Get protein to pathways from Reactome."""
     version = bioversions.get_version("reactome")
     url = f"https://reactome.org/download/{version}/UniProt2Reactome_All_Levels.txt"
     rv = defaultdict(set)
     df = pd.read_csv(url, sep="\t", header=None, usecols=[0, 1], dtype=str)
-    print(df.head())
     for uniprot_id, reactome_id in df.values:
         rv[uniprot_id].add(reactome_id)
     return dict(rv)
@@ -270,11 +285,13 @@ def get_processed_data() -> dict[str, any]:
     df["dep_gene_id"] = df["DepMap_coDependency"].map(hgnc_client.get_current_hgnc_id)
     df["dep_gene_symbol"] = df["dep_gene_id"].map(hgnc_client.get_hgnc_name, na_action="ignore")
 
-    for (dub_hgnc_id, dub_hgnc_symbol), sdf in tqdm(
+    it = tqdm(
         df.groupby(["dub_hgnc_id", "dub_hgnc_symbol"]),
         unit="DUB",
         desc="Processing database",
-    ):
+    )
+    for (dub_hgnc_id, dub_hgnc_symbol), sdf in it:
+        it.set_postfix({"hgnc": dub_hgnc_id, "symbol": dub_hgnc_symbol})
         # Non-grouping operations
         fraction_dependent = sdf.iloc[0]["fraction_cell_lines_dependent_on_DUB"]
         # We actively query for the number of PMIDs for a given DUB gene symbol
@@ -288,17 +305,20 @@ def get_processed_data() -> dict[str, any]:
 
         # Get gene dependencies for this DUB
         depmap_gene_records = []
-        for _, row in tqdm(sdf.iterrows(), unit="dep", leave=False, desc="Mapping dependencies"):
+        inner_it = tqdm(sdf.iterrows(), unit="dep", leave=False, desc="Mapping dependencies")
+        for _, row in inner_it:
             depmap_gene_id = row["dep_gene_id"]
             if pd.isna(depmap_gene_id) or pd.isnull(depmap_gene_id) or not depmap_gene_id:
                 continue
             depmap_gene_symbol = row["dep_gene_symbol"]
+            inner_it.set_postfix(dict(hgnc=depmap_gene_id, symbol=depmap_gene_symbol))
+
             stmts = get_interaction_stmts(dub_hgnc_symbol, depmap_gene_symbol)
 
             depmap_result = dict(
                 hgnc_id=depmap_gene_id,
                 hgnc_symbol=depmap_gene_symbol,
-                hgnc_name=pyobo.get_definition("hgnc", depmap_gene_id),
+                hgnc_name=_hgnc_id_to_name.get(depmap_gene_id),
                 correlation=row["DepMap_correlation"],
                 interactions=dict(
                     biogrid=row["Biogrid"] == "yes",
@@ -355,8 +375,7 @@ def get_processed_data() -> dict[str, any]:
         rv[dub_hgnc_symbol] = dict(
             hgnc_id=dub_hgnc_id,
             hgnc_symbol=dub_hgnc_symbol,
-            hgnc_name=pyobo.get_definition("hgnc", dub_hgnc_id),
-            # description=pyobo.get_definition('ncbigene', entrez_id),
+            hgnc_name=_hgnc_id_to_name.get(dub_hgnc_id),
             dub_family=dub_family,
             xrefs=dict(
                 uniprot_id=hgnc_client.get_uniprot_id(dub_hgnc_id),
@@ -401,15 +420,16 @@ def get_rv(force: bool):
     return rv
 
 
-def _d(symbols):
+def _d(hgnc_symbols: Iterable[str]) -> list[dict[str, str]]:
     return [
         dict(
-            identifier=identifier,
-            symbol=symbol,
-            name=pyobo.get_definition("hgnc", identifier),
+            identifier=hgnc_id,
+            symbol=hgnc_symbol,
+            name=_hgnc_id_to_name[hgnc_id],
         )
-        for identifier, symbol in (
-            (hgnc_client.get_current_hgnc_id(symbol), symbol) for symbol in symbols
+        for hgnc_id, hgnc_symbol in (
+            (hgnc_client.get_current_hgnc_id(hgnc_symbol), hgnc_symbol)
+            for hgnc_symbol in hgnc_symbols
         )
     ]
 
@@ -455,7 +475,9 @@ def _main_helper(force: bool):
 
     # Load INDRA statements
     dub_symbol_statments = {}
-    for key, value in rv.items():
+    it = tqdm(rv.items(), desc="Get INDRA statements", unit="DUB")
+    for key, value in it:
+        it.set_postfix({"hgnc_id": value["hgnc_id"], "symbol": value["hgnc_symbol"]})
         gene_stmts, gene_stmts_meta = get_gene_statements(value["hgnc_id"])
         gene_stmts, gene_stmts_meta = dubportal_preassembly(gene_stmts, gene_stmts_meta)
         dub_symbol_statments[value["hgnc_symbol"]] = (gene_stmts, gene_stmts_meta)
@@ -479,8 +501,10 @@ def _main_helper(force: bool):
     with about_dir.joinpath("index.html").open("w") as file:
         print(about_html, file=file)
 
-    for row in tqdm(rows, desc="Putting it all together"):
+    it = tqdm(rows, desc="Putting it all together")
+    for row in it:
         hgnc_symbol = row["hgnc_symbol"]
+        it.set_postfix(dict(symbol=hgnc_symbol))
 
         stmts, stmts_meta = dub_symbol_statments.get(hgnc_symbol, [])
         stmts_dub, stmts_meta_dub = filter_to_dub_action(stmts, stmts_meta, hgnc_symbol, False)
