@@ -63,12 +63,19 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="/dubportal">Home</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/dubportal/about/">About</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav my-2 my-lg-0">
+            <li class="nav-item active">
+                <span class="text-muted">
+                    Last Updated 2021-11-10
+                </span>
             </li>
         </ul>
     </div>
@@ -94,7 +101,7 @@
                         <a class="badge badge-info"
                            href="https://bioregistry.io/hgnc:35475">hgnc:35475</a>
                         <a class="badge badge-info"
-                           href="https://bioregistry.io/ncbigene:646951">ncbigene:646951</a>
+                           href="https://bioregistry.io/ncbigene:646951">NCBIGene:646951</a>
                         <a class="badge badge-info"
                            href="https://bioregistry.io/uniprot:A8MYZ0">uniprot:A8MYZ0</a>
                     </dd>
@@ -103,7 +110,8 @@
                         <dd class="col-8">
                             
                             
-                                <a class="badge badge-info"
+                                <a class="badge badge-info" data-toggle="tooltip" data-html="true"
+                                   title="Rat Genome Database (RGD) is a model organism database listing rat genes that are homologous to human genes."
                                    href="https://bioregistry.io/rgd:11362385">rgd:11362385</a>
                             
                         </dd>
@@ -124,7 +132,7 @@
                             Search for MINDY4B</a>
                     </dd>
                     <dt class="col-4">Number of Papers</dt>
-                    <dd class="col-8">0</dd>
+                    <dd class="col-8">0 retrieved on 2021-11-10</dd>
                 </dl>
                 <h2>DepMap Analysis</h2>
                 <p>
@@ -175,8 +183,8 @@
                 <h3>Dependency GO Term Enrichment</h3>
                 <p>
                     Gene set enrichment analysis was done on the genes correlated with MINDY4Busing the
-                    terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the<a
-                        href="http://geneontology.org/docs/go-annotations/">Gene Ontology Annotations database</a> via
+                    terms from <a href="http://geneontology.org/">Gene Ontology</a> and gene sets derived from the
+                    <a href="http://geneontology.org/docs/go-annotations/">Gene Ontology Annotations database</a> via
                     <a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp">MSigDB</a>.
                 </p>
                 <p>
@@ -316,12 +324,12 @@
         
             
                 .source-psp {
-                    background-color: #bebada;
+                    background-color: #bc80bd;
                     color: black;
                 }
             
                 .source-cbn {
-                    background-color: #fdb462;
+                    background-color: #d9d9d9;
                     color: black;
                 }
             
@@ -331,47 +339,42 @@
                 }
             
                 .source-bel_lc {
-                    background-color: #80b1d3;
-                    color: black;
-                }
-            
-                .source-signor {
-                    background-color: #bc80bd;
-                    color: black;
-                }
-            
-                .source-biogrid {
-                    background-color: #fccde5;
-                    color: black;
-                }
-            
-                .source-lincs_drug {
                     background-color: #fb8072;
                     color: black;
                 }
             
-                .source-tas {
-                    background-color: #d9d9d9;
+                .source-signor {
+                    background-color: #bebada;
                     color: black;
                 }
             
-                .source-hprd {
+                .source-biogrid {
                     background-color: #8dd3c7;
                     color: black;
                 }
             
+                .source-tas {
+                    background-color: #e0e03d;
+                    color: black;
+                }
+            
+                .source-hprd {
+                    background-color: #80b1d3;
+                    color: black;
+                }
+            
                 .source-trrust {
-                    background-color: #ffed6f;
+                    background-color: #fccde5;
                     color: black;
                 }
             
                 .source-ctd {
-                    background-color: #ccebc5;
+                    background-color: #ffed6f;
                     color: black;
                 }
             
                 .source-vhn {
-                    background-color: #e0e03d;
+                    background-color: #ccebc5;
                     color: black;
                 }
             
@@ -381,54 +384,59 @@
                 }
             
                 .source-drugbank {
-                    background-color: #acfcfc;
+                    background-color: #fdb462;
                     color: black;
                 }
             
                 .source-omnipath {
-                    background-color: #dd99ff;
+                    background-color: #acfcfc;
                     color: black;
                 }
             
                 .source-conib {
-                    background-color: #00d4a6;
+                    background-color: #999999;
                     color: black;
                 }
             
                 .source-crog {
-                    background-color: #bebada;
+                    background-color: #00d4a6;
                     color: black;
                 }
             
                 .source-dgi {
-                    background-color: #fdb462;
+                    background-color: #00e8ff;
+                    color: black;
+                }
+            
+                .source-minerva {
+                    background-color: #dd99ff;
+                    color: black;
+                }
+            
+                .source-creeds {
+                    background-color: #f68ee1;
                     color: black;
                 }
             
         
             
-                .source-rlimsp {
-                    background-color: #8dd3c7;
-                    color: white;
-                }
-            
-                .source-isi {
+                .source-geneways {
                     background-color: #d9d9d9;
                     color: white;
                 }
             
                 .source-tees {
+                    background-color: #8dd3c7;
+                    color: white;
+                }
+            
+                .source-gnbr {
+                    background-color: #ffed6f;
+                    color: white;
+                }
+            
+                .source-isi {
                     background-color: #fb8072;
-                    color: white;
-                }
-            
-                .source-geneways {
-                    background-color: #fccde5;
-                    color: white;
-                }
-            
-                .source-eidos {
-                    background-color: #bc80bd;
                     color: white;
                 }
             
@@ -437,8 +445,18 @@
                     color: white;
                 }
             
+                .source-rlimsp {
+                    background-color: #fccde5;
+                    color: white;
+                }
+            
                 .source-medscan {
                     background-color: #b3de69;
+                    color: white;
+                }
+            
+                .source-eidos {
+                    background-color: #bc80bd;
                     color: white;
                 }
             
@@ -542,7 +560,7 @@
 
         <div class="row">
         <div class="col">
-        <div class="group-shown" id="tl-2698dccc-3e59-4198-8c60-7d1b3e1ffcc5_group">
+        <div class="group-shown" id="tl-b0e0c37e-4da6-4e7b-9e85-13c7640ae2cc_group">
 
     
 
@@ -686,12 +704,12 @@
         
             
                 .source-psp {
-                    background-color: #bebada;
+                    background-color: #bc80bd;
                     color: black;
                 }
             
                 .source-cbn {
-                    background-color: #fdb462;
+                    background-color: #d9d9d9;
                     color: black;
                 }
             
@@ -701,47 +719,42 @@
                 }
             
                 .source-bel_lc {
-                    background-color: #80b1d3;
-                    color: black;
-                }
-            
-                .source-signor {
-                    background-color: #bc80bd;
-                    color: black;
-                }
-            
-                .source-biogrid {
-                    background-color: #fccde5;
-                    color: black;
-                }
-            
-                .source-lincs_drug {
                     background-color: #fb8072;
                     color: black;
                 }
             
-                .source-tas {
-                    background-color: #d9d9d9;
+                .source-signor {
+                    background-color: #bebada;
                     color: black;
                 }
             
-                .source-hprd {
+                .source-biogrid {
                     background-color: #8dd3c7;
                     color: black;
                 }
             
+                .source-tas {
+                    background-color: #e0e03d;
+                    color: black;
+                }
+            
+                .source-hprd {
+                    background-color: #80b1d3;
+                    color: black;
+                }
+            
                 .source-trrust {
-                    background-color: #ffed6f;
+                    background-color: #fccde5;
                     color: black;
                 }
             
                 .source-ctd {
-                    background-color: #ccebc5;
+                    background-color: #ffed6f;
                     color: black;
                 }
             
                 .source-vhn {
-                    background-color: #e0e03d;
+                    background-color: #ccebc5;
                     color: black;
                 }
             
@@ -751,54 +764,59 @@
                 }
             
                 .source-drugbank {
-                    background-color: #acfcfc;
+                    background-color: #fdb462;
                     color: black;
                 }
             
                 .source-omnipath {
-                    background-color: #dd99ff;
+                    background-color: #acfcfc;
                     color: black;
                 }
             
                 .source-conib {
-                    background-color: #00d4a6;
+                    background-color: #999999;
                     color: black;
                 }
             
                 .source-crog {
-                    background-color: #bebada;
+                    background-color: #00d4a6;
                     color: black;
                 }
             
                 .source-dgi {
-                    background-color: #fdb462;
+                    background-color: #00e8ff;
+                    color: black;
+                }
+            
+                .source-minerva {
+                    background-color: #dd99ff;
+                    color: black;
+                }
+            
+                .source-creeds {
+                    background-color: #f68ee1;
                     color: black;
                 }
             
         
             
-                .source-rlimsp {
-                    background-color: #8dd3c7;
-                    color: white;
-                }
-            
-                .source-isi {
+                .source-geneways {
                     background-color: #d9d9d9;
                     color: white;
                 }
             
                 .source-tees {
+                    background-color: #8dd3c7;
+                    color: white;
+                }
+            
+                .source-gnbr {
+                    background-color: #ffed6f;
+                    color: white;
+                }
+            
+                .source-isi {
                     background-color: #fb8072;
-                    color: white;
-                }
-            
-                .source-geneways {
-                    background-color: #fccde5;
-                    color: white;
-                }
-            
-                .source-eidos {
-                    background-color: #bc80bd;
                     color: white;
                 }
             
@@ -807,8 +825,18 @@
                     color: white;
                 }
             
+                .source-rlimsp {
+                    background-color: #fccde5;
+                    color: white;
+                }
+            
                 .source-medscan {
                     background-color: #b3de69;
+                    color: white;
+                }
+            
+                .source-eidos {
+                    background-color: #bc80bd;
                     color: white;
                 }
             
