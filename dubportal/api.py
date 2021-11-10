@@ -546,6 +546,7 @@ def _main_helper(force: bool):
 
         gene_html = gene_template.render(
             record=row,
+            date=all_data["metadata"]["date"],
             dub_stmt_html=markupsafe.Markup(dub_stmt_html),
             other_stmt_html=markupsafe.Markup(other_stmt_html),
             # FIXME @bgyori this was only defined in a loop

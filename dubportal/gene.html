@@ -59,7 +59,7 @@
                         <a class="badge badge-info"
                            href="https://bioregistry.io/hgnc:{{ record.hgnc_id }}">hgnc:{{ record.hgnc_id }}</a>
                         <a class="badge badge-info"
-                           href="https://bioregistry.io/ncbigene:{{ record.xrefs.entrez_id }}">ncbigene:{{ record.xrefs.entrez_id }}</a>
+                           href="https://bioregistry.io/ncbigene:{{ record.xrefs.entrez_id }}">NCBIGene:{{ record.xrefs.entrez_id }}</a>
                         <a class="badge badge-info"
                            href="https://bioregistry.io/uniprot:{{ record.xrefs.uniprot_id }}">uniprot:{{ record.xrefs.uniprot_id }}</a>
                     </dd>
@@ -67,11 +67,15 @@
                         <dt class="col-4">Orthologs</dt>
                         <dd class="col-8">
                             {% if record.orthologs.mgi %}
-                                <a class="badge badge-info"
-                                   href="https://bioregistry.io/mgi:{{ record.orthologs.mgi }}">mgi:{{ record.orthologs.mgi }}</a>
+                                <a class="badge badge-info" data-toggle="tooltip" data-html="true"
+                                   title="Mouse Genome Informatics (MGI) is a model organism database listing mouse genes that are homologous to human genes."
+
+                                   href="https://bioregistry.io/mgi:{{ record.orthologs.mgi }}">mgi:{{ record.orthologs.mgi }}
+                                </a>
                             {% endif %}
                             {% if record.orthologs.rgd %}
-                                <a class="badge badge-info"
+                                <a class="badge badge-info" data-toggle="tooltip" data-html="true"
+                                   title="Rat Genome Database (RGD) is a model organism database listing rat genes that are homologous to human genes."
                                    href="https://bioregistry.io/rgd:{{ record.orthologs.rgd }}">rgd:{{ record.orthologs.rgd }}</a>
                             {% endif %}
                         </dd>
@@ -92,7 +96,7 @@
                             Search for {{ record.hgnc_symbol }}</a>
                     </dd>
                     <dt class="col-4">Number of Papers</dt>
-                    <dd class="col-8">{{ record.papers }}</dd>
+                    <dd class="col-8">{{ record.papers }} retrieved on {{ date }}</dd>
                 </dl>
                 <h2>DepMap Analysis</h2>
                 <p>
