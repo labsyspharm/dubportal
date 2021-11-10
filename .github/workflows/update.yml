@@ -1,6 +1,9 @@
 name: Update DUB Portal
 on:
   workflow_dispatch:
+  schedule:
+    # Run weekly on a Sunday night
+    - cron: "0 0 * * 0"
 jobs:
   build:
     runs-on: ubuntu-latest
