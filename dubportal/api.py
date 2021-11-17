@@ -501,9 +501,10 @@ def get_processed_data() -> dict[str, any]:
             "date": datetime.datetime.now().strftime("%Y-%m-%d"),
         },
         "versions": {
-            "reactome": REACTOME_VERSION,
-            "biogrid": BIOGRID_VERSION,
-            "pathway commons": PATHWAY_COMMONS_VERSION,
+            "Reactome": REACTOME_VERSION,
+            "BioGRID": BIOGRID_VERSION,
+            "Pathway Commons": PATHWAY_COMMONS_VERSION,
+            # "DepMap": DEPMAP_VERSION, 
         },
     }
 
