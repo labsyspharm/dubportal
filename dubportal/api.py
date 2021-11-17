@@ -31,6 +31,7 @@ from indra.statements import (
     stmts_from_json_file,
     stmts_to_json_file,
 )
+from protmapper import uniprot_client
 from indra.tools import assemble_corpus as ac
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
@@ -280,6 +281,7 @@ class InteractionChecker:
             url,
             sep="\t",
             usecols=[1, 2],  # source entrez ID, target entrez ID
+            dtype=str,
         )
         rv = defaultdict(set)
         for a, b in df.values:
@@ -299,7 +301,10 @@ class InteractionChecker:
             return json.load(file)
 
     def get_nursa(self, hgnc_id_1: str, hgnc_id_2: str) -> bool:
-        return hgnc_id_2 in self.nursa.get(hgnc_id_1, set())
+        return (
+            hgnc_id_2 in self.nursa.get(hgnc_id_1, set())
+            or hgnc_id_1 in self.nursa.get(hgnc_id_2, set())
+        )
 
     @staticmethod
     def _load_reactome() -> Mapping[str, set[str]]:
@@ -309,7 +314,7 @@ class InteractionChecker:
         rv = defaultdict(set)
         df = pd.read_csv(url, sep="\t", header=None, usecols=[0, 1], dtype=str)
         for uniprot_id, reactome_id in df.values:
-            hgnc_id = hgnc_client.get_uniprot_id(uniprot_id)
+            hgnc_id = uniprot_client.get_hgnc_id(uniprot_id)
             if hgnc_id:
                 rv[hgnc_id].add(reactome_id)
         logger.info("Done loading Reactome")
@@ -322,6 +327,7 @@ class InteractionChecker:
 
     @staticmethod
     def get_pathway_commons(hgnc_id_1: str, hgnc_id_2: str) -> bool:
+        # this should be 2-way
         return hgnc_id_2 in _query_pc(hgnc_id_1)
 
 
