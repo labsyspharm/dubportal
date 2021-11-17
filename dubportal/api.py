@@ -317,11 +317,17 @@ class InteractionChecker:
         return len(a_pathways.intersection(b_pathways))
 
     @staticmethod
-    def get_pathway_commons(hgnc_id_1: str, hgnc_id_2: str) -> int:
-        hgnc_symbol_1 = hgnc_client.get_hgnc_name(hgnc_id_1)
-        res = requests.get(PATHWAY_COMMONS_ENDPOINT, params={"sources": hgnc_symbol_1}).json()
-        target_symbols = {hgnc_client.get_hgnc_id(r["data"]["id"]) for r in res["network"]["nodes"]}
-        return hgnc_id_2 in target_symbols
+    def get_pathway_commons(hgnc_id_1: str, hgnc_id_2: str) -> bool:
+        return hgnc_id_2 in _query_pc(hgnc_id_1)
+
+
+@lru_cache(maxsize=None)
+def _query_pc(source_hgnc_id: str) -> set[str]:
+    """Get interacting HGNC identifiers."""
+    hgnc_symbol_1 = hgnc_client.get_hgnc_name(source_hgnc_id)
+    res = requests.get(PATHWAY_COMMONS_ENDPOINT, params={"sources": hgnc_symbol_1}).json()
+    target_symbols = (hgnc_client.get_hgnc_id(r["data"]["id"]) for r in res["network"]["nodes"])
+    return {s for s in target_symbols if s}
 
 
 checker = InteractionChecker()
