@@ -92,13 +92,13 @@ PATHWAY_COMMONS_ENDPOINT = f"https://apps.pathwaycommons.org/api/interactions"
 
 def _get_hgnc_names() -> dict[str, str]:
     """Get a dictionary from HGNC gene identifiers to their full names."""
-    print("Loading HGNC")
+    logger.info("Loading HGNC")
     df = pd.read_csv(
         "http://ftp.ebi.ac.uk/pub/databases/genenames/new/tsv/hgnc_complete_set.txt",
         sep="\t",
         usecols=[0, 2],
     )
-    print("Done loading HGNC")
+    logger.info("Done loading HGNC")
     df["hgnc_id"] = df["hgnc_id"].map(lambda s: s.removeprefix("HGNC:"))
     return dict(df.values)
 
@@ -275,6 +275,7 @@ class InteractionChecker:
             f"BioGRID/Release-Archive/BIOGRID-{BIOGRID_VERSION}/"
             f"BIOGRID-MV-Physical-{BIOGRID_VERSION}.tab3.zip"
         )
+        logger.info(f"Loading BioGRID v{BIOGRID_VERSION}")
         df = pd.read_csv(
             url,
             sep="\t",
@@ -286,6 +287,7 @@ class InteractionChecker:
             b = hgnc_client.get_hgnc_from_entrez(b)
             if a and b:
                 rv[a].add(b)
+        logger.info("Done loading BioGRID")
         return dict(rv)
 
     def get_biogrid(self, hgnc_id_1: str, hgnc_id_2: str) -> bool:
@@ -302,6 +304,7 @@ class InteractionChecker:
     @staticmethod
     def _load_reactome() -> Mapping[str, set[str]]:
         """Get protein to pathways from Reactome."""
+        logger.info(f"Loading Reactome v{REACTOME_VERSION}")
         url = f"https://reactome.org/download/{REACTOME_VERSION}/UniProt2Reactome_All_Levels.txt"
         rv = defaultdict(set)
         df = pd.read_csv(url, sep="\t", header=None, usecols=[0, 1], dtype=str)
@@ -309,6 +312,7 @@ class InteractionChecker:
             hgnc_id = hgnc_client.get_uniprot_id(uniprot_id)
             if hgnc_id:
                 rv[hgnc_id].add(reactome_id)
+        logger.info("Done loading Reactome")
         return dict(rv)
 
     def get_reactome(self, hgnc_id_1: str, hgnc_id_2: str) -> int:
