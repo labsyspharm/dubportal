@@ -15,6 +15,7 @@ import markupsafe
 import matplotlib.pyplot as plt
 import pandas as pd
 import pystow
+import requests
 import seaborn as sns
 from indra.assemblers.html import HtmlAssembler
 from indra.databases import go_client, hgnc_client
@@ -34,6 +35,7 @@ from indra.tools import assemble_corpus as ac
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
 from more_click import force_option, verbose_option
+from protmapper import uniprot_client
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
@@ -54,8 +56,13 @@ NDEX_LINKS = DOCS.joinpath("network_index.json")
 STATEMENTS_DIR = RAW.joinpath("statements")
 STATEMENTS_DIR.mkdir(exist_ok=True, parents=True)
 
-environment = Environment(autoescape=True, loader=FileSystemLoader(HERE), trim_blocks=False)
+DUBPORTAL_MODULE = pystow.module("dubportal")
+DUBPORTAL_SINGLE = DUBPORTAL_MODULE.submodule("single")
+DUBPORTAL_INTERACTION = DUBPORTAL_MODULE.submodule("interaction")
+DUBPORTAL_DEPS = DUBPORTAL_MODULE.submodule("deps")
 
+# Templating
+environment = Environment(autoescape=True, loader=FileSystemLoader(HERE), trim_blocks=False)
 index_template = environment.get_template("index.html")
 gene_template = environment.get_template("gene.html")
 about_template = environment.get_template("about.html")
@@ -68,24 +75,32 @@ GENE_FIXES = {
     "KRTAP20": "KRTAP20-1",
 }
 
+logger.info("getting DUBs from Famplex")
 #: A set of HGNC gene symbol strings corresponding to DUBs,
 #: based on HGNC gene family annotations
 FAMPLEX_DUBS = {
     identifier for prefix, identifier in famplex.descendant_terms("FPLX", DUB) if prefix == "HGNC"
 }
 
+# Versions
 REACTOME_VERSION = bioversions.get_version("reactome")
+BIOGRID_VERSION = bioversions.get_version("biogrid")
+DEPMAP_VERSION = bioversions.get_version("depmap")
+PATHWAY_COMMONS_VERSION = bioversions.get_version("pathwaycommons")
+
+# URL Endpoints
+PATHWAY_COMMONS_ENDPOINT = f"https://apps.pathwaycommons.org/api/interactions"
 
 
 def _get_hgnc_names() -> dict[str, str]:
     """Get a dictionary from HGNC gene identifiers to their full names."""
-    print("Loading HGNC")
+    logger.info("Loading HGNC")
     df = pd.read_csv(
         "http://ftp.ebi.ac.uk/pub/databases/genenames/new/tsv/hgnc_complete_set.txt",
         sep="\t",
         usecols=[0, 2],
     )
-    print("Done loading HGNC")
+    logger.info("Done loading HGNC")
     df["hgnc_id"] = df["hgnc_id"].map(lambda s: s.removeprefix("HGNC:"))
     return dict(df.values)
 
@@ -115,10 +130,12 @@ def get_go_type(identifier: str) -> Optional[str]:
     return go_namespace.replace("_", " ").title()
 
 
-def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
+def get_gene_statements(
+    hgnc_id: str, force: bool = False
+) -> tuple[list[Statement], dict[str, any]]:
     """Get INDRA statements for the given gene."""
-    path = pystow.join("dubportal", "single", name=f"{hgnc_id}.json")
-    path_meta = pystow.join("dubportal", "single", name=f"{hgnc_id}_meta.json")
+    path = DUBPORTAL_SINGLE.join(name=f"{hgnc_id}.json")
+    path_meta = DUBPORTAL_SINGLE.join(name=f"{hgnc_id}_meta.json")
     if path.is_file() and path_meta.is_file() and not force:
         stmts = stmts_from_json_file(path)
         with open(path_meta, "r") as fh:
@@ -126,7 +143,7 @@ def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
             for key, data in meta.items():
                 meta[key] = {int(k): v for k, v in data.items()}
         return stmts, meta
-    path.parent.mkdir(exist_ok=True, parents=True)
+
     ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=30)
     stmts = ip.statements
     stmts_to_json_file(stmts, path)
@@ -143,11 +160,10 @@ def get_gene_statements(hgnc_id: str, force: bool = False) -> list[Statement]:
 
 def get_interaction_stmts(source: str, target: str, force: bool = False) -> list[Statement]:
     """Get INDRA statements for the given interaction between source/target."""
-    path = pystow.join("dubportal", "interaction", source, name=f"{target}.json")
+    path = DUBPORTAL_INTERACTION.join(source, name=f"{target}.json")
     if path.is_file() and not force:
         return stmts_from_json_file(path)
 
-    path.parent.mkdir(exist_ok=True, parents=True)
     ip = get_statements(agents=[source, target], ev_limit=1)
     stmts_to_json_file(ip.statements, path)
     return ip.statements
@@ -231,7 +247,6 @@ def filter_out_medscan(stmts: list[Statement]) -> list[Statement]:
 def filter_curations(stmts: list[Statement]) -> list[Statement]:
     curs = safe_get_curations()
     if curs is not None:
-        logger.info("filtering %d curations", len(curs))
         stmts = ac.filter_by_curation(stmts, curs)
     return stmts
 
@@ -243,30 +258,111 @@ def safe_get_curations():
     except ImportError:
         return None
     try:
-        return get_curations() or None
+        rv = get_curations()
     except:
         return None
+    else:
+        if rv is None:
+            return None
+        logger.info("got %d curations for filtering", len(rv))
+        return rv
 
 
-def shared_reactome(hgnc_id_1: str, hgnc_id_2: str) -> set[str]:
-    uniprot_to_pathways = get_protein_to_pathways()
-    uniprot_a = hgnc_client.get_uniprot_id(hgnc_id_1)
-    uniprot_a_pathways = uniprot_to_pathways.get(uniprot_a, set())
-    uniprot_b = hgnc_client.get_uniprot_id(hgnc_id_2)
-    uniprot_b_pathways = uniprot_to_pathways.get(uniprot_b, set())
-    return uniprot_a_pathways.intersection(uniprot_b_pathways)
+class InteractionChecker:
+    def __init__(self):
+        self.nursa = self._load_nursa()
+        self.reactome = self._load_reactome()
+        self.biogrid = self._load_biogrid()
+
+    def _load_biogrid(self):
+        url = (
+            f"https://downloads.thebiogrid.org/Download/"
+            f"BioGRID/Release-Archive/BIOGRID-{BIOGRID_VERSION}/"
+            f"BIOGRID-MV-Physical-{BIOGRID_VERSION}.tab3.zip"
+        )
+        logger.info(f"Loading BioGRID v{BIOGRID_VERSION}")
+        df = pd.read_csv(
+            url,
+            sep="\t",
+            usecols=[1, 2],  # source entrez ID, target entrez ID
+            dtype=str,
+        )
+        rv = defaultdict(set)
+        for a, b in df.values:
+            a = hgnc_client.get_hgnc_from_entrez(a)
+            b = hgnc_client.get_hgnc_from_entrez(b)
+            if a and b:
+                rv[a].add(b)
+        logger.info("Done loading BioGRID")
+        return dict(rv)
+
+    def get_biogrid(self, hgnc_id_1: str, hgnc_id_2: str) -> bool:
+        return hgnc_id_2 in self.biogrid.get(hgnc_id_1, set())
+
+    @staticmethod
+    def _load_nursa():
+        with PROCESSED.joinpath("nursa.json").open() as file:
+            return json.load(file)
+
+    def get_nursa(self, hgnc_id_1: str, hgnc_id_2: str) -> bool:
+        return hgnc_id_2 in self.nursa.get(hgnc_id_1, set()) or hgnc_id_1 in self.nursa.get(
+            hgnc_id_2, set()
+        )
+
+    @staticmethod
+    def _load_reactome() -> Mapping[str, set[str]]:
+        """Get protein to pathways from Reactome."""
+        logger.info(f"Loading Reactome v{REACTOME_VERSION}")
+        url = f"https://reactome.org/download/{REACTOME_VERSION}/UniProt2Reactome_All_Levels.txt"
+        rv = defaultdict(set)
+        df = pd.read_csv(url, sep="\t", header=None, usecols=[0, 1], dtype=str)
+        for uniprot_id, reactome_id in df.values:
+            hgnc_id = uniprot_client.get_hgnc_id(uniprot_id)
+            if hgnc_id:
+                rv[hgnc_id].add(reactome_id)
+        logger.info("Done loading Reactome")
+        return dict(rv)
+
+    def get_reactome(self, hgnc_id_1: str, hgnc_id_2: str) -> int:
+        a_pathways = self.reactome.get(hgnc_id_1, set())
+        b_pathways = self.reactome.get(hgnc_id_2, set())
+        return len(a_pathways.intersection(b_pathways))
+
+    @staticmethod
+    def get_pathway_commons(hgnc_id_1: str, hgnc_id_2: str) -> bool:
+        # this should be 2-way
+        return hgnc_id_2 in _query_pc(hgnc_id_1)
 
 
-@lru_cache(maxsize=1)
-def get_protein_to_pathways() -> Mapping[str, set[str]]:
-    """Get protein to pathways from Reactome."""
+@lru_cache(maxsize=None)
+def _query_pc(source_hgnc_id: str) -> set[str]:
+    """Get interacting HGNC identifiers."""
+    hgnc_symbol_1 = hgnc_client.get_hgnc_name(source_hgnc_id)
+    res = requests.get(PATHWAY_COMMONS_ENDPOINT, params={"sources": hgnc_symbol_1}).json()
+    target_symbols = (hgnc_client.get_hgnc_id(r["data"]["id"]) for r in res["network"]["nodes"])
+    return {s for s in target_symbols if s}
 
-    url = f"https://reactome.org/download/{REACTOME_VERSION}/UniProt2Reactome_All_Levels.txt"
-    rv = defaultdict(set)
-    df = pd.read_csv(url, sep="\t", header=None, usecols=[0, 1], dtype=str)
-    for uniprot_id, reactome_id in df.values:
-        rv[uniprot_id].add(reactome_id)
-    return dict(rv)
+
+checker = InteractionChecker()
+
+
+def get_dependent_by_symbol(symbol: str) -> dict[str, float]:
+    crispr_dependent_df = DUBPORTAL_DEPS.ensure_csv(
+        DEPMAP_VERSION,
+        url=f"https://depmap.org/portal/gene/{symbol}/top_correlations?dataset_name=Chronos_Combined",
+        name=f"{symbol}.csv",
+        read_csv_kwargs=dict(
+            usecols=[1, 3],
+            names=["ncbigene_id", "correlation"],
+            sep=",",
+        ),
+    )
+    rv = {}
+    for ncbigene_id, correlation in crispr_dependent_df.values:
+        hgnc_id = hgnc_client.get_hgnc_from_entrez(ncbigene_id)
+        if hgnc_id:
+            rv[hgnc_id] = correlation
+    return rv
 
 
 def get_processed_data() -> dict[str, any]:
@@ -312,6 +408,9 @@ def get_processed_data() -> dict[str, any]:
         # External IDs
         entrez_id = hgnc_client.get_entrez_id(dub_hgnc_id)
 
+        # Dependent genes
+        # crispr_dependent_dict = get_dependent_by_symbol(dub_hgnc_symbol)
+
         # Get gene dependencies for this DUB
         depmap_gene_records = []
         inner_it = tqdm(sdf.iterrows(), unit="dep", leave=False, desc="Mapping dependencies")
@@ -330,13 +429,13 @@ def get_processed_data() -> dict[str, any]:
                 hgnc_name=_hgnc_id_to_name.get(depmap_gene_id),
                 correlation=row["DepMap_correlation"],
                 interactions=dict(
-                    biogrid=row["Biogrid"] == "yes",
+                    biogrid=checker.get_biogrid(dub_hgnc_id, depmap_gene_id),
+                    nursa=checker.get_nursa(dub_hgnc_id, depmap_gene_id),
+                    pc=checker.get_pathway_commons(dub_hgnc_id, depmap_gene_id),
                     intact=row["IntAct"] == "yes",
-                    nursa=row["NURSA"] == "yes",
-                    pc=row["PathwayCommons"] == "yes",
                     ppid=row["PPID_support"] == "yes",
                     indra=len(stmts),
-                    reactome=len(shared_reactome(dub_hgnc_id, depmap_gene_id)),
+                    reactome=checker.get_reactome(dub_hgnc_id, depmap_gene_id),
                     dge=any(
                         r["hgnc_id"] == depmap_gene_id
                         for r in symbol_to_ko_dgea.get(dub_hgnc_id, [])
@@ -411,7 +510,10 @@ def get_processed_data() -> dict[str, any]:
             "date": datetime.datetime.now().strftime("%Y-%m-%d"),
         },
         "versions": {
-            "reactome": REACTOME_VERSION,
+            "Reactome": REACTOME_VERSION,
+            "BioGRID": BIOGRID_VERSION,
+            "Pathway Commons": PATHWAY_COMMONS_VERSION,
+            "DepMap": DEPMAP_VERSION,
         },
     }
 
