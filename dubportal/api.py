@@ -49,7 +49,7 @@ HERE = pathlib.Path(__file__).parent.resolve()
 DOCS = HERE.parent.joinpath("docs")
 RAW = HERE.joinpath("raw")
 PROCESSED = HERE.joinpath("processed")
-INPUT_PATH = RAW.joinpath("DUB_website_main_v2.tsv")
+INPUT_PATH = PROCESSED.joinpath("DUB_website_main_v2.tsv")
 OUTPUT_PATH = PROCESSED.joinpath("data.json")
 NDEX_LINKS = DOCS.joinpath("network_index.json")
 
