@@ -31,11 +31,11 @@ from indra.statements import (
     stmts_from_json_file,
     stmts_to_json_file,
 )
-from protmapper import uniprot_client
 from indra.tools import assemble_corpus as ac
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
 from more_click import force_option, verbose_option
+from protmapper import uniprot_client
 from tqdm import tqdm
 from tqdm.contrib.logging import logging_redirect_tqdm
 
@@ -75,6 +75,7 @@ GENE_FIXES = {
     "KRTAP20": "KRTAP20-1",
 }
 
+logger.info("getting DUBs from Famplex")
 #: A set of HGNC gene symbol strings corresponding to DUBs,
 #: based on HGNC gene family annotations
 FAMPLEX_DUBS = {
@@ -142,7 +143,7 @@ def get_gene_statements(
             for key, data in meta.items():
                 meta[key] = {int(k): v for k, v in data.items()}
         return stmts, meta
-    path.parent.mkdir(exist_ok=True, parents=True)
+
     ip = get_statements(agents=[f"{hgnc_id}@HGNC"], ev_limit=30)
     stmts = ip.statements
     stmts_to_json_file(stmts, path)
@@ -163,7 +164,6 @@ def get_interaction_stmts(source: str, target: str, force: bool = False) -> list
     if path.is_file() and not force:
         return stmts_from_json_file(path)
 
-    path.parent.mkdir(exist_ok=True, parents=True)
     ip = get_statements(agents=[source, target], ev_limit=1)
     stmts_to_json_file(ip.statements, path)
     return ip.statements
@@ -247,7 +247,6 @@ def filter_out_medscan(stmts: list[Statement]) -> list[Statement]:
 def filter_curations(stmts: list[Statement]) -> list[Statement]:
     curs = safe_get_curations()
     if curs is not None:
-        logger.info("filtering %d curations", len(curs))
         stmts = ac.filter_by_curation(stmts, curs)
     return stmts
 
@@ -259,9 +258,14 @@ def safe_get_curations():
     except ImportError:
         return None
     try:
-        return get_curations() or None
+        rv = get_curations()
     except:
         return None
+    else:
+        if rv is None:
+            return None
+        logger.info("got %d curations for filtering", len(rv))
+        return rv
 
 
 class InteractionChecker:
@@ -301,9 +305,8 @@ class InteractionChecker:
             return json.load(file)
 
     def get_nursa(self, hgnc_id_1: str, hgnc_id_2: str) -> bool:
-        return (
-            hgnc_id_2 in self.nursa.get(hgnc_id_1, set())
-            or hgnc_id_1 in self.nursa.get(hgnc_id_2, set())
+        return hgnc_id_2 in self.nursa.get(hgnc_id_1, set()) or hgnc_id_1 in self.nursa.get(
+            hgnc_id_2, set()
         )
 
     @staticmethod
