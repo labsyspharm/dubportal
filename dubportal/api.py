@@ -510,7 +510,7 @@ def get_processed_data() -> dict[str, any]:
             "Reactome": REACTOME_VERSION,
             "BioGRID": BIOGRID_VERSION,
             "Pathway Commons": PATHWAY_COMMONS_VERSION,
-            # "DepMap": DEPMAP_VERSION,
+            "DepMap": DEPMAP_VERSION,
         },
     }
 
