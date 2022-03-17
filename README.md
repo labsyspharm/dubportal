@@ -14,7 +14,7 @@ Cite the pre-print associated with the DUB Portal as:
 Or using in latex:
 
 ```bibtex
-@article {doherty2021dub,
+@article{doherty2021dub,
   author = {Doherty, Laura M. and Mills, Caitlin E. and Boswell, Sarah A. and Liu, Xiaoxi and Hoyt, Charles Tapley and Gyori, Benjamin M. and Buhrlage, Sara J. and Sorger, Peter K.},
   title = {Integrating multi-omics data reveals function and therapeutic potential of deubiquitinating enzymes},
   year = {2021},
