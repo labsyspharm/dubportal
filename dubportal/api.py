@@ -624,6 +624,18 @@ def _main_helper(force: bool):
     with about_dir.joinpath("index.html").open("w") as file:
         print(about_html, file=file)
 
+    for key in [
+        "overview", "sources", "well_studied", "poorly_studied", "family_insights",
+    ]:
+        template = environment.get_template(f"{key}.html")
+        html = template.render(
+            date=all_data["metadata"]["date"],
+            versions=all_data["versions"],
+        )
+        _directory = DOCS.joinpath(key)
+        _directory.mkdir(exist_ok=True, parents=True)
+        _directory.joinpath("index.html").write_text(html)
+
     it = tqdm(rows, desc="Putting it all together")
     for row in it:
         hgnc_symbol = row["hgnc_symbol"]
