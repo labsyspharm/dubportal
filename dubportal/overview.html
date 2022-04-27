@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}DUB Portal - Overview{% endblock %}
+
+{% block content %}
+    <h3>Vignettes highlighting breadth of novel insights into DUB biology</h3>
+    <p>
+        Rapid growth in publicly available and “functional genomic” datasets affords an opportunity for extensive
+        analysis of large gene families such as human DUBs. A total of nine different public resources measuring the
+        following were mined for data, in most cases starting with a CRISPR-Cas9 knockout or small molecule signature we
+        collected in our laboratories (using the high-throughput DGE RNA-seq):
+    <p>
+    <ul>
+        <li>transcript signatures following gene perturbation (CMap)</li>
+        <li>gene essentiality (DepMap, IMPC ad MGI)</li>
+        <li>protein co-expression (CCLE proteomics)</li>
+        <li>protein-protein interaction (BioGRID, IntAct, Pathway Commons PPID, and NURSA PPID)</li>
+    </ul>
+    <p>
+        Click <a href="/dubportal/sources/">here</a> to view a table summarizing the data and insights gained from each
+        resource.
+    </p>
+    <p>
+        Comparison of enriched gene sets or GO terms made it possible to bridge different types of data. Overall, we
+        observed substantial and encouraging consistency among datasets. For example, genes identified as co-dependent
+        with DUBs in DepMap data frequently exhibited similar transcript signatures, were co-expressed across cell
+        lines, and were physically associated.
+    </p>
+    <p>
+        Our analysis yielded three types of information:
+    </p>
+    <ol>
+        <li>
+            <strong>potentially new or more precisely specified functions for several well-characterized DUBs</strong>,
+            including a UCHL5, USP7, USP8, and USP14
+        </li>
+        <li>
+            <strong>potential pathways or functional roles for understudied DUBs</strong>, including a role for USPL1
+            in the Little Elongation Complex and UCHL3, USP38, VCPIP1, and USP42 in the regulation of TP53 signaling;
+        </li>
+        <li>
+            <strong>insight into the DUB family as a whole</strong>, including evidence that 23 DUBs play a role in
+            stabilizing 33 E3 ubiquitin ligases, most likely by antagonizing their auto-ubiquitination activities. 52
+            DUBs were found to be essential for proliferation in at least five cancer cell lines, and 34 of these DUBs
+            affected the proliferation of cell lines from one tumor type more than cell lines from all other tumor
+            types, potentially providing insight into disease context. These data are summarized in a
+            <a href="/dubportal/about/">simple graphical form</a>, as a series of tables suitable for computational
+            analysis in supplementary materials, and online on this DUB Portal.
+        </li>
+    </ol>
+    <h3>Conclusion</h3>
+    <p>
+        Our studies provide a diverse set of data on the DUB family as a whole as well as new insight into many
+        individual DUBs, including several that have been studied intensively. One theme that emerges is that for genes
+        with multiple proposed functions (USP7 and UCHL5 for example), a combination of profiling CRISPR-Cas9 knockouts
+        or drug-induced perturbations with systematic mining of functional genomic databases makes it possible to
+        distinguish among essential and no-essential phenotypes. A second is that more DUBs than anticipated have
+        non-redundant roles in the tumor suppressor and oncogenic pathways, most notably TP53 regulation, suggesting new
+        approaches to undruggable targets. The approaches described in this work are directly applicable to other gene
+        families and therapeutic targets.
+    </p>
+{% endblock %}
