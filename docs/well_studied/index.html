@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Bootstrap -->
+            <link
+                    rel="stylesheet"
+                    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+                    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+                    crossorigin="anonymous"
+            />
+            <link
+                    rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.12/c3.min.css"
+            />
+            <link
+                    rel="stylesheet"
+                    href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"
+            />
+            <!-- DataTables, see: https://datatables.net/examples/styling/bootstrap4.html-->
+            <link
+                    rel="stylesheet"
+                    href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
+            />
+            <style type="text/css">
+                h2 {
+                    margin-top: 35px;
+                }
+
+                html, body {
+                    height: 100%;
+                }
+
+                body {
+                    display: flex;
+                    flex-flow: column;
+                }
+
+                .footer {
+                    margin-top: auto;
+                    padding-top: 1em;
+                    background-color: #f5f5f5;
+                }
+
+                nav[data-toggle="toc"] {
+                    top: 42px;
+                }
+            </style>
+
+        <script src="https://kit.fontawesome.com/4c86883252.js" crossorigin="anonymous"></script>
+        <title>DUB Portal - Well-Studied DUBs</title>
+</head>
+
+<body data-spy="scroll" data-target="#toc">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/dubportal">
+        
+        DUB Portal
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/overview/">Overview</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/sources/">Data Souces</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/well_studied/">Well-Studied DUBs</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/poorly_studied/">Poorly-Studied DUBs</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/family_insights/">DUB Family Insights</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/about/">About</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav my-2 my-lg-0">
+            <li class="nav-item active">
+                <span class="text-muted">
+                    Last Updated 2022-04-17
+                </span>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+    <div class="container" style="margin-top: 50px; margin-bottom: 50px">
+        
+    <h1>
+        Discriminating among essential and non-essential DUB functions for well-studied DUBs
+    </h1>
+    <p>
+        In several cases, our studies yielded unexpected hypotheses about the functions of DUBs that have already been
+        well studied.
+    </p>
+
+    <h3>USP14</h3>
+    <p>
+        USP14 is a component of the proteasome; however, we found that USP14 was strongly co-dependent in DepMap data
+        not with subunits of the proteasome but instead with the UBC polyubiquitin gene, a primary source of ubiquitin
+        in mammalian cells. Knockout of USP14 by CRISPR-Cas9, or exposure of cells to the USP14 inhibitor I-335 resulted
+        in highly selective upregulation of the UBC gene. We therefore propose that maintenance of the pool of free
+        ubiquitin, not regulation of the proteasome, is likely to be the key, non-redundant function for USP14.
+    </p>
+
+    <h3>UCHL5</h3>
+    <p>
+        UCHL5 is a component of both the INO80 complex and the proteasome. The effect of UCHL5 knockout is most similar
+        to that of knockout of other INO80 subunits and no significant correlation was observed in DepMap data with
+        knockout of proteosome subunits. We hypothesize that UCHL5 plays an essential and non-redundant function in the
+        INO80 complex rather than the proteasome.
+    </p>
+
+    <h3>USP8</h3>
+    <p>
+        USP8 is an extensively studied DUB that has been shown to stabilize endosomal sorting complexes required for
+        transport (ESCRT) and receptors. We find that knockout of USP8 also upregulates the expression of cytokines,
+        implying that USP8 may have a role in recycling cytokine receptors as well as growth factor receptors. We
+        knocked out three ESCRT proteins (UBAP1, HGS, PTPN23) that strongly correlated with USP8 in DepMap data. We
+        found that the transcriptional signature of UBAP1 knockout was strongly correlated with that of USP8 knockout
+        and that both knockouts resulted in upregulation of multiple cytokines. In DepMap data, USP8 correlated more
+        strongly with ESCRT machinery proteins than with individual growth factor or cytokine receptors, independent of
+        cancer lineage, suggesting that the essential function of USP8 in cancer cells is not mediated by one specific
+        receptor alone – e.g. EGFR – but rather by multiple growth factor and cytokine receptors that undergo similar
+        ESCRT-dependent endosomal sorting.
+    </p>
+
+    <h3>Misc.</h3>
+    <p>
+        One of the most promising potential uses of DUB inhibitors is to indirectly regulate the levels of
+        disease-associated genes that are not conventionally considered to be druggable such as transcription factors
+        and scaffolding proteins. This strategy has been most actively pursued for USP7, which is a regulator of MDM2,
+        the E3 ligase for the TP53 tumor suppressor protein: inhibition of USP7 increases the levels of ubiquitinated
+        MDM2, promoting its degradation and thereby increasing TP53 levels.
+    </p>
+    <p>
+        Our data on USP7 are consistent with this hypothesis: we find that the top DepMap co-dependent gene for USP7 is
+        MDM2, and knockdown of TP53 largely rescues the transcriptional phenotype observed for USP7 inhibition in TP53
+        wildtype cells. We find that USP7 has at least one additional substrate, C16orf72, that may also be a TP53
+        regulator. Moreover, the USP7 inhibitor XL177A has a phenotype that is independent of TP53 and involves
+        upregulation of histone genes and genes involved in the G2M cell cycle checkpoint. We speculate that this may
+        reflect the reported involvement of USP7 in the regulation of polycomb complexes (de Bie et al., 2010), although
+        we cannot rule out an off-target activity for XL177A. We conclude that the primary role of USP7 in cancer cells
+        involves the MDM2-TP53 axis (Schauer et al., 2020).
+    </p>
+    <p>
+        Discriminating the functions of well-studied DUBs: (A) Changes in gene expression (log2 fold change vs. log 10
+        adjusted p-value, adjusted p-value < 0.05 colored red) in MDAMB231 cells 96 hours after USP14 knockout by
+        CRISPR-Cas9 (left) and 24 hours after treatment with the USP14 inhibitor I-335 at 20 µM (right). (B)
+        Hierarchical clustering of significantly differentially expressed genes (adjusted p-value < 0.05) 96 hours
+        following knockout of USP8 or UBAP1 in MDAMB231 cells. (C) Gene sets significantly (FDR < 0.05) enriched in
+        MDAMB231 cells 96 hours after knockout of USP8 or UBAP1. The top five upregulated and top five downregulated
+        gene sets for each condition are shown. (D) Hierarchical clustering of significantly differentially expressed
+        genes (adjusted p-value < 0.05) 96 hours after knockout of USP7 or C16orf72 in wild-type MCF7 cells or following
+        a 24-hour treatment with 5 µM nutlin3a or 1 µM XL-177A in wildtype or p53 knockdown MCF7 cells. (E) Gene sets
+        significantly enriched (FDR < 0.05) for the conditions shown in (D). The top five up- and down-regulated gene
+        sets for each condition are shown.
+    </p>
+
+    </div>
+
+
+<footer class="footer">
+    <p class="small text-center text-muted">
+        Developed with ❤️ by the <a href="https://indralab.github.io">INDRA Lab</a>, a part of the
+        <a href="https://labsyspharm.github.io">Laboratory of Systems Pharmacology</a> and
+        <a href="https://hits.harvard.edu">Harvard Program in Therapeutic Science (HiTS)</a>.<br>
+        Points of contact: <a href="https://github.com/lauradohertyws">@lauradohertyws</a>
+        and <a href="https://github.com/cthoyt">@cthoyt</a>
+        (<a href="https://github.com/labsyspharm/dubportal">Source code</a>)
+    </p>
+</footer>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+
+    <!-- DataTables, see: https://datatables.net/examples/styling/bootstrap4.html-->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.12/c3.min.js"></script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+</body>
+</html>
