@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Bootstrap -->
+            <link
+                    rel="stylesheet"
+                    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+                    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+                    crossorigin="anonymous"
+            />
+            <link
+                    rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.12/c3.min.css"
+            />
+            <link
+                    rel="stylesheet"
+                    href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"
+            />
+            <!-- DataTables, see: https://datatables.net/examples/styling/bootstrap4.html-->
+            <link
+                    rel="stylesheet"
+                    href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
+            />
+            <style type="text/css">
+                h2 {
+                    margin-top: 35px;
+                }
+
+                html, body {
+                    height: 100%;
+                }
+
+                body {
+                    display: flex;
+                    flex-flow: column;
+                }
+
+                .footer {
+                    margin-top: auto;
+                    padding-top: 1em;
+                    background-color: #f5f5f5;
+                }
+
+                nav[data-toggle="toc"] {
+                    top: 42px;
+                }
+            </style>
+
+        <script src="https://kit.fontawesome.com/4c86883252.js" crossorigin="anonymous"></script>
+        <title>DUB Portal - Data Sources</title>
+</head>
+
+<body data-spy="scroll" data-target="#toc">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/dubportal">
+        
+        DUB Portal
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/overview/">Overview</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/sources/">Data Souces</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/well_studied/">Well-Studied DUBs</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/poorly_studied/">Poorly-Studied DUBs</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/family_insights/">DUB Family Insights</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/about/">About</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav my-2 my-lg-0">
+            <li class="nav-item active">
+                <span class="text-muted">
+                    Last Updated 2022-04-27
+                </span>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+    <div class="container" style="margin-top: 50px; margin-bottom: 50px">
+        
+    <h1>Datasets Used</h1>
+    <table>
+        <tr>
+            <td>Resource</td>
+            <td>Description</td>
+            <td>Key Insights</td>
+            <td>Terms / abbreviations</td>
+        </tr>
+        <tr>
+            <td>DGE RNA-seq</td>
+            <td>We collected high throughput RNA-seq following knockout or inhibition of individual DUBs. 81 DUB
+                knockouts and 7 inhibitors were characterized.
+            </td>
+            <td>The transcriptomic signatures following loss of individual DUBs.</td>
+            <td>
+                <p>
+                    "3’DGE-seq: 3’ Digital Gene Expression, a type of high-throughput RNA-seq.
+                </p>
+                <p>DE gene: differentially expressed gene (defined by a false discovery rate (FDR) adjusted p <
+                    0.05)."</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Connectivity Map (CMap)
+            </td>
+            <td>
+                A Broad Institute database of post-perturbation RNA-seq signatures following genetic knockdown or
+                over-expression or treatment with inhibitors. The signatures within this resource are comprised of the
+                L1000 genes (1000 genes measured or inferred by the assay). Data are available for ~3,000 different
+                genes and ~5000 small molecules.
+            </td>
+            <td>
+                Enables identification of genes that, when silenced with RNAi, or overexpressed, have similar
+                transcriptional effects as query signatures (e.g., signatures following DUB knockout).
+            </td>
+            <td>
+                <p>
+                    "Query mRNA profile: the transcriptomic signature that the user inputs into CMap to retrieve similar
+                    signatures.
+                </p>
+                <p>
+                    A tau score quantifies similarity between the query mRNA profile and CMap signatures (tau similarity
+                    is computed by counting the number of pairwise mismatches between two ranked lists). CMap recommends
+                    a threshold of tau similarity score > 90."
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Dependency Map (DepMap)
+            </td>
+            <td>
+                Broad Institute genome-wide pooled CRISPR-Cas9 knockout screen conducted in more than 700 cancer cell
+                lines. Guide RNA dropout is measured as a surrogate for viability.
+            </td>
+            <td>
+                <p>
+                    "Enables identification of genes that are essential for cell proliferation as well as which gene
+                    knockouts yield similar viability phenotypes across cell lines (co-dependent genes).
+                </p>
+                <p>
+                    The top co-dependent genes can be analyzed to identify protein complexes and pathways enriched in
+                    the co-dependent genes."
+                </p>
+            <td>
+                <p>
+                    "Genes with similar DepMap scores across cell lines are more likely to have related biological
+                    functions, a property known as co-dependency.
+                </p>
+                <p>
+                    Co-dependent genes: gene knockouts that exhibit co-dependency or give similar DepMap scores across
+                    cell lines. In our study, we analyzed the top seven co-dependent genes as this gave the largest
+                    number of expected results for well-characterized DUBs, but the top five and ten co-dependent genes
+                    gave similar results. "
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Cancer Cell Line Encyclopedia (CCLE) Proteomics
+            </td>
+            <td>
+                Previously published baseline proteomics collected in the CCLE cell lines (~375 cell lines). About
+                12,000
+                proteins were detected.
+            </td>
+            <td>
+                Co-expressed genes based on expression levels across ~375 cell lines. Proteins in the same complex are
+                often
+                co-expressed to a significant degree across a cell line panel.
+            </td>
+            <td>
+                Co-expressed genes: correlation in abundance across cell lines with FDR < 0.01 and |z-score| > 2.
+                Previous
+                publication used FDR < 0.01.
+            </td>
+        </tr>
+        <tr>
+            <td>BioGRID</td>
+            <td>
+                Protein-protein interaction database compiling interaction data from multiple sources.
+            </td>
+            <td>
+                Proteins that interact as measured in multiple ways, including affinity capture MS, affinity capture
+                Western
+                Blotting, and assembly of reconstituted complexes from purified recombinant subunits in vitro.
+            </td>
+            <td>PPID: protein-protein interaction database.</td>
+        </tr>
+        <tr>
+            <td>IntAct
+            </td>
+            <td>
+                Protein-protein interaction database compiling interaction data from multiple sources.
+            </td>
+            <td>
+                Proteins that interact as measured in multiple ways, including affinity capture MS, affinity capture
+                Western
+                Blotting, and assembly of reconstituted complexes from purified recombinant subunits in vitro.
+            </td>
+            <td>
+                PPID: protein-protein interaction database.
+            </td>
+        </tr>
+        <tr>
+            <td>NURSA</td>
+            <td>
+                Protein-protein interaction dataset focused on interactions among proteins involved in transcription.
+            </td>
+            <td>
+                Proteins that interact as measured by ~3000 immuno-precipitations (IPs) followed by MS.
+            </td>
+            <td>"PPID: protein-protein interaction database.</td>
+        </tr>
+    </table>
+
+    </div>
+
+
+<footer class="footer">
+    <p class="small text-center text-muted">
+        Developed with ❤️ by the <a href="https://indralab.github.io">INDRA Lab</a>, a part of the
+        <a href="https://labsyspharm.github.io">Laboratory of Systems Pharmacology</a> and
+        <a href="https://hits.harvard.edu">Harvard Program in Therapeutic Science (HiTS)</a>.<br>
+        Points of contact: <a href="https://github.com/lauradohertyws">@lauradohertyws</a>
+        and <a href="https://github.com/cthoyt">@cthoyt</a>
+        (<a href="https://github.com/labsyspharm/dubportal">Source code</a>)
+    </p>
+</footer>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+
+    <!-- DataTables, see: https://datatables.net/examples/styling/bootstrap4.html-->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.12/c3.min.js"></script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+</body>
+</html>

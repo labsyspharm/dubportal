@@ -625,7 +625,11 @@ def _main_helper(force: bool):
         print(about_html, file=file)
 
     for key in [
-        "overview", "sources", "well_studied", "poorly_studied", "family_insights",
+        "overview",
+        "sources",
+        "well_studied",
+        "poorly_studied",
+        "family_insights",
     ]:
         template = environment.get_template(f"{key}.html")
         html = template.render(

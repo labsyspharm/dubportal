@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <!-- Bootstrap -->
+            <link
+                    rel="stylesheet"
+                    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+                    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+                    crossorigin="anonymous"
+            />
+            <link
+                    rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.12/c3.min.css"
+            />
+            <link
+                    rel="stylesheet"
+                    href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"
+            />
+            <!-- DataTables, see: https://datatables.net/examples/styling/bootstrap4.html-->
+            <link
+                    rel="stylesheet"
+                    href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
+            />
+            <style type="text/css">
+                h2 {
+                    margin-top: 35px;
+                }
+
+                html, body {
+                    height: 100%;
+                }
+
+                body {
+                    display: flex;
+                    flex-flow: column;
+                }
+
+                .footer {
+                    margin-top: auto;
+                    padding-top: 1em;
+                    background-color: #f5f5f5;
+                }
+
+                nav[data-toggle="toc"] {
+                    top: 42px;
+                }
+            </style>
+
+        <script src="https://kit.fontawesome.com/4c86883252.js" crossorigin="anonymous"></script>
+        <title>DUB Portal - Overview</title>
+</head>
+
+<body data-spy="scroll" data-target="#toc">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/dubportal">
+        
+        DUB Portal
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/overview/">Overview</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/sources/">Data Souces</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/well_studied/">Well-Studied DUBs</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/poorly_studied/">Poorly-Studied DUBs</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/family_insights/">DUB Family Insights</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/dubportal/about/">About</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav my-2 my-lg-0">
+            <li class="nav-item active">
+                <span class="text-muted">
+                    Last Updated 2022-04-27
+                </span>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+    <div class="container" style="margin-top: 50px; margin-bottom: 50px">
+        
+    <h3>Vignettes highlighting breadth of novel insights into DUB biology</h3>
+    <p>
+        Rapid growth in publicly available and “functional genomic” datasets affords an opportunity for extensive
+        analysis of large gene families such as human DUBs. A total of nine different public resources measuring the
+        following were mined for data, in most cases starting with a CRISPR-Cas9 knockout or small molecule signature we
+        collected in our laboratories (using the high-throughput DGE RNA-seq):
+    <p>
+    <ul>
+        <li>transcript signatures following gene perturbation (CMap)</li>
+        <li>gene essentiality (DepMap, IMPC ad MGI)</li>
+        <li>protein co-expression (CCLE proteomics)</li>
+        <li>protein-protein interaction (BioGRID, IntAct, Pathway Commons PPID, and NURSA PPID)</li>
+    </ul>
+    <p>
+        Click <a href="/dubportal/sources/">here</a> to view a table summarizing the data and insights gained from each
+        resource.
+    </p>
+    <p>
+        Comparison of enriched gene sets or GO terms made it possible to bridge different types of data. Overall, we
+        observed substantial and encouraging consistency among datasets. For example, genes identified as co-dependent
+        with DUBs in DepMap data frequently exhibited similar transcript signatures, were co-expressed across cell
+        lines, and were physically associated.
+    </p>
+    <p>
+        Our analysis yielded three types of information:
+    </p>
+    <ol>
+        <li>
+            <strong>potentially new or more precisely specified functions for several well-characterized DUBs</strong>,
+            including a UCHL5, USP7, USP8, and USP14
+        </li>
+        <li>
+            <strong>potential pathways or functional roles for understudied DUBs</strong>, including a role for USPL1
+            in the Little Elongation Complex and UCHL3, USP38, VCPIP1, and USP42 in the regulation of TP53 signaling;
+        </li>
+        <li>
+            <strong>insight into the DUB family as a whole</strong>, including evidence that 23 DUBs play a role in
+            stabilizing 33 E3 ubiquitin ligases, most likely by antagonizing their auto-ubiquitination activities. 52
+            DUBs were found to be essential for proliferation in at least five cancer cell lines, and 34 of these DUBs
+            affected the proliferation of cell lines from one tumor type more than cell lines from all other tumor
+            types, potentially providing insight into disease context. These data are summarized in a
+            <a href="/dubportal/about/">simple graphical form</a>, as a series of tables suitable for computational
+            analysis in supplementary materials, and online on this DUB Portal.
+        </li>
+    </ol>
+    <h3>Conclusion</h3>
+    <p>
+        Our studies provide a diverse set of data on the DUB family as a whole as well as new insight into many
+        individual DUBs, including several that have been studied intensively. One theme that emerges is that for genes
+        with multiple proposed functions (USP7 and UCHL5 for example), a combination of profiling CRISPR-Cas9 knockouts
+        or drug-induced perturbations with systematic mining of functional genomic databases makes it possible to
+        distinguish among essential and no-essential phenotypes. A second is that more DUBs than anticipated have
+        non-redundant roles in the tumor suppressor and oncogenic pathways, most notably TP53 regulation, suggesting new
+        approaches to undruggable targets. The approaches described in this work are directly applicable to other gene
+        families and therapeutic targets.
+    </p>
+
+    </div>
+
+
+<footer class="footer">
+    <p class="small text-center text-muted">
+        Developed with ❤️ by the <a href="https://indralab.github.io">INDRA Lab</a>, a part of the
+        <a href="https://labsyspharm.github.io">Laboratory of Systems Pharmacology</a> and
+        <a href="https://hits.harvard.edu">Harvard Program in Therapeutic Science (HiTS)</a>.<br>
+        Points of contact: <a href="https://github.com/lauradohertyws">@lauradohertyws</a>
+        and <a href="https://github.com/cthoyt">@cthoyt</a>
+        (<a href="https://github.com/labsyspharm/dubportal">Source code</a>)
+    </p>
+</footer>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+
+    <!-- DataTables, see: https://datatables.net/examples/styling/bootstrap4.html-->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.12/c3.min.js"></script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+</body>
+</html>
