@@ -32,6 +32,7 @@ from indra.statements import (
     stmts_to_json_file,
 )
 from indra.tools import assemble_corpus as ac
+from indra.tools.fix_invalidities import fix_invalidities
 from jinja2 import Environment, FileSystemLoader
 from matplotlib_venn import venn2
 from more_click import force_option, verbose_option
@@ -182,6 +183,7 @@ def dubportal_preassembly(
 ) -> list[Statement]:
     stmts = filter_out_medscan(stmts)
     stmts = filter_curations(stmts)
+    stmts = fix_invalidities(stmts)
     stmts = only_dubbing(stmts)
     stmts = first_k_evidences(stmts, k=10)
     stmts = ac.filter_grounded_only(stmts)
