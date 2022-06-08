@@ -1,5 +1,7 @@
 # DUB Portal
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6624842.svg)](https://doi.org/10.5281/zenodo.6624842)
+
 This website is served at the following location:
 https://labsyspharm.github.io/dubportal/
 
