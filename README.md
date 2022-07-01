@@ -11,7 +11,7 @@ Cite the publication associated with the DUB Portal as:
 
 [**Integrating multi-omics data reveals function and therapeutic potential of deubiquitinating enzymes**](https://doi.org/10.7554/eLife.72879).
 <br /> Laura M Doherty, Caitlin E Mills, Sarah A Boswell, Xiaoxi Liu, Charles Tapley Hoyt, Benjamin Gyori, Sara J Buhrlage, and Peter K Sorger (2022).
-<br />*eLife*, 11:e72879
+<br />*eLife*, **11**:e72879
 
 Or using in LaTeX:
 
